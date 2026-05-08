@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#0A0A0A" />
+<title>trAIn · La app de fitness que te explica por qué</title>
+<meta name="description" content="La única app de fitness que te explica POR QUÉ te manda lo que te manda. Decisiones técnicas, sin motivación infantil, sin gamificación cutre. Únete a la waitlist." />
+<meta name="keywords" content="trAIn, app entrenamiento IA, entrenador personal IA, plan de entrenamiento adaptativo, fitness app España" />
+<meta property="og:title" content="trAIn · La app de fitness que te explica por qué" />
+<meta property="og:description" content="La única app de fitness que te explica POR QUÉ te manda lo que te manda. Decisiones técnicas, sin motivación infantil." />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="https://placehold.co/1200x630/0A0A0A/B6FF3C?text=trAIn" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href="logo.png" type="image/png" />
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700;1,800;1,900&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+
+<style>
+  :root {
+    --bg: #0A0A0A;
+    --bg-2: #0d0d0d;
+    --bg-3: #111111;
+    --fg: #FAFAFA;
+    --muted: #8a8a8a;
+    --muted-2: #5a5a5a;
+    --line: #1f1f1f;
+    --line-2: #2a2a2a;
+    --accent: #B6FF3C;
+    --accent-2: #d2ff7a;
+    --accent-soft: rgba(182, 255, 60, 0.12);
+    --warm: #FF8A3D;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  html, body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter Tight', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body { overflow-x: hidden; }
+  ::selection { background: var(--accent); color: #000; }
+
+  .mono { font-family: 'Inter Tight', system-ui, sans-serif; font-weight: 600; }
+  .display { font-family: 'Inter Tight', sans-serif; font-weight: 800; letter-spacing: -0.035em; line-height: 0.92; }
+  .display-tight { font-family: 'Inter Tight', sans-serif; font-weight: 900; letter-spacing: -0.05em; line-height: 0.85; }
+  .hairline { border-color: var(--line); }
+  .hairline-2 { border-color: var(--line-2); }
+  .accent { color: var(--accent); }
+  .bg-accent { background: var(--accent); }
+  .text-muted { color: var(--muted); }
+  .text-muted-2 { color: var(--muted-2); }
+  .label { font-family: 'Inter Tight', sans-serif; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted); }
+
+  .wordmark { font-family: 'Inter Tight', sans-serif; font-weight: 700; letter-spacing: -0.04em; }
+  .wordmark .ai { color: var(--accent); font-style: italic; font-weight: 800; }
+
+  /* ── Grain overlay ── */
+  .grain {
+    position: fixed; inset: 0; pointer-events: none; z-index: 100;
+    opacity: 0.06; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.9'/></svg>");
+  }
+
+  /* ── Phone ── */
+  .phone {
+    width: 260px; aspect-ratio: 9 / 19.5;
+    background: linear-gradient(160deg, #1a1a1a 0%, #050505 50%, #1a1a1a 100%);
+    border-radius: 40px; padding: 8px; position: relative;
+    box-shadow: 0 0 0 1.5px #2e2e2e, inset 0 0 0 1.5px rgba(255,255,255,0.04),
+      0 60px 120px -30px rgba(182, 255, 60, 0.18), 0 30px 60px -20px rgba(0,0,0,0.8);
+  }
+  .phone::before {
+    content: ''; position: absolute; top: 11px; left: 50%; transform: translateX(-50%);
+    width: 88px; height: 24px; background: #050505; border-radius: 13px;
+    z-index: 10; box-shadow: inset 0 0 0 1px #1a1a1a;
+  }
+  .phone::after {
+    content: ''; position: absolute; top: 20px; right: calc(50% - 24px);
+    width: 5px; height: 5px; background: #0a0a0a; border-radius: 50%; z-index: 11;
+    box-shadow: inset 0 0 2px rgba(255,255,255,0.15);
+  }
+  .phone-screen { position: relative; width: 100%; height: 100%; border-radius: 32px; overflow: hidden; background: var(--bg); box-shadow: inset 0 0 0 1px #000; }
+  .phone-screen > img { display: block; width: 102%; height: 102%; object-fit: cover; object-position: center; margin: -1%; }
+  .phone-screen::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, transparent 30%, transparent 70%, rgba(255,255,255,0.03) 100%);
+    pointer-events: none; z-index: 5; border-radius: 32px;
+  }
+  .phone-stack { position: relative; perspective: 1500px; }
+  .phone-stack .phone-back {
+    position: absolute; top: 60px; right: 60%;
+    transform: rotate(-8deg) scale(0.85);
+    opacity: 0.55; filter: blur(0.5px); z-index: 1;
+  }
+  .phone-stack .phone-front { position: relative; transform: rotate(3deg); z-index: 2; }
+  /* ── Hero glow ── */
+  .hero-glow {
+    position: absolute; border-radius: 50%;
+    background: radial-gradient(circle, rgba(182,255,60,0.18) 0%, rgba(255,140,40,0.08) 35%, transparent 70%);
+    filter: blur(40px); pointer-events: none;
+  }
+
+  /* ── Word reveal ── */
+  .word { display: inline-block; will-change: transform, opacity; }
+  .reveal-line { overflow: hidden; display: block; }
+
+  /* ── Live dot ── */
+  .live-dot {
+    width: 7px; height: 7px; border-radius: 50%; background: var(--accent);
+    box-shadow: 0 0 0 0 rgba(182,255,60,0.6);
+    animation: pulse 1.8s ease-out infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(182,255,60,0.6); }
+    70% { box-shadow: 0 0 0 12px rgba(182,255,60,0); }
+    100% { box-shadow: 0 0 0 0 rgba(182,255,60,0); }
+  }
+
+  /* ── App-style card ── */
+  .app-card { border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; display: flex; align-items: center; gap: 10px; font-size: 13px; }
+  .app-card.featured { border-color: rgba(182, 255, 60, 0.35); background: rgba(182, 255, 60, 0.04); border-radius: 18px; padding: 14px; }
+  .app-card.active { border-color: var(--accent); border-left-width: 3px; }
+  .app-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+  .app-dot.dim { background: #444; }
+  .app-check { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--accent); color: var(--accent); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .app-check.done { background: rgba(182, 255, 60, 0.15); }
+  .app-check.empty { border-color: #333; }
+
+  /* ── Marquee ── */
+  .marquee { overflow: hidden; position: relative; padding: 24px 0; }
+  .marquee::before, .marquee::after {
+    content: ''; position: absolute; top: 0; bottom: 0; width: 120px; z-index: 2; pointer-events: none;
+  }
+  .marquee::before { left: 0; background: linear-gradient(90deg, var(--bg), transparent); }
+  .marquee::after { right: 0; background: linear-gradient(-90deg, var(--bg), transparent); }
+  .marquee-track { display: flex; gap: 60px; animation: marquee 40s linear infinite; white-space: nowrap; will-change: transform; }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .marquee-item { display: inline-flex; align-items: center; gap: 16px; font-size: clamp(28px, 4vw, 44px); font-weight: 800; letter-spacing: -0.03em; }
+  .marquee-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+
+  /* ── Form ── */
+  .field { background: transparent; border: 1px solid #000; color: #000; width: 100%; padding: 14px 16px; font-family: inherit; font-size: 16px; outline: none; border-radius: 0; transition: background 0.2s ease; }
+  .field::placeholder { color: rgba(0,0,0,0.45); }
+  .field:focus { background: rgba(0,0,0,0.06); }
+  .radio-pill { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border: 1px solid #000; cursor: pointer; user-select: none; font-size: 14px; transition: all 0.2s ease; }
+  .radio-pill input { display: none; }
+  .radio-pill .dot { width: 12px; height: 12px; border: 1px solid #000; border-radius: 50%; position: relative; }
+  .radio-pill input:checked + .dot::after { content: ''; position: absolute; inset: 2px; background: #000; border-radius: 50%; }
+  .radio-pill:has(input:checked) { background: #000; color: var(--accent); }
+  .radio-pill:has(input:checked) .dot { border-color: var(--accent); }
+  .radio-pill:has(input:checked) .dot::after { background: var(--accent); }
+
+  /* ── Buttons ── */
+  .btn-accent {
+    background: var(--accent); color: #000; font-weight: 600;
+    padding: 14px 24px; border-radius: 999px;
+    display: inline-flex; align-items: center; gap: 10px;
+    transition: transform 0.15s ease, box-shadow 0.2s ease;
+    position: relative; overflow: hidden;
+  }
+  .btn-accent::before { content: ''; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.45) 50%, transparent 70%); transform: translateX(-100%); transition: transform 0.6s ease; }
+  .btn-accent:hover::before { transform: translateX(100%); }
+  .btn-accent:hover { transform: translateY(-1px); box-shadow: 0 12px 30px -10px rgba(182,255,60,0.5); }
+  .btn-dark { background: #000; color: var(--accent); font-weight: 600; padding: 16px 24px; width: 100%; transition: all 0.2s ease; position: relative; overflow: hidden; }
+  .btn-dark:hover { background: #1a1a1a; }
+  .btn-ghost { border: 1px solid var(--line-2); color: var(--fg); padding: 13px 22px; border-radius: 999px; display: inline-flex; align-items: center; gap: 10px; transition: all 0.2s ease; }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── Chat bubbles ── */
+  .ch-bubble { padding: 10px 12px; border-radius: 14px; font-size: 12px; max-width: 85%; margin-bottom: 8px; line-height: 1.35; }
+  .ch-bubble.user { background: #1a1a1a; margin-left: auto; border-bottom-right-radius: 4px; }
+  .ch-bubble.ai { background: rgba(182,255,60,0.08); border: 1px solid rgba(182,255,60,0.25); color: var(--accent); border-bottom-left-radius: 4px; }
+  .typing { display: inline-flex; gap: 3px; padding: 12px 16px; background: rgba(182,255,60,0.08); border: 1px solid rgba(182,255,60,0.25); border-radius: 14px; border-bottom-left-radius: 4px; }
+  .typing span { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: bounce 1.4s ease-in-out infinite; }
+  .typing span:nth-child(2) { animation-delay: 0.15s; }
+  .typing span:nth-child(3) { animation-delay: 0.3s; }
+  @keyframes bounce { 0%, 60%, 100% { transform: translateY(0); opacity: 0.4; } 30% { transform: translateY(-4px); opacity: 1; } }
+
+  /* ── How steps ── */
+  .how-step { opacity: 0.25; transition: opacity 0.4s ease; }
+  .how-step.is-active { opacity: 1; }
+
+
+  /* ── Comparison table ── */
+  .compare-table { width: 100%; border-collapse: collapse; }
+  .compare-table th, .compare-table td { padding: 18px 20px; text-align: left; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .compare-table thead th { font-family: 'Inter Tight', sans-serif; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 700; border-bottom: 1px solid var(--line-2); padding: 14px 20px; }
+  .compare-table .col-train { background: rgba(182,255,60,0.04); position: relative; }
+  .compare-table .col-train.head { color: var(--accent); }
+  .check-y { color: var(--accent); }
+  .check-n { color: #444; }
+  .check-h { color: var(--warm); opacity: 0.7; }
+
+  /* ── FAQ accordion ── */
+  .faq-item { border-bottom: 1px solid var(--line); }
+  .faq-q { width: 100%; padding: 26px 0; display: flex; align-items: center; justify-content: space-between; gap: 24px; text-align: left; transition: color 0.2s ease; }
+  .faq-q:hover { color: var(--accent); }
+  .faq-q .ico { width: 14px; height: 14px; flex-shrink: 0; transition: transform 0.3s ease; color: var(--muted); }
+  .faq-item.open .faq-q .ico { transform: rotate(45deg); color: var(--accent); }
+  .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+  .faq-item.open .faq-a { max-height: 320px; }
+  .faq-a-inner { padding-bottom: 28px; color: var(--muted); line-height: 1.65; max-width: 760px; }
+
+  /* ── Numbers ── */
+  .stat-num { font-feature-settings: 'tnum'; font-variant-numeric: tabular-nums; }
+
+  /* ── Caret ── */
+  @keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+  .caret { animation: blink 1s steps(1) infinite; color: var(--accent); }
+
+  /* ── Demo prompt input ── */
+  .demo-input { background: #0d0d0d; border: 1px solid var(--line-2); border-radius: 14px; padding: 14px 16px; color: var(--fg); font-family: inherit; font-size: 15px; width: 100%; outline: none; transition: border-color 0.2s ease; }
+  .demo-input:focus { border-color: var(--accent); }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line-2); font-size: 13px; color: var(--muted); cursor: pointer; transition: all 0.2s ease; background: transparent; }
+  .chip:hover { color: var(--accent); border-color: var(--accent); background: rgba(182,255,60,0.04); }
+
+  /* ── Bento ── */
+  .bento { display: grid; grid-template-columns: repeat(12, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .bento > * { background: var(--bg); padding: 28px; min-height: 200px; }
+  @media (max-width: 768px) { .bento > * { grid-column: span 12 !important; } }
+
+  .scroll-snap-x { scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+  .scroll-snap-x > * { scroll-snap-align: start; }
+  .link-a { transition: color 0.2s ease; }
+  .link-a:hover { color: var(--accent); }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { scrollbar-width: none; }
+
+  .badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--line-2); font-family: 'Inter Tight', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.05em; color: var(--muted); }
+
+  /* ── Base layout ── */
+  section { min-height: 90vh; display: flex; flex-direction: column; justify-content: center; }
+  .max-w-page { max-width: 1240px; margin-left: auto; margin-right: auto; }
+  .pad-x { padding-left: 20px; padding-right: 20px; }
+  @media (min-width: 768px) { .pad-x { padding-left: 32px; padding-right: 32px; } }
+
+  /* ══════════════════════════════════════════
+     TABLET + MOBILE  (< 1024px)
+  ══════════════════════════════════════════ */
+  @media (max-width: 1023px) {
+    /* Hero: phone first, text second */
+    .hero-phone-wrapper { order: 1; display: flex !important; justify-content: center; }
+    .hero-text-col { order: 2; }
+
+    /* Phone stack: explicit width for two-phone layout */
+    .phone-stack { width: 260px; }
+    .phone-stack .phone-front { transform: rotate(3deg); }
+  }
+
+  /* ══════════════════════════════════════════
+     MOBILE  (< 768px)
+     Target: iPhone 14 (390px), SE (375px)
+  ══════════════════════════════════════════ */
+  @media (max-width: 767px) {
+
+    /* ─── Global ─── */
+    section { min-height: auto; padding-top: 0; padding-bottom: 0; }
+
+    /* ─── Phone ─── */
+    .phone { width: 155px; border-radius: 28px; padding: 5px; }
+    .phone-screen { border-radius: 23px; }
+    .phone::before { width: 58px; height: 16px; top: 8px; border-radius: 10px; }
+    .phone::after { top: 13px; right: calc(50% - 16px); width: 4px; height: 4px; }
+    .phone-stack { width: 195px; }
+    .phone-stack .phone-back { top: 32px; right: 48%; transform: rotate(-11deg) scale(0.80); }
+    /* Extra left offset so back phone clears screen edge */
+    .hero-phone-wrapper { padding-left: 44px !important; }
+
+    /* ─── Hero ─── */
+    .hero-text-col { text-align: center; }
+    .hero-text-col .badge-row { justify-content: center; }
+    #hero-cta { flex-direction: column; align-items: stretch; gap: 10px; }
+    #hero-cta .btn-accent,
+    #hero-cta .btn-ghost { justify-content: center; }
+    #hero-sub { max-width: 100%; }
+
+    /* ─── Section vertical spacing ─── */
+    .py-28, .py-20 { padding-top: 2.25rem !important; padding-bottom: 2.25rem !important; }
+    .py-16 { padding-top: 1.75rem !important; padding-bottom: 1.75rem !important; }
+    footer { padding-top: 2rem !important; padding-bottom: 2rem !important; }
+
+    /* ─── Typography ─── */
+    /* HOW step numbers: smaller on mobile */
+    .how-card span.display { font-size: 2.75rem !important; }
+
+    /* ─── Cards ─── */
+    .cards-inset { padding-left: 2px; padding-right: 2px; }
+    .card-item { border-radius: 14px !important; }
+
+    /* ─── Experiment VS cards ─── */
+    .vs-card { text-align: center; }
+    .vs-card > .flex.items-center { justify-content: center; }
+    .vs-card .space-y-4 .flex { justify-content: center; }
+
+    /* ─── FAQ ─── */
+    .faq-q { padding: 16px 0; gap: 16px; }
+    #faq .btn-accent { width: 100%; justify-content: center; }
+
+    /* ─── Modal ─── */
+    .modal-card { padding: 36px 18px 28px; }
+
+    /* ─── BETA block ─── */
+    #beta-block h2 { font-size: 1.875rem !important; line-height: 1.05 !important; }
+    #beta-block .btn-dark { min-width: 0 !important; width: 100%; }
+    #beta-block .referral-row { flex-direction: column; gap: 1px; padding: 10px 0; }
+    #beta-block .referral-row span:first-child { font-size: 0.875rem; font-weight: 600; }
+    #beta-block .referral-row span:last-child { font-size: 0.75rem; opacity: 0.55; }
+
+    /* ─── Footer ─── */
+    .footer-cols-small { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+    /* ─── Misc ─── */
+    .chip { font-size: 11.5px; padding: 5px 10px; }
+    #how .grid { margin-top: 1.5rem !important; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+
+  /* ── Modal ── */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(0,0,0,0.82);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+  .modal-overlay.active { opacity: 1; pointer-events: all; }
+  .modal-card {
+    background: #161616;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-top: 2px solid var(--accent);
+    padding: 44px 40px 40px;
+    max-width: 480px;
+    width: 100%;
+    position: relative;
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+  }
+  .modal-overlay.active .modal-card { transform: translateY(0); }
+  .modal-close {
+    position: absolute; top: 16px; right: 16px;
+    color: var(--muted); padding: 8px; line-height: 1;
+    transition: color 0.2s;
+  }
+  .modal-close:hover { color: white; }
+  .modal-card .field {
+    background: #0d0d0d;
+    border: 1px solid rgba(255,255,255,0.12);
+    color: var(--fg);
+    border-radius: 6px;
+    padding: 14px 16px;
+    font-size: 16px;
+    width: 100%;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s ease;
+  }
+  .modal-card .field::placeholder { color: var(--muted); }
+  .modal-card .field:focus { border-color: var(--accent); }
+</style>
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+
+<!-- NAV -->
+<nav id="nav" class="fixed top-0 left-0 right-0 z-50 transition-colors">
+  <div class="max-w-page pad-x h-16 flex items-center justify-between">
+    <a href="#" class="flex items-center">
+      <img src="wordmark_on_dark.png" alt="trAIn" style="height: 28px; width: auto;" />
+    </a>
+    <div class="hidden md:flex items-center gap-8 text-sm text-muted">
+      <a href="#manifiesto" class="hover:text-white transition-colors">Manifiesto</a>
+      <a href="#demo" class="hover:text-white transition-colors">Demo</a>
+      <a href="#comparativa" class="hover:text-white transition-colors">vs Resto</a>
+      <a href="#faq" class="hover:text-white transition-colors">FAQ</a>
+    </div>
+    <button class="open-modal btn-accent text-sm" style="padding: 10px 18px;">Únete a la beta</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="relative pt-16 md:pt-24 pb-8 md:pb-12 overflow-hidden">
+  <div class="hero-glow" style="width: 700px; height: 700px; top: -150px; right: -150px;"></div>
+  <div class="hero-glow" style="width: 500px; height: 500px; bottom: -100px; left: -150px; background: radial-gradient(circle, rgba(255,140,40,0.08) 0%, transparent 60%);"></div>
+
+  <div class="max-w-page pad-x relative">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 lg:gap-12 items-center">
+      <div class="lg:col-span-7 hero-text-col">
+        <div class="flex items-center gap-3 mb-3 md:mb-5 flex-wrap badge-row">
+          <div class="badge" style="border-color: rgba(182,255,60,0.3); color: var(--accent);">
+            <span class="live-dot"></span>
+            <span>Waitlist abierta · Lanzamiento septiembre 2026</span>
+          </div>
+        </div>
+
+        <h1 id="hero-headline" class="display text-[32px] md:text-6xl lg:text-[66px]">
+          <span class="reveal-line"><span class="word">La única app</span></span>
+          <span class="reveal-line"><span class="word">de fitness que</span></span>
+          <span class="reveal-line"><span class="word">te explica</span> <span class="word" style="color: var(--accent);">POR QUÉ.</span></span>
+        </h1>
+
+        <p id="hero-sub" class="text-muted text-sm md:text-lg mt-3 md:mt-5 max-w-xl leading-relaxed">
+          <span class="text-white">Entrena con cabeza.</span> Sin motivación barata. Sin gurús. Sin planes genéricos.
+        </p>
+
+        <div id="hero-cta" class="flex flex-wrap items-center gap-4 mt-4 md:mt-6">
+          <button class="open-modal btn-accent">
+            Quiero entrar a la beta
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L8.5 3.5M13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+          </button>
+          <a href="#demo" class="btn-ghost">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M5 3l8 5-8 5V3z" fill="currentColor"/></svg>
+            Ver cómo piensa
+          </a>
+        </div>
+      </div>
+
+      <!-- Hero phone -->
+      <div class="lg:col-span-5 flex justify-center lg:justify-end hero-phone-wrapper">
+        <div class="phone-stack" id="hero-phone">
+          <div class="phone phone-back">
+            <div class="phone-screen">
+              <img src="assets/app-splash.jpeg" alt="trAIn — La app de fitness que te explica por qué" loading="lazy" />
+            </div>
+          </div>
+          <div class="phone phone-front" id="phone-tilt">
+            <div class="phone-screen">
+              <img src="assets/app-plan.jpeg" alt="Plan semanal trAIn" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hidden md:flex items-center gap-3 mt-8 text-muted-2 text-xs uppercase tracking-[0.12em] font-semibold" id="scroll-hint">
+      <span>Sigue bajando</span>
+      <span class="w-12 h-px bg-current"></span>
+    </div>
+  </div>
+</section>
+
+<!-- EL PROBLEMA -->
+<section class="py-20 md:py-28 border-t hairline">
+  <div class="max-w-page pad-x">
+    <span class="label">El problema</span>
+    <h2 class="display text-3xl md:text-5xl lg:text-6xl mt-3 max-w-4xl">
+      Las apps de fitness te tratan como a un <span class="text-muted">usuario promedio que no existe.</span>
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mt-10 md:mt-14 cards-inset">
+      <div class="card-item p-7 md:p-8 border hairline text-center flex flex-col items-center gap-3">
+        <div class="text-xs uppercase tracking-[0.1em] font-bold" style="color: #ff5555;">✕ Plan genérico</div>
+        <p class="text-muted leading-relaxed text-sm">
+          La misma rutina para el que lleva dos años en el gym y para el que empieza hoy. Solo cambia el peso.
+        </p>
+      </div>
+      <div class="card-item p-7 md:p-8 border hairline text-center flex flex-col items-center gap-3">
+        <div class="text-xs uppercase tracking-[0.1em] font-bold" style="color: #ff5555;">✕ "IA" de marketing</div>
+        <p class="text-muted leading-relaxed text-sm">
+          Ponen "Inteligencia Artificial" en el nombre pero el plan que te dan es igual para todos. Sin personalización real.
+        </p>
+      </div>
+      <div class="card-item p-7 md:p-8 border hairline text-center flex flex-col items-center gap-3">
+        <div class="text-xs uppercase tracking-[0.1em] font-bold" style="color: #ff5555;">✕ Motivación vacía</div>
+        <p class="text-muted leading-relaxed text-sm">
+          Te mandan notificaciones de ánimo en lugar de decirte si hoy conviene entrenar duro o descansar.
+        </p>
+      </div>
+    </div>
+    <p class="text-lg text-muted mt-12 max-w-2xl leading-relaxed">
+      Si llevas más de un año entrenando en serio, ya lo sabes. <span class="text-white">Por eso estamos construyendo otra cosa.</span>
+    </p>
+  </div>
+</section>
+
+<!-- LA SOLUCIÓN -->
+<section class="py-20 md:py-28">
+  <div class="max-w-page pad-x">
+    <div class="flex items-end justify-between flex-wrap gap-6 mb-14">
+      <div>
+        <span class="label">La solución</span>
+        <h2 class="display text-3xl md:text-5xl lg:text-6xl mt-3 max-w-3xl">
+          Tres cosas que <span class="text-muted">ninguna otra app hace.</span>
+        </h2>
+        <p class="text-muted text-lg mt-6 max-w-2xl">
+          Cada decisión que toma la app sobre tu entrenamiento viene explicada. Siempre sabes el porqué.
+        </p>
+      </div>
+      <div class="hidden lg:block text-xs text-muted-2 uppercase tracking-[0.1em] font-semibold">↓ Tres principios</div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 cards-inset gap-px-0">
+      <div class="card-item border hairline p-7 md:p-10 flex flex-col gap-4 text-center items-center" style="min-height: 280px;">
+        <div class="text-xs accent font-bold uppercase tracking-[0.12em]">01 — Transparencia</div>
+        <h3 class="display text-2xl md:text-3xl">Te explica el porqué.</h3>
+        <p class="text-muted leading-relaxed text-sm flex-1">
+          Cada vez que te sube el peso, te baja el volumen o te cambia el ejercicio,
+          te dice exactamente por qué. Con tus datos.
+        </p>
+        <div class="pt-5 border-t hairline text-sm text-muted-2 w-full">
+          Cada cambio, explicado al momento
+        </div>
+      </div>
+      <div class="card-item border hairline md:border-l-0 p-7 md:p-10 flex flex-col gap-4 text-center items-center" style="min-height: 280px;">
+        <div class="text-xs accent font-bold uppercase tracking-[0.12em]">02 — Adaptación real</div>
+        <h3 class="display text-2xl md:text-3xl">Mejora contigo.</h3>
+        <p class="text-muted leading-relaxed text-sm flex-1">
+          Cuanto más entrenas, mejor te conoce. Ajusta carga, volumen y descanso
+          en función de lo que tú haces. No del usuario medio.
+        </p>
+        <div class="pt-5 border-t hairline text-sm text-muted-2 w-full">
+          Se actualiza después de cada sesión
+        </div>
+      </div>
+      <div class="card-item border hairline md:border-l-0 p-7 md:p-10 flex flex-col gap-4 text-center items-center" style="min-height: 280px;">
+        <div class="text-xs accent font-bold uppercase tracking-[0.12em]">03 — Basado en ciencia</div>
+        <h3 class="display text-2xl md:text-3xl">Con base en ciencia.</h3>
+        <p class="text-muted leading-relaxed text-sm flex-1">
+          Más de 5.000 ejercicios catalogados. Cada decisión tiene una razón contrastada detrás,
+          no la opinión de nadie.
+        </p>
+        <div class="pt-5 border-t hairline flex items-baseline justify-center gap-2 w-full">
+          <span class="display text-2xl accent">5.000+</span>
+          <span class="text-sm text-muted-2">ejercicios</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE DEMO -->
+<section id="demo" class="border-t hairline relative overflow-hidden">
+  <div class="hero-glow" style="width: 600px; height: 600px; bottom: -200px; right: -200px;"></div>
+  <div class="max-w-page pad-x py-16 md:py-20 w-full">
+    <span class="label">Demo</span>
+    <h2 class="display text-3xl md:text-5xl lg:text-6xl mt-3">
+      Mira cómo <span class="accent">piensa trAIn.</span>
+    </h2>
+    <p class="text-muted text-lg mt-4 max-w-xl leading-relaxed">
+      Estas son situaciones reales que trAIn resuelve en segundos. El vídeo completo llega pronto.
+    </p>
+
+    <div class="relative mt-10 max-w-3xl w-full rounded-2xl border hairline overflow-hidden" style="aspect-ratio: 16/9; background: var(--bg-2);">
+      <div class="absolute inset-0 flex flex-col items-center justify-center gap-4">
+        <div class="w-16 h-16 rounded-full border hairline-2 flex items-center justify-center" style="background: rgba(182,255,60,0.06);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 3l16 9-16 9V3z" fill="var(--accent)"/></svg>
+        </div>
+        <span class="text-xs text-muted-2 font-semibold uppercase tracking-[0.1em]">Vídeo demo · Próximamente</span>
+      </div>
+      <div class="absolute inset-0 rounded-2xl" style="border: 1px solid rgba(182,255,60,0.06);"></div>
+    </div>
+
+    <div class="mt-10">
+      <div class="text-xs text-muted-2 font-semibold uppercase tracking-[0.1em] mb-4">Situaciones que resuelve</div>
+      <div class="flex flex-wrap gap-3">
+        <span class="chip">"Mañana viajo y me lesioné el hombro"</span>
+        <span class="chip">"Llevo 3 semanas sin progresar"</span>
+        <span class="chip">"Tengo solo 25 minutos hoy"</span>
+        <span class="chip">"Me duelen las rodillas haciendo sentadilla"</span>
+      </div>
+    </div>
+
+    <div class="mt-10">
+      <button class="open-modal btn-accent">
+        Probar la beta real
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L8.5 3.5M13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section id="how" class="border-t hairline">
+  <div class="max-w-page pad-x py-16 md:py-20 w-full">
+    <span class="label">Cómo funciona</span>
+    <h2 class="display text-3xl md:text-5xl lg:text-6xl mt-3">
+      Tres pasos. <span class="accent">Sin diplomas.</span>
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-px hairline border bg-[var(--line)] mt-8 md:mt-12 cards-inset">
+      <div class="bg-[var(--bg)] p-7 md:p-10 how-card text-center flex flex-col items-center gap-3">
+        <span class="display text-6xl md:text-7xl text-muted-2">01</span>
+        <h3 class="display text-2xl md:text-3xl">Cuéntale qué quieres.</h3>
+        <p class="text-muted leading-relaxed text-sm flex-1">
+          Objetivo, días disponibles, material y lesiones. Sin selfies ni fotos de progreso.
+        </p>
+        <div class="text-xs text-muted-2 mt-2">⏱ 2 minutos</div>
+      </div>
+      <div class="bg-[var(--bg)] p-7 md:p-10 how-card text-center flex flex-col items-center gap-3">
+        <span class="display text-6xl md:text-7xl text-muted-2">02</span>
+        <h3 class="display text-2xl md:text-3xl">Entrena con tu plan.</h3>
+        <p class="text-muted leading-relaxed text-sm flex-1">
+          Plan completo con vídeos para cada ejercicio. Marcas las series, notas cómo fue. A casa.
+        </p>
+        <div class="text-xs text-muted-2 mt-2">📱 En tu móvil</div>
+      </div>
+      <div class="bg-[var(--bg)] p-7 md:p-10 how-card text-center flex flex-col items-center gap-3">
+        <span class="display text-6xl md:text-7xl text-muted-2">03</span>
+        <h3 class="display text-2xl md:text-3xl">El plan se adapta solo.</h3>
+        <p class="text-muted leading-relaxed text-sm flex-1">
+          ¿Viaje? ¿Lesión? Le cuentas lo que pasa. Reescribe el plan en segundos. Sin excusas.
+        </p>
+        <div class="text-xs text-muted-2 mt-2">🧠 En segundos</div>
+      </div>
+    </div>
+
+    <div class="mt-12 text-center">
+      <button class="open-modal btn-accent">
+        Quiero mi plan personalizado
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L8.5 3.5M13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- EL EXPERIMENTO PÚBLICO -->
+<section id="experimento" class="border-t hairline relative overflow-hidden">
+  <div class="hero-glow" style="width: 700px; height: 700px; top: -200px; left: -200px; opacity: 0.5;"></div>
+  <div class="max-w-page pad-x py-16 md:py-20 w-full">
+
+    <div class="flex items-center gap-3 mb-8">
+      <span class="live-dot"></span>
+      <span class="label" style="color: var(--accent);">Experimento público · En curso</span>
+    </div>
+
+    <h2 class="display text-3xl md:text-5xl lg:text-[64px] max-w-4xl">
+      ¿Puede trAIn <span class="accent">ganar a un coach humano?</span>
+    </h2>
+    <p class="text-muted text-lg mt-6 max-w-2xl leading-relaxed">
+      Lo estamos midiendo. En público. Sin esconder los resultados.
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-11 gap-4 mt-12 items-stretch">
+      <div class="vs-card md:col-span-5 p-7 md:p-8 border hairline rounded-2xl bg-[var(--bg-2)] flex flex-col">
+        <div class="flex items-center gap-2 mb-6">
+          <span class="w-2 h-2 rounded-full bg-accent flex-shrink-0"></span>
+          <span class="label" style="color: var(--accent);">trAIn IA</span>
+        </div>
+        <div class="space-y-4">
+          <div class="flex items-start gap-3 text-sm">
+            <span class="accent mt-0.5">→</span>
+            <span class="text-muted">Plan adaptativo que se reescribe cada semana</span>
+          </div>
+          <div class="flex items-start gap-3 text-sm">
+            <span class="accent mt-0.5">→</span>
+            <span class="text-muted">Explica el porqué de cada decisión</span>
+          </div>
+          <div class="flex items-start gap-3 text-sm">
+            <span class="accent mt-0.5">→</span>
+            <span class="text-muted">Disponible en cualquier momento</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="md:col-span-1 flex items-center justify-center py-4 md:py-0">
+        <span class="display text-4xl text-muted-2">VS</span>
+      </div>
+
+      <div class="vs-card md:col-span-5 p-7 md:p-8 border hairline rounded-2xl bg-[var(--bg-2)] flex flex-col">
+        <div class="flex items-center gap-2 mb-6">
+          <span class="w-2 h-2 rounded-full bg-[var(--muted-2)] flex-shrink-0"></span>
+          <span class="label">Coach humano</span>
+        </div>
+        <div class="space-y-4">
+          <div class="flex items-start gap-3 text-sm">
+            <span class="text-muted-2 mt-0.5">→</span>
+            <span class="text-muted">Plan personalizado según el criterio del coach</span>
+          </div>
+          <div class="flex items-start gap-3 text-sm">
+            <span class="text-muted-2 mt-0.5">→</span>
+            <span class="text-muted">Años de experiencia y retroalimentación directa</span>
+          </div>
+          <div class="flex items-start gap-3 text-sm">
+            <span class="text-muted-2 mt-0.5">→</span>
+            <span class="text-muted">Ajustes bajo demanda</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-3 gap-4 md:gap-8 mt-8 md:mt-12 mx-auto" style="max-width: 380px;">
+      <div class="text-center">
+        <div class="display text-4xl md:text-5xl accent stat-num">8</div>
+        <div class="text-muted text-xs md:text-sm mt-1">personas reales</div>
+      </div>
+      <div class="text-center">
+        <div class="display text-4xl md:text-5xl stat-num">8</div>
+        <div class="text-muted text-xs md:text-sm mt-1">semanas</div>
+      </div>
+      <div class="text-center">
+        <div class="display text-4xl md:text-5xl accent">↗</div>
+        <div class="text-muted text-sm mt-1">Resultados públicos</div>
+      </div>
+    </div>
+
+    <div class="flex flex-col items-center gap-5 mt-12 text-center">
+      <p class="text-muted">
+        Si la IA pierde, lo publicamos igual. <span class="text-white">Esa es la única promesa que importa.</span>
+      </p>
+      <a href="#" class="btn-ghost" style="font-size: 14px; padding: 10px 18px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.45-6.231zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/></svg>
+        Seguir en Twitter @trainapp
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- MANIFESTO -->
+<section id="manifiesto" class="border-t hairline relative overflow-hidden">
+  <div class="hero-glow" style="width: 800px; height: 800px; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.3;"></div>
+  <div class="max-w-page pad-x py-16 md:py-20 relative">
+    <span class="label">Manifiesto</span>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 mt-10 max-w-4xl">
+      <p class="text-xl leading-relaxed text-muted">
+        El fitness se ha llenado de plantillas, gurús y filtros.
+        Llevamos años copiando rutinas de personas a las que no nos parecemos en nada.
+      </p>
+      <p class="text-xl leading-relaxed">
+        trAIn no inventa nada nuevo: aplica lo que un buen entrenador haría
+        si tuviera tiempo infinito para escucharte. <span class="accent">Eso ya lo tiene la IA.</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDER NOTE -->
+<section class="py-20 md:py-28 border-t hairline">
+  <div class="max-w-page pad-x">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+      <div class="lg:col-span-4">
+        <span class="label">Carta del fundador</span>
+        <div class="flex items-center gap-4 mt-6">
+          <div class="avatar" style="width: 56px; height: 56px; font-size: 18px; background: linear-gradient(135deg, #B6FF3C, #7ad900); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #000;">N</div>
+          <div>
+            <div class="font-semibold text-lg">Nacho</div>
+            <div class="text-xs text-muted-2">Fundador, trAIn</div>
+          </div>
+        </div>
+        <div class="mt-8 text-xs text-muted-2">📍 Madrid · Mayo 2026</div>
+      </div>
+      <div class="lg:col-span-8 space-y-6 text-lg leading-relaxed">
+        <p>Hola. Esto lo escribo yo, no un copywriter.</p>
+        <p>
+          Llevo entrenando 12 años y probando apps unas 9. Todas tenían el mismo problema:
+          no me conocían, no se adaptaban, y a las dos semanas estaba <span class="accent">improvisando otra vez</span>.
+        </p>
+        <p>
+          Cuando salieron los modelos de IA decentes, vi claro que esto era el momento.
+          Un buen entrenador hace dos cosas: <strong>te da contexto</strong> y <strong>se acuerda de ti la próxima semana</strong>.
+          Nada más. Eso una IA bien usada lo hace, y lo hace mejor.
+        </p>
+        <p>
+          trAIn no es un wrapper de ChatGPT. Es un modelo entrenado con periodización seria,
+          patrones de fatiga, biomecánica, y miles de horas de log de gente real.
+        </p>
+        <p>
+          Estoy abriendo plazas porque quiero feedback honesto antes de cobrar nada.
+          Si entras, <span class="accent">vas a recibir mensajes míos directamente</span>. Y yo voy a leer todo lo que me digas.
+        </p>
+        <p class="text-muted font-semibold">— Nacho</p>
+        <div class="mt-10">
+          <button class="open-modal btn-accent">
+            Entrar a la beta
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L8.5 3.5M13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="py-16 md:py-20 border-t hairline">
+  <div class="max-w-page pad-x">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+      <!-- Left header -->
+      <div class="lg:col-span-4">
+        <span class="label">Preguntas frecuentes</span>
+        <h2 class="display text-3xl md:text-4xl lg:text-5xl mt-3">
+          Lo que <span class="text-muted">todo el mundo pregunta.</span>
+        </h2>
+        <p class="text-muted mt-6">¿Otra cosa? Escríbeme cuando entres a la beta. Lo leo yo.</p>
+
+        <div class="mt-10">
+          <button class="open-modal btn-accent">
+            Únete a la beta gratis
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L8.5 3.5M13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Accordion: spans 2 rows on desktop -->
+      <div class="lg:col-span-8 lg:row-span-2">
+        <div class="border-t hairline">
+          <div class="faq-item">
+            <button class="faq-q display text-base md:text-xl">
+              <span>¿Es solo otra envoltura de ChatGPT?</span>
+              <svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <div class="faq-a"><div class="faq-a-inner">No. Es un modelo entrenado específicamente con bases de datos de periodización, biomecánica y logs reales de entrenamiento. Hablar con él te lo va a confirmar a los 30 segundos.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q display text-base md:text-xl">
+              <span>¿Cuándo está disponible para iOS?</span>
+              <svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <div class="faq-a"><div class="faq-a-inner">La beta está en APK de Android. Cuando cerremos la beta y validemos, sale iOS. Estimo Q3 2026 — pero la beta es ahora.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q display text-base md:text-xl">
+              <span>Estoy lesionado/a — ¿puedo entrar igual?</span>
+              <svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <div class="faq-a"><div class="faq-a-inner">Sí. Le cuentas lo que tienes y construye un plan que respete eso. trAIn no es un médico — es un entrenador. Si la lesión es seria, ve antes a un fisio.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q display text-base md:text-xl">
+              <span>¿Mis datos van a entrenar otros modelos?</span>
+              <svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <div class="faq-a"><div class="faq-a-inner">No. Tus logs de entreno son tuyos. Si en algún momento usamos datos agregados y anonimizados para mejorar el modelo, te avisaremos antes y podrás decir que no.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q display text-base md:text-xl">
+              <span>Soy principiante absoluto. ¿Es para mí?</span>
+              <svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <div class="faq-a"><div class="faq-a-inner">Sí — de hecho es donde más sentido tiene. Empezamos con técnicas básicas, vídeos de cada ejercicio, y subimos volumen solo cuando estás listo. Sin saltos raros.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q display text-base md:text-xl">
+              <span>¿Qué pasa cuando termina la beta?</span>
+              <svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <div class="faq-a"><div class="faq-a-inner">Tendrás precio fundador para siempre — no más caro que una clase de spinning al mes. Y los 3 primeros meses son gratis para los de la beta cerrada.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q display text-base md:text-xl">
+              <span>¿Necesito un wearable / pulso / báscula?</span>
+              <svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <div class="faq-a"><div class="faq-a-inner">No. Si los tienes y los conectas, mejor. Si no, suficientes 3 datos: lo que cargas, cuántas reps llegas, y cómo te has sentido. La IA hace el resto.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ¿Convencido?: row 2 col 1 on desktop, after accordion on mobile -->
+      <div class="lg:col-span-4">
+        <div class="p-8 rounded-2xl" style="background: var(--accent-soft); border: 1px solid rgba(182,255,60,0.15);">
+          <p class="text-lg font-semibold mb-2">¿Convencido?</p>
+          <p class="text-muted mb-6 text-sm leading-relaxed">La beta es gratis. Los primeros 100 tienen acceso de por vida. No hay truco.</p>
+          <button class="open-modal btn-accent w-full justify-center">
+            Reservar mi plaza ahora
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L8.5 3.5M13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BETA -->
+<section id="beta" class="py-20 md:py-28 pad-x">
+  <div class="max-w-page">
+    <div class="bg-accent text-black p-8 md:p-14 lg:p-16 relative overflow-hidden" id="beta-block">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+        <div class="lg:col-span-7">
+          <div class="text-xs uppercase tracking-[0.1em] font-bold mb-6 flex items-center gap-3">
+            <span class="w-2 h-2 rounded-full bg-black"></span>
+            <span>Plazas limitadas</span>
+          </div>
+          <h2 class="display text-4xl md:text-5xl lg:text-7xl">
+            Los primeros <span class="opacity-60">tienen ventaja.</span>
+          </h2>
+          <p class="text-lg mt-6 max-w-lg leading-relaxed">
+            La beta abre por oleadas. Los primeros 100 reciben acceso de por vida y figuran como Founding Members en los créditos de la app. Cada amigo al que invites te sube puestos en la cola.
+          </p>
+
+          <div class="mt-10 space-y-3 max-w-lg">
+            <div class="referral-row flex items-center justify-between py-3 border-b" style="border-color: rgba(0,0,0,0.15);">
+              <span class="text-sm font-medium">1 amigo invitado</span>
+              <span class="text-xs font-bold">Subes 50 puestos</span>
+            </div>
+            <div class="referral-row flex items-center justify-between py-3 border-b" style="border-color: rgba(0,0,0,0.15);">
+              <span class="text-sm font-medium">3 amigos invitados</span>
+              <span class="text-xs font-bold">Acceso garantizado al primer grupo</span>
+            </div>
+            <div class="referral-row flex items-center justify-between py-3 border-b" style="border-color: rgba(0,0,0,0.15);">
+              <span class="text-sm font-medium">5 amigos invitados</span>
+              <span class="text-xs font-bold">Founding 100: acceso de por vida</span>
+            </div>
+            <div class="referral-row flex items-center justify-between py-3">
+              <span class="text-sm font-medium">10 amigos invitados</span>
+              <span class="text-xs font-bold">Founding Plus + créditos en la app</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 flex items-center justify-center">
+          <div class="text-center">
+            <button class="open-modal btn-dark text-base font-bold flex items-center justify-center gap-3 mx-auto" style="min-width: 280px; padding: 18px 32px;">
+              Reservar mi plaza gratis
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L8.5 3.5M13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+            </button>
+            <div class="text-xs opacity-50 mt-4">Sin tarjeta · Tu puesto se confirma por email</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="border-t hairline py-14 px-6 md:px-8">
+  <div class="max-w-page">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10 mb-12">
+      <div class="md:col-span-5">
+        <img src="wordmark_on_dark.png" alt="trAIn" style="height: 32px; width: auto;" class="mb-3" />
+        <div class="text-muted mb-6 max-w-sm text-sm leading-relaxed">La única app de fitness que te explica por qué. Construyendo en público desde mayo 2026.</div>
+        <button class="open-modal btn-accent">
+          Pedir acceso
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L8.5 3.5M13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+        </button>
+      </div>
+      <div class="md:col-span-3">
+        <div class="text-xs text-muted-2 uppercase tracking-[0.1em] font-semibold mb-4">Producto</div>
+        <ul class="space-y-2 text-sm">
+          <li><a href="#demo" class="link-a">Demo</a></li>
+          <li><a href="#how" class="link-a">Cómo funciona</a></li>
+          <li><a href="#experimento" class="link-a">El experimento</a></li>
+          <li><a href="#faq" class="link-a">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-cols-small md:contents">
+        <div class="md:col-span-2">
+          <div class="text-xs text-muted-2 uppercase tracking-[0.1em] font-semibold mb-4">Legal</div>
+          <ul class="space-y-2 text-sm">
+            <li><a href="#" class="link-a">Privacidad</a></li>
+            <li><a href="#" class="link-a">Términos</a></li>
+            <li><a href="#" class="link-a">Cookies</a></li>
+          </ul>
+        </div>
+        <div class="md:col-span-2">
+          <div class="text-xs text-muted-2 uppercase tracking-[0.1em] font-semibold mb-4">Contacto</div>
+          <ul class="space-y-2 text-sm">
+            <li><a href="mailto:hola@trainapp.es" class="link-a">hola@trainapp.es</a></li>
+            <li><a href="#" class="link-a">Twitter</a></li>
+            <li><a href="#" class="link-a">Instagram</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="border-t hairline pt-8 flex flex-col md:flex-row justify-between gap-6 text-xs text-muted-2">
+      <div>© 2026 trAIn · Hecho con disciplina en Madrid</div>
+      <div>Construyendo en público desde mayo 2026</div>
+    </div>
+
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div id="beta-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-label="Únete a la beta">
+  <div class="modal-card">
+    <button class="modal-close" id="modal-close" aria-label="Cerrar">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2 2l14 14M16 2L2 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+    </button>
+
+    <div class="mb-6">
+      <img src="wordmark_on_dark.png" alt="trAIn" style="height: 26px; width: auto;" class="mb-4" />
+      <h3 class="display text-3xl">Reserva tu plaza</h3>
+      <p class="text-muted text-sm mt-2">Beta gratuita · Los primeros 100, acceso de por vida.</p>
+    </div>
+
+    <form id="beta-form" class="space-y-4">
+      <div>
+        <label class="text-xs uppercase tracking-[0.1em] font-bold block mb-2">Tu email</label>
+        <input type="email" name="email" required placeholder="tu@email.com" class="field" />
+      </div>
+      <button type="submit" class="btn-dark text-sm font-bold flex items-center justify-center gap-3" id="submit-btn">
+        <span class="btn-label">Entrar a la beta</span>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L8.5 3.5M13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+      </button>
+      <div class="text-xs text-muted text-center pt-1">Sin tarjeta · Lanzamiento septiembre 2026</div>
+    </form>
+
+    <div id="beta-success" class="hidden text-center py-6">
+      <svg width="72" height="72" viewBox="0 0 80 80" fill="none" class="mx-auto mb-5">
+        <circle cx="40" cy="40" r="36" stroke="var(--accent)" stroke-width="2" id="check-circle" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+        <path d="M24 41 L36 53 L57 30" stroke="var(--accent)" stroke-width="3" stroke-linecap="square" fill="none" id="check-mark" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+      </svg>
+      <div class="display text-3xl mb-2">Estás dentro.</div>
+      <p class="text-muted text-sm">Te avisamos por email cuando abramos tu oleada.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* ─────── Modal ─────── */
+  const modal = document.getElementById('beta-modal');
+  function openBetaModal() {
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeBetaModal() {
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('modal-close').addEventListener('click', closeBetaModal);
+  modal.addEventListener('click', function(e) { if (e.target === modal) closeBetaModal(); });
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeBetaModal(); });
+  document.querySelectorAll('.open-modal').forEach(btn => {
+    btn.addEventListener('click', function(e) { e.preventDefault(); openBetaModal(); });
+  });
+
+  /* ─────── Smooth scroll ─────── */
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const href = a.getAttribute('href');
+      if (href.length > 1) {
+        const t = document.querySelector(href);
+        if (t) { e.preventDefault(); window.scrollTo({ top: t.getBoundingClientRect().top + window.scrollY - 60, behavior: 'smooth' }); }
+      }
+    });
+  });
+
+  /* ─────── Nav scroll ─────── */
+  const nav = document.getElementById('nav');
+  function syncNav() {
+    if (window.scrollY > 50) {
+      nav.style.background = 'rgba(10,10,10,0.85)';
+      nav.style.backdropFilter = 'blur(12px)';
+      nav.style.borderBottom = '1px solid var(--line)';
+    } else {
+      nav.style.background = 'transparent';
+      nav.style.backdropFilter = 'none';
+      nav.style.borderBottom = '1px solid transparent';
+    }
+  }
+  syncNav();
+  window.addEventListener('scroll', syncNav, { passive: true });
+
+  /* ─────── Hero animations ─────── */
+  if (reduceMotion) {
+    gsap.utils.toArray('.word, .why-card').forEach(el => {
+      gsap.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.3, scrollTrigger: { trigger: el, start: 'top 95%' }});
+    });
+  } else {
+    gsap.from('#hero-headline .word', { y: 80, opacity: 0, duration: 0.95, stagger: 0.07, ease: 'power3.out' });
+    gsap.from('#hero-sub', { y: 20, opacity: 0, duration: 0.8, delay: 0.6, ease: 'power3.out' });
+    gsap.from('#hero-cta', { y: 20, opacity: 0, duration: 0.8, delay: 0.8, ease: 'power3.out' });
+    gsap.from('#hero-phone .phone-front', { x: 200, opacity: 0, duration: 1.2, delay: 0.2, ease: 'power3.out' });
+    gsap.from('#hero-phone .phone-back', { x: 80, opacity: 0, duration: 1.2, delay: 0.5, ease: 'power3.out' });
+    gsap.from('#scroll-hint', { opacity: 0, duration: 1.2, delay: 1.4, ease: 'power3.out' });
+
+    gsap.to('#hero-phone', { y: -80, scrollTrigger: { trigger: 'section', start: 'top top', end: 'bottom top', scrub: 0.5 }});
+
+    gsap.utils.toArray('.why-card').forEach(card => {
+      gsap.from(card, { y: 40, opacity: 0, duration: 0.7, ease: 'power3.out', scrollTrigger: { trigger: card, start: 'top 85%' } });
+    });
+
+
+
+    gsap.utils.toArray('.how-card').forEach(card => {
+      gsap.from(card, { y: 30, opacity: 0, duration: 0.6, ease: 'power3.out', scrollTrigger: { trigger: card, start: 'top 85%' } });
+    });
+
+    
+    gsap.from('#beta-block', { scale: 0.95, opacity: 0, duration: 0.9, ease: 'power3.out', scrollTrigger: { trigger: '#beta-block', start: 'top 80%' } });
+  }
+
+
+  /* ─────── FAQ ─────── */
+  document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => {
+      const item = q.closest('.faq-item');
+      item.classList.toggle('open');
+    });
+  });
+
+
+  /* ─────── Beta form ─────── */
+  const form = document.getElementById('beta-form');
+  const success = document.getElementById('beta-success');
+  const submitBtn = document.getElementById('submit-btn');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    submitBtn.querySelector('.btn-label').textContent = 'Enviando…';
+    submitBtn.disabled = true;
+    submitBtn.style.opacity = '0.6';
+    setTimeout(() => {
+      form.classList.add('hidden');
+      success.classList.remove('hidden');
+      const tl = gsap.timeline();
+      tl.to('#check-circle', { strokeDashoffset: 0, duration: 0.6, ease: 'power2.out' })
+        .to('#check-mark', { strokeDashoffset: 0, duration: 0.4, ease: 'power2.out' }, '-=0.2');
+    }, 800);
+  });
+
+  /* Reset modal form when reopened */
+  modal.addEventListener('transitionend', function() {
+    if (!modal.classList.contains('active')) {
+      setTimeout(() => {
+        form.classList.remove('hidden');
+        success.classList.add('hidden');
+        form.reset();
+        submitBtn.querySelector('.btn-label').textContent = 'Entrar a la beta';
+        submitBtn.disabled = false;
+        submitBtn.style.opacity = '';
+      }, 50);
+    }
+  });
+
+})();
+</script>
+
+</body>
+</html>
