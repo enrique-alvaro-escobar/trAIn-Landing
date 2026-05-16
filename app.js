@@ -152,7 +152,9 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
     const link = referralCode ? `https://2trainapp.com?ref=${referralCode}` : 'https://2trainapp.com';
 
     if (referralCode) {
-      document.getElementById('referral-link-text').textContent = `2trainapp.com?ref=${referralCode}`;
+      const refLinkEl = document.getElementById('referral-link-text');
+      refLinkEl.textContent = `https://2trainapp.com?ref=${referralCode}`;
+      refLinkEl.href = link;
       const copyBtn = document.getElementById('copy-referral');
       copyBtn.onclick = () => {
         navigator.clipboard.writeText(link).then(() => {

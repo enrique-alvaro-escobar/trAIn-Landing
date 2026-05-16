@@ -61,6 +61,7 @@
   .phone::after { display: none; }
   .phone-screen { position: relative; width: 100%; height: 100%; border-radius: 32px; overflow: hidden; background: var(--bg); box-shadow: inset 0 0 0 1px #000; }
   .phone-screen > img { display: block; width: 102%; height: 102%; object-fit: cover; margin: -1%; }
+  .phone-screen picture { display: block; width: 100%; height: 100%; }
   .phone-screen::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, transparent 30%, transparent 70%, rgba(255,255,255,0.03) 100%); pointer-events: none; z-index: 5; border-radius: 32px; }
   .phone-stack { position: relative; width: 420px; height: 572px; }
   .phone-item { position: absolute; top: 0; left: 0; }
@@ -278,12 +279,12 @@
           </div>
           <div class="phone phone-item" id="ph1">
             <div class="phone-screen">
-              <picture><source type="image/webp" srcset="/assets/while-training.webp"><img style="display:block;width:100%;height:100%;object-fit:cover;object-position:center top;transform:translateX(5px);" src="/assets/while-training.png" alt="" loading="lazy"></picture>
+              <picture><source type="image/webp" srcset="/assets/while-training.webp"><img style="display:block;width:100%;height:100%;object-fit:cover;object-position:center top;transform:translateX(5px);" src="/assets/while-training.png" alt=""></picture>
             </div>
           </div>
           <div class="phone phone-item" id="ph2">
             <div class="phone-screen">
-              <picture><source type="image/webp" srcset="/assets/summary.webp"><img style="display:block;width:102%;height:102%;object-fit:cover;margin:-1%;object-position:center top;transform:translateY(-3px) translateX(5px);" src="/assets/summary.png" alt="" loading="lazy"></picture>
+              <picture><source type="image/webp" srcset="/assets/summary.webp"><img style="display:block;width:102%;height:102%;object-fit:cover;margin:-1%;object-position:center top;transform:translateY(-3px) translateX(5px);" src="/assets/summary.png" alt=""></picture>
             </div>
           </div>
         </div>
@@ -727,7 +728,7 @@
 
       <!-- Referral link -->
       <div style="background:#0a0a0a;border:1px solid #1a1a1a;border-radius:8px;padding:9px 12px;margin-bottom:10px;">
-        <span id="referral-link-text" style="font-size:11px;color:#555;word-break:break-all;font-family:monospace;">2trainapp.com?ref=…</span>
+        <a id="referral-link-text" href="#" target="_blank" rel="noopener" style="font-size:11px;color:#555;word-break:break-all;font-family:monospace;text-decoration:none;">2trainapp.com?ref=…</a>
       </div>
 
       <span id="proj-1" hidden></span>
