@@ -1,0 +1,15 @@
+# System
+.DS_Store
+Thumbs.db
+
+# Environment / secrets — NEVER commit these
+.env
+.env.*
+*.secret
+*.key
+
+# Supabase CLI local state
+supabase/.temp/
+
+# Vercel CLI local state
+.vercel/
