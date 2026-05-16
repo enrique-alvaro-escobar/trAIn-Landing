@@ -55,6 +55,14 @@ Deno.serve(async (req) => {
     const { data: posData } = await supabase.rpc('get_waitlist_position', { p_email: email })
     const position: number = posData ?? 0
 
+    // Get projected positions with extra referrals
+    const [r1, r2, r3] = await Promise.all([
+      supabase.rpc('project_waitlist_position', { p_email: email, p_extra_referrals: 1 }),
+      supabase.rpc('project_waitlist_position', { p_email: email, p_extra_referrals: 2 }),
+      supabase.rpc('project_waitlist_position', { p_email: email, p_extra_referrals: 3 }),
+    ])
+    const projection = { '1': r1.data ?? position, '2': r2.data ?? position, '3': r3.data ?? position }
+
     const siteUrl = Deno.env.get('SITE_URL') ?? 'https://2trainapp.com'
     const referralLink = `${siteUrl}?ref=${referralCode}`
 
@@ -75,7 +83,7 @@ Deno.serve(async (req) => {
       })
     }
 
-    return new Response(JSON.stringify({ referral_code: referralCode, position, already_registered: alreadyRegistered }), {
+    return new Response(JSON.stringify({ referral_code: referralCode, position, projection, already_registered: alreadyRegistered }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     })
   } catch (err) {

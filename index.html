@@ -236,7 +236,7 @@
         <div class="flex items-center gap-3 mb-5 flex-wrap badge-row">
           <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full" style="border: 1px solid rgba(42, 111, 219,0.3); background: rgba(42, 111, 219,0.06);">
             <span class="live-dot"></span>
-            <span class="text-xs font-semibold accent">47 / 100 plazas reservadas</span>
+            <span class="text-xs font-semibold accent">100 plazas · acceso de por vida</span>
           </div>
           <div class="badge-context inline-flex items-center gap-2 px-3 py-1.5 rounded-full" style="border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04);">
             <span class="text-xs" style="color: var(--muted);">Para quien lleva meses entrenando sin resultados claros</span>
@@ -581,21 +581,23 @@
         <div class="lg:col-span-7">
           <div class="text-xs uppercase tracking-[0.12em] font-bold mb-5 flex items-center gap-3">
             <span class="w-2 h-2 rounded-full bg-black"></span>
-            <span>Plazas limitadas · 47 de 100</span>
+            <span>Solo 100 plazas · gratis para siempre</span>
           </div>
           <h2 class="display text-4xl md:text-5xl lg:text-6xl">
             Reserva ahora. <br>
             <span class="opacity-60">Cancelas cuando quieras.</span>
           </h2>
 
-          <!-- Progress bar -->
+          <!-- Oferta limitada -->
           <div class="mt-8 max-w-md">
-            <div class="progress-track" style="background: rgba(0,0,0,0.15);">
-              <div class="progress-fill" style="width: 47%; background: #000;"></div>
+            <div class="flex flex-wrap gap-2">
+              <span style="background:rgba(0,0,0,0.1);border:1px solid rgba(0,0,0,0.2);border-radius:999px;padding:4px 12px;font-size:12px;font-weight:700;">Acceso de por vida</span>
+              <span style="background:rgba(0,0,0,0.1);border:1px solid rgba(0,0,0,0.2);border-radius:999px;padding:4px 12px;font-size:12px;font-weight:700;">Gratis para siempre</span>
+              <span style="background:rgba(0,0,0,0.1);border:1px solid rgba(0,0,0,0.2);border-radius:999px;padding:4px 12px;font-size:12px;font-weight:700;">Cuando se cierren, no vuelven</span>
             </div>
-            <div class="flex justify-between mt-2 text-xs font-semibold">
-              <span>47 reservadas</span>
-              <span class="opacity-60">53 disponibles</span>
+            <div class="mt-5">
+              <p style="font-size:11px;font-weight:700;opacity:0.6;margin:0 0 4px;">La beta abre el 1 de septiembre · faltan</p>
+              <p id="countdown-display" style="font-size:28px;font-weight:900;letter-spacing:-0.02em;margin:0;">…</p>
             </div>
           </div>
 
@@ -695,14 +697,23 @@
       <div class="display text-2xl mb-1">Estás dentro.</div>
       <p class="text-muted text-sm mb-4">Eres el <strong id="waitlist-position" style="color:var(--accent)">#—</strong> en la lista.</p>
       <div style="background:#0d0d0d;border:1px solid #1e1e1e;border-radius:10px;padding:14px;margin-bottom:10px;text-align:left;">
-        <p style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#555;margin:0 0 8px;">Sube de wave</p>
+        <p style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#555;margin:0 0 8px;">Tu acceso</p>
+        <p id="wave-status-text" style="font-size:14px;font-weight:800;color:var(--accent);margin:0 0 4px;">Wave 1 ⚡</p>
+        <p id="wave-status-sub" style="font-size:12px;color:#aaa;margin:0;">Acceso gratuito de por vida</p>
+      </div>
+      <div style="background:#0d0d0d;border:1px solid #1e1e1e;border-radius:10px;padding:14px;margin-bottom:10px;text-align:left;">
+        <p style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#555;margin:0 0 8px;">Mejora tu posición</p>
         <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #1e1e1e;">
           <span style="font-size:13px;color:#aaa;">1 amigo apuntado</span>
-          <span style="font-size:12px;font-weight:700;color:var(--accent);">Wave 2 garantizado</span>
+          <span id="proj-1" style="font-size:12px;font-weight:700;color:var(--accent);">—</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #1e1e1e;">
+          <span style="font-size:13px;color:#aaa;">2 amigos apuntados</span>
+          <span id="proj-2" style="font-size:12px;font-weight:700;color:var(--accent);">—</span>
         </div>
         <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;">
           <span style="font-size:13px;color:#aaa;">3 amigos apuntados</span>
-          <span style="font-size:12px;font-weight:700;color:var(--accent);">Wave 1 garantizado ⚡</span>
+          <span id="proj-3" style="font-size:12px;font-weight:700;color:var(--accent);">—</span>
         </div>
       </div>
       <div style="background:#0d0d0d;border:1px solid #1e1e1e;border-radius:10px;padding:14px;margin-bottom:12px;text-align:left;">
@@ -883,7 +894,7 @@
   }
   function hideModalError() { mError.style.display = 'none'; }
 
-  function showModalSuccess(referralCode, position) {
+  function showModalSuccess(referralCode, position, projection) {
     if (referralCode) {
       const link = `https://2trainapp.com?ref=${referralCode}`;
       document.getElementById('referral-link-text').textContent = `2trainapp.com?ref=${referralCode}`;
@@ -897,6 +908,26 @@
     }
     if (position) {
       document.getElementById('waitlist-position').textContent = `#${position}`;
+      const waveText = document.getElementById('wave-status-text');
+      const waveSub = document.getElementById('wave-status-sub');
+      if (waveText && waveSub) {
+        if (position <= 100) {
+          waveText.textContent = 'Wave 1 ⚡ Estás dentro';
+          waveSub.textContent = 'Acceso gratuito de por vida';
+        } else {
+          waveText.textContent = `A ${position - 100} puestos de Wave 1`;
+          waveSub.textContent = 'Comparte para subir posiciones';
+        }
+      }
+    }
+    if (projection) {
+      const fmt = p => `puesto #${p}`;
+      const p1 = document.getElementById('proj-1');
+      const p2 = document.getElementById('proj-2');
+      const p3 = document.getElementById('proj-3');
+      if (p1) p1.textContent = projection['1'] ? fmt(projection['1']) : '—';
+      if (p2) p2.textContent = projection['2'] ? fmt(projection['2']) : '—';
+      if (p3) p3.textContent = projection['3'] ? fmt(projection['3']) : '—';
     }
     mForm.classList.add('hidden');
     mSuccess.classList.remove('hidden');
@@ -923,7 +954,7 @@
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Error desconocido');
-      showModalSuccess(data.referral_code, data.position);
+      showModalSuccess(data.referral_code, data.position, data.projection);
     } catch (err) {
       console.error('Waitlist error:', err);
       showModalError('Algo salió mal. Inténtalo de nuevo o escríbenos.');
@@ -945,6 +976,23 @@
       }, 50);
     }
   });
+})();
+</script>
+<script>
+(function() {
+  var target = new Date('2026-09-01T00:00:00');
+  function tick() {
+    var el = document.getElementById('countdown-display');
+    if (!el) return;
+    var diff = target - new Date();
+    if (diff <= 0) { el.textContent = 'Beta disponible'; return; }
+    var d = Math.floor(diff / 86400000);
+    var h = Math.floor((diff % 86400000) / 3600000);
+    var m = Math.floor((diff % 3600000) / 60000);
+    el.textContent = d + 'd ' + h + 'h ' + m + 'm';
+  }
+  tick();
+  setInterval(tick, 60000);
 })();
 </script>
 </body>
