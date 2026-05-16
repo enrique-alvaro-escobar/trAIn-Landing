@@ -171,21 +171,25 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
   }
 
   function animateBar(position) {
-    const marker = document.getElementById('ms-marker');
     const fill = document.getElementById('ms-fill');
-    const totalPct = Math.min((position / 400) * 100, 100);
-    const w1Pct = Math.min(position, 100);
-    if (reduceMotion) {
-      marker.style.transition = 'none';
-      fill.style.transition = 'none';
-      marker.style.left = totalPct + '%';
-      fill.style.width = w1Pct + '%';
-      return;
+    const wave = position <= 100 ? 1 : position <= 250 ? 2 : 3;
+    let pct, taken, free, waveLabel;
+    if (wave === 1) {
+      taken = position; free = 100 - position;
+      pct = position; waveLabel = 'PLAZAS WAVE 1';
+    } else if (wave === 2) {
+      taken = position - 100; free = 250 - position + 1;
+      pct = Math.round((position - 100) / 150 * 100); waveLabel = 'PLAZAS WAVE 2';
+    } else {
+      taken = position - 250; free = Math.max(400 - position + 1, 0);
+      pct = Math.round((position - 250) / 150 * 100); waveLabel = 'PLAZAS WAVE 3';
     }
-    setTimeout(() => {
-      marker.style.left = totalPct + '%';
-      fill.style.width = w1Pct + '%';
-    }, 500);
+    document.getElementById('ms-wl-text').textContent = waveLabel;
+    document.getElementById('ms-pos-frac').textContent = `${free} libres`;
+    document.getElementById('ms-scarcity-taken').textContent = `${taken} ocupada${taken !== 1 ? 's' : ''}`;
+    document.getElementById('ms-scarcity-free').textContent = `${free} disponible${free !== 1 ? 's' : ''} →`;
+    if (reduceMotion) { fill.style.transition = 'none'; fill.style.width = pct + '%'; return; }
+    setTimeout(() => { fill.style.width = pct + '%'; }, 500);
   }
 
   function showModalSuccess(referralCode, position, projection) {
@@ -204,8 +208,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
     document.getElementById('ms-badge-3').textContent = waveData.badge3;
 
     // Waves card
-    document.getElementById('ms-pos-frac').textContent = `${position} / 400`;
-    document.getElementById('ms-marker-tag').textContent = `TÚ #${position}`;
+    document.getElementById('ms-pos-frac').textContent = `${position <= 100 ? 100 - position : position <= 250 ? 251 - position : Math.max(401 - position, 0)} libres`;
     ['ms-w1', 'ms-w2', 'ms-w3'].forEach((id, i) => {
       const el = document.getElementById(id);
       const isActive = i + 1 === wave;
@@ -251,11 +254,10 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
     numWrap.style.cursor = 'pointer';
     numWrap.onclick = () => {
       const fill = document.getElementById('ms-fill');
-      const marker = document.getElementById('ms-marker');
-      fill.style.transition = 'none'; marker.style.transition = 'none';
-      fill.style.width = '0%'; marker.style.left = '0%';
+      fill.style.transition = 'none';
+      fill.style.width = '0%';
       void fill.offsetWidth;
-      fill.style.transition = ''; marker.style.transition = '';
+      fill.style.transition = '';
       animateNumber(position);
       animateBar(position);
     };
@@ -297,11 +299,9 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
         hideModalError();
         mBtn.querySelector('.btn-label').textContent = 'Entrar a la beta';
         mBtn.disabled = false; mBtn.style.opacity = '';
-        // Reset bar/marker for next open
+        // Reset bar for next open
         const fill = document.getElementById('ms-fill');
-        const marker = document.getElementById('ms-marker');
         if (fill) { fill.style.transition = 'none'; fill.style.width = '0%'; }
-        if (marker) { marker.style.transition = 'none'; marker.style.left = '0%'; }
       }, 50);
     }
   });

@@ -153,7 +153,6 @@
   #modal-success .ms-check::before {
     content: ""; position: absolute; inset: -8px; border-radius: 50%;
     border: 2px solid var(--ms-blue); opacity: 0;
-    animation: checkring 1.4s cubic-bezier(.2,.7,.2,1) .3s infinite;
   }
   #modal-success .ms-check svg { width: 22px; height: 22px; animation: checkdraw .5s cubic-bezier(.65,0,.45,1) .25s both; }
   #modal-success .ms-check svg path { stroke-dasharray: 28; stroke-dashoffset: 28; animation: checkdash .4s cubic-bezier(.65,0,.45,1) .35s forwards; }
@@ -168,7 +167,7 @@
     color: var(--ms-blue); font-variant-numeric: tabular-nums; display: inline-block;
     text-shadow: 0 0 60px rgba(42,111,219,.4);
   }
-  #modal-success .ms-num .ms-h { opacity: .85; }
+  #modal-success .ms-num .ms-h { opacity: .85; margin-right: 6px; }
   #modal-success .ms-num.pop { animation: numpop .35s cubic-bezier(.2,.7,.2,1); }
   @keyframes numpop { 0%{transform:scale(.85);filter:blur(4px)} 60%{transform:scale(1.04);filter:blur(0)} 100%{transform:scale(1)} }
   #modal-success .ms-badges { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
@@ -189,37 +188,16 @@
   }
   #modal-success .ms-waves-h { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
   #modal-success .ms-waves-h .ms-wl { font-size: 12px; font-weight: 600; color: var(--ms-mute); letter-spacing: .04em; text-transform: uppercase; }
-  #modal-success .ms-waves-h .ms-wr { font-size: 12px; color: var(--ms-blue); font-weight: 700; }
-  #modal-success .ms-bar-wrap { position: relative; padding-top: 18px; }
-  #modal-success .ms-you-marker {
-    position: absolute; top: -2px; left: 0%;
-    transform: translateX(-50%);
-    transition: left 1.4s cubic-bezier(.2,.7,.2,1) .6s;
-    display: flex; flex-direction: column; align-items: center; gap: 3px;
-  }
-  #modal-success .ms-you-marker .ms-tag {
-    font-size: 10px; font-weight: 800; letter-spacing: .06em; color: #fff;
-    background: var(--ms-blue); padding: 3px 7px; border-radius: 4px;
-    box-shadow: 0 4px 14px rgba(42,111,219,.55); white-space: nowrap;
-  }
-  #modal-success .ms-you-marker .ms-arr {
-    width: 0; height: 0;
-    border-left: 5px solid transparent; border-right: 5px solid transparent;
-    border-top: 6px solid var(--ms-blue);
-  }
-  #modal-success .ms-bar {
-    display: flex; height: 10px; border-radius: 6px; overflow: hidden;
-    background: #0a0b0d; border: 1px solid var(--ms-line);
-  }
-  #modal-success .ms-seg { height: 100%; position: relative; }
-  #modal-success .ms-seg-1 { flex: 100; background: linear-gradient(90deg, var(--ms-blue), var(--ms-blue-2)); }
-  #modal-success .ms-seg-2 { flex: 150; background: #2a2d32; }
-  #modal-success .ms-seg-3 { flex: 150; background: #1c1e22; }
-  #modal-success .ms-seg-1-fill {
-    position: absolute; left: 0; top: 0; bottom: 0; width: 0%;
-    background: rgba(255,255,255,.18);
+  #modal-success .ms-waves-h .ms-wr { font-size: 13px; color: var(--ms-amber); font-weight: 800; }
+  /* Scarcity bar */
+  #modal-success .ms-scarcity-bar { height: 10px; border-radius: 6px; background: #1c1e22; overflow: hidden; border: 1px solid var(--ms-line); margin-bottom: 6px; }
+  #modal-success .ms-scarcity-fill {
+    height: 100%; border-radius: 6px; width: 0%;
+    background: linear-gradient(90deg, var(--ms-blue), var(--ms-blue-2));
     transition: width 1.4s cubic-bezier(.2,.7,.2,1) .6s;
   }
+  #modal-success .ms-scarcity-labels { display: flex; justify-content: space-between; font-size: 10px; color: var(--ms-mute); margin-bottom: 2px; }
+  #modal-success .ms-free-label { color: var(--ms-amber); font-weight: 700; }
   #modal-success .ms-wave-grid { margin-top: 12px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; }
   #modal-success .ms-w { padding: 8px 9px; border-radius: 8px; border: 1px solid var(--ms-line); background: transparent; }
   #modal-success .ms-w.active { border-color: rgba(42,111,219,.4); background: linear-gradient(180deg,rgba(42,111,219,.10),rgba(42,111,219,.02)); }
@@ -862,19 +840,15 @@
 
       <div class="ms-waves-card">
         <div class="ms-waves-h">
-          <span class="ms-wl">Tu posición en la cola</span>
-          <span class="ms-wr" id="ms-pos-frac">— / 400</span>
+          <span class="ms-wl" id="ms-wl-text">PLAZAS WAVE 1</span>
+          <span class="ms-wr" id="ms-pos-frac">— libres</span>
         </div>
-        <div class="ms-bar-wrap">
-          <div class="ms-you-marker" id="ms-marker">
-            <span class="ms-tag" id="ms-marker-tag">TÚ</span>
-            <span class="ms-arr"></span>
-          </div>
-          <div class="ms-bar">
-            <div class="ms-seg ms-seg-1"><div class="ms-seg-1-fill" id="ms-fill"></div></div>
-            <div class="ms-seg ms-seg-2"></div>
-            <div class="ms-seg ms-seg-3"></div>
-          </div>
+        <div class="ms-scarcity-labels">
+          <span id="ms-scarcity-taken">0 ocupadas</span>
+          <span id="ms-scarcity-free" class="ms-free-label">— disponibles →</span>
+        </div>
+        <div class="ms-scarcity-bar">
+          <div class="ms-scarcity-fill" id="ms-fill"></div>
         </div>
         <div class="ms-wave-grid">
           <div class="ms-w" id="ms-w1">
