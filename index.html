@@ -21,6 +21,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,800;1,900&display=swap" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  // TODO: reemplaza estos valores con los de tu proyecto en supabase.com → Settings → API
+  const SUPABASE_URL = 'https://nruzjtqewjakfwshfagz.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ydXpqdHFld2pha2Z3c2hmYWd6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg5MjAyMzcsImV4cCI6MjA5NDQ5NjIzN30.GC0IRyXF1QppjbvQJNoYhe_FbWIAa6mjOZQkplrEbfM';
+  const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+</script>
 
 <style>
   :root {
@@ -679,12 +686,31 @@
       <div class="text-xs text-muted text-center pt-1">Sin tarjeta · Sin spam · Cancelas cuando quieras</div>
     </form>
     <div id="modal-success" class="hidden text-center py-6">
-      <svg width="64" height="64" viewBox="0 0 80 80" fill="none" class="mx-auto mb-4">
+      <svg width="56" height="56" viewBox="0 0 80 80" fill="none" class="mx-auto mb-4">
         <circle cx="40" cy="40" r="36" stroke="var(--accent)" stroke-width="2" id="check-circle" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
         <path d="M24 41 L36 53 L57 30" stroke="var(--accent)" stroke-width="3" stroke-linecap="square" fill="none" id="check-mark" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
       </svg>
-      <div class="display text-2xl mb-2">Estás dentro.</div>
-      <p class="text-muted text-sm">Te aviso por email cuando abramos tu oleada. — Nacho</p>
+      <div class="display text-2xl mb-1">Estás dentro.</div>
+      <p class="text-muted text-sm mb-4">Eres el <strong id="waitlist-position" style="color:var(--accent)">#—</strong> en la lista.</p>
+      <div style="background:#0d0d0d;border:1px solid #1e1e1e;border-radius:10px;padding:14px;margin-bottom:10px;text-align:left;">
+        <p style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#555;margin:0 0 8px;">Sube de wave</p>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #1e1e1e;">
+          <span style="font-size:13px;color:#aaa;">1 amigo apuntado</span>
+          <span style="font-size:12px;font-weight:700;color:var(--accent);">Wave 2 garantizado</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;">
+          <span style="font-size:13px;color:#aaa;">3 amigos apuntados</span>
+          <span style="font-size:12px;font-weight:700;color:var(--accent);">Wave 1 garantizado ⚡</span>
+        </div>
+      </div>
+      <div style="background:#0d0d0d;border:1px solid #1e1e1e;border-radius:10px;padding:14px;margin-bottom:12px;text-align:left;">
+        <p style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#555;margin:0 0 8px;">Tu link personal</p>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span id="referral-link-text" style="flex:1;font-size:12px;color:#aaa;word-break:break-all;">2trainapp.com?ref=…</span>
+          <button id="copy-referral" style="background:var(--accent);color:#fff;border:none;border-radius:6px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;">Copiar</button>
+        </div>
+      </div>
+      <p class="text-muted" style="font-size:12px;">Te hemos enviado el link por email también.</p>
     </div>
   </div>
 </div>
@@ -834,21 +860,74 @@
   // FAQ
   document.querySelectorAll('.faq-q').forEach(q => q.addEventListener('click', () => q.closest('.faq-item').classList.toggle('open')));
 
+  // Capture referral code from URL
+  const _refCode = new URLSearchParams(window.location.search).get('ref') || null;
+
   // Modal form submit
   const mForm = document.getElementById('modal-form');
   const mSuccess = document.getElementById('modal-success');
   const mBtn = document.getElementById('modal-submit');
-  mForm.addEventListener('submit', e => {
+  let mError = document.getElementById('modal-error');
+  if (!mError) {
+    mError = document.createElement('p');
+    mError.id = 'modal-error';
+    mError.style.cssText = 'color:#f87171;font-size:13px;text-align:center;margin-top:8px;display:none;';
+    mForm.appendChild(mError);
+  }
+
+  function showModalError(msg) {
+    mError.textContent = msg;
+    mError.style.display = 'block';
+  }
+  function hideModalError() { mError.style.display = 'none'; }
+
+  function showModalSuccess(referralCode, position) {
+    if (referralCode) {
+      const link = `https://2trainapp.com?ref=${referralCode}`;
+      document.getElementById('referral-link-text').textContent = `2trainapp.com?ref=${referralCode}`;
+      const copyBtn = document.getElementById('copy-referral');
+      copyBtn.onclick = () => {
+        navigator.clipboard.writeText(link).then(() => {
+          copyBtn.textContent = '¡Copiado!';
+          setTimeout(() => { copyBtn.textContent = 'Copiar'; }, 2000);
+        });
+      };
+    }
+    if (position) {
+      document.getElementById('waitlist-position').textContent = `#${position}`;
+    }
+    mForm.classList.add('hidden');
+    mSuccess.classList.remove('hidden');
+    gsap.timeline()
+      .to('#check-circle', { strokeDashoffset: 0, duration: 0.6, ease: 'power2.out' })
+      .to('#check-mark', { strokeDashoffset: 0, duration: 0.4, ease: 'power2.out' }, '-=0.2');
+  }
+
+  mForm.addEventListener('submit', async e => {
     e.preventDefault();
+    hideModalError();
+    const email = mForm.querySelector('input[name="email"]').value.trim();
     mBtn.querySelector('.btn-label').textContent = 'Enviando…';
     mBtn.disabled = true; mBtn.style.opacity = '0.6';
-    setTimeout(() => {
-      mForm.classList.add('hidden');
-      mSuccess.classList.remove('hidden');
-      gsap.timeline()
-        .to('#check-circle', { strokeDashoffset: 0, duration: 0.6, ease: 'power2.out' })
-        .to('#check-mark', { strokeDashoffset: 0, duration: 0.4, ease: 'power2.out' }, '-=0.2');
-    }, 700);
+
+    try {
+      const res = await fetch('https://nruzjtqewjakfwshfagz.supabase.co/functions/v1/join-waitlist', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        },
+        body: JSON.stringify({ email, referred_by: _refCode }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Error desconocido');
+      showModalSuccess(data.referral_code, data.position);
+    } catch (err) {
+      console.error('Waitlist error:', err);
+      showModalError('Algo salió mal. Inténtalo de nuevo o escríbenos.');
+      mBtn.querySelector('.btn-label').textContent = 'Entrar a la beta';
+      mBtn.disabled = false; mBtn.style.opacity = '';
+    }
   });
 
   // Reset modal on close
@@ -858,6 +937,7 @@
         mForm.classList.remove('hidden');
         mSuccess.classList.add('hidden');
         mForm.reset();
+        hideModalError();
         mBtn.querySelector('.btn-label').textContent = 'Entrar a la beta';
         mBtn.disabled = false; mBtn.style.opacity = '';
       }, 50);
