@@ -68,6 +68,17 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
   syncSticky();
   window.addEventListener('scroll', syncSticky, { passive: true });
   window.addEventListener('resize', syncSticky);
+  // Fix: mobile browsers change visual viewport height when address bar hides/shows,
+  // but position:fixed uses the layout viewport. Visual Viewport API corrects this.
+  if (window.visualViewport) {
+    function repositionSticky() {
+      var vv = window.visualViewport;
+      var gap = Math.max(0, window.innerHeight - vv.offsetTop - vv.height);
+      sticky.style.bottom = gap + 'px';
+    }
+    window.visualViewport.addEventListener('resize', repositionSticky, { passive: true });
+    window.visualViewport.addEventListener('scroll', repositionSticky, { passive: true });
+  }
 
   // Animations
   if (!reduceMotion) {
@@ -76,7 +87,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
     gsap.from('#hero-form', { y: 20, opacity: 0, duration: 0.8, delay: 0.8, ease: 'power3.out' });
     gsap.from('.trust-row', { y: 10, opacity: 0, duration: 0.6, delay: 1.0, ease: 'power3.out' });
     gsap.set('#hero-phone .phone-front, #hero-phone .phone-back', { force3D: true, backfaceVisibility: 'hidden' });
-    // 3-phone carousel
+    // 3-phone carousel — wait for images to decode first to avoid paint jank on first load
     (function() {
       var phones = [
         document.getElementById('ph0'),
@@ -99,29 +110,43 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
         { x: -25, y: 50, rotation: -9, scale: 0.82, opacity: 0.45, zIndex: 2 }
       ];
 
+      // Set positions immediately (no GPU paint yet, just CSS vars)
       var posIdx = [0, 1, 2];
-      phones.forEach(function(ph, i) { gsap.set(ph, POS[posIdx[i]]); });
       phones.forEach(function(ph, i) {
-        gsap.from(ph, { opacity: 0, duration: 0.7, delay: 0.1 + i * 0.1, ease: 'power2.out' });
+        gsap.set(ph, Object.assign({}, POS[posIdx[i]], { opacity: 0, force3D: true }));
       });
 
-      var floatTl = null;
-      function startFloat(ph) {
-        if (floatTl) floatTl.kill();
-        floatTl = gsap.timeline({ repeat: -1, yoyo: true });
-        floatTl.to(ph, { y: '-=7', duration: 3.2, ease: 'sine.inOut' });
-      }
-      setTimeout(function() { startFloat(phones[0]); }, 800);
-
-      setInterval(function() {
-        floatTl.kill();
-        posIdx = posIdx.map(function(p) { return (p + 1) % 3; });
+      function startCarousel() {
+        // Fade in staggered after positions are set
         phones.forEach(function(ph, i) {
-          gsap.to(ph, Object.assign({}, POS[posIdx[i]], { duration: 0.85, ease: 'power3.inOut' }));
+          gsap.to(ph, { opacity: POS[posIdx[i]].opacity, duration: 0.6, delay: i * 0.08, ease: 'power2.out' });
         });
-        var frontPh = phones[posIdx.indexOf(0)];
-        setTimeout(function() { startFloat(frontPh); }, 900);
-      }, 3600);
+
+        var floatTl = null;
+        function startFloat(ph) {
+          if (floatTl) floatTl.kill();
+          floatTl = gsap.timeline({ repeat: -1, yoyo: true });
+          floatTl.to(ph, { y: '-=7', duration: 3.2, ease: 'sine.inOut' });
+        }
+        setTimeout(function() { startFloat(phones[0]); }, 800);
+
+        setInterval(function() {
+          floatTl.kill();
+          posIdx = posIdx.map(function(p) { return (p + 1) % 3; });
+          phones.forEach(function(ph, i) {
+            gsap.to(ph, Object.assign({}, POS[posIdx[i]], { duration: 0.85, ease: 'power3.inOut' }));
+          });
+          var frontPh = phones[posIdx.indexOf(0)];
+          setTimeout(function() { startFloat(frontPh); }, 900);
+        }, 3600);
+      }
+
+      // Wait for all phone images to decode before starting animation
+      var imgs = Array.from(document.querySelectorAll('#hero-phone img'));
+      Promise.all(imgs.map(function(img) {
+        if (img.complete && img.naturalWidth) return Promise.resolve();
+        return img.decode ? img.decode().catch(function() {}) : new Promise(function(res) { img.onload = res; img.onerror = res; });
+      })).then(startCarousel);
     })();
     gsap.to('#hero-phone', { y: -60, scrollTrigger: { trigger: 'section', start: 'top top', end: 'bottom top', scrub: 0.5 }});
     gsap.from('#beta-block', { scale: 0.96, opacity: 0, duration: 0.9, ease: 'power3.out', scrollTrigger: { trigger: '#beta-block', start: 'top 85%' } });
