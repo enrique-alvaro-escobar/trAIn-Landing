@@ -75,7 +75,7 @@ Deno.serve(async (req) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          from: 'Equipo 2trAIn <waitlist@2trainapp.com>',
+          from: ' 2trAIn Waitlist <waitlist@2trainapp.com>',
           to: email,
           subject: `Eres el #${position} en la waitlist de 2trAIn`,
           html: buildEmail(position, referralLink),
