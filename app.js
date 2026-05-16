@@ -59,27 +59,6 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
   syncNav();
   window.addEventListener('scroll', syncNav, { passive: true });
 
-  // Sticky mobile CTA — show after hero
-  const sticky = document.getElementById('sticky-cta');
-  function syncSticky() {
-    if (window.innerWidth >= 768) { sticky.classList.remove('show'); return; }
-    sticky.classList.toggle('show', window.scrollY > 600);
-  }
-  syncSticky();
-  window.addEventListener('scroll', syncSticky, { passive: true });
-  window.addEventListener('resize', syncSticky);
-  // Fix: mobile browsers change visual viewport height when address bar hides/shows,
-  // but position:fixed uses the layout viewport. Visual Viewport API corrects this.
-  if (window.visualViewport) {
-    function repositionSticky() {
-      var vv = window.visualViewport;
-      var gap = Math.max(0, window.innerHeight - vv.offsetTop - vv.height);
-      sticky.style.bottom = gap + 'px';
-    }
-    window.visualViewport.addEventListener('resize', repositionSticky, { passive: true });
-    window.visualViewport.addEventListener('scroll', repositionSticky, { passive: true });
-  }
-
   // Animations
   if (!reduceMotion) {
     gsap.from('#hero-headline .word', { y: 80, opacity: 0, duration: 0.95, stagger: 0.07, ease: 'power3.out' });
