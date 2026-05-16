@@ -122,13 +122,158 @@
   /* Modal */
   .modal-overlay { position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.82); backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
   .modal-overlay.active { opacity: 1; pointer-events: all; }
-  .modal-card { background: #161616; border: 1px solid rgba(255,255,255,0.1); border-top: 2px solid var(--accent); padding: 44px 40px 40px; max-width: 460px; width: 100%; max-height: 88vh; overflow-y: auto; position: relative; transform: translateY(20px); transition: transform 0.3s ease; box-shadow: 0 32px 80px rgba(0,0,0,0.6); border-radius: 4px; }
+  .modal-card { background: #161616; border: 1px solid rgba(255,255,255,0.1); border-top: 2px solid var(--accent); padding: 0; max-width: 460px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; transform: translateY(20px); transition: transform 0.3s ease; box-shadow: 0 32px 80px rgba(0,0,0,0.6); border-radius: 14px; }
+  #modal-form-state { padding: 40px 32px 32px; }
   .modal-overlay.active .modal-card { transform: translateY(0); }
   .modal-close { position: absolute; top: 16px; right: 16px; color: var(--muted); padding: 8px; transition: color 0.2s; }
   .modal-close:hover { color: white; }
   .modal-card .field { background: #0d0d0d; border: 1px solid rgba(255,255,255,0.12); color: var(--fg); border-radius: 6px; padding: 14px 16px; font-size: 16px; width: 100%; font-family: inherit; outline: none; transition: border-color 0.2s ease; }
   .modal-card .field::placeholder { color: var(--muted); }
   .modal-card .field:focus { border-color: var(--accent); }
+
+  /* ── Modal de éxito (nuevo diseño) ─────────────────── */
+  #modal-success {
+    --ms-blue: var(--accent); --ms-blue-2: var(--accent-2);
+    --ms-modal-2: #1d1f22; --ms-line: #2a2d32; --ms-line-2: #33363c;
+    --ms-mute: #9aa0a8; --ms-dim: #5c616a; --ms-green: #22c55e; --ms-amber: #f5b62a;
+  }
+
+  /* Head */
+  #modal-success .ms-head { padding: 24px 22px 8px; }
+  #modal-success .ms-head h3 { margin: 0; font-size: 24px; font-weight: 800; letter-spacing: -.02em; line-height: 1.1; }
+  #modal-success .ms-head p { margin: 6px 0 0; color: var(--ms-mute); font-size: 13.5px; line-height: 1.4; }
+
+  /* Hero */
+  #modal-success .ms-hero { padding: 18px 18px 16px; text-align: center; }
+  #modal-success .ms-check {
+    width: 48px; height: 48px; border-radius: 50%; border: 2px solid var(--ms-blue);
+    margin: 0 auto 18px; display: grid; place-items: center; color: var(--ms-blue);
+    position: relative; animation: checkpop .55s cubic-bezier(.2,.7,.2,1) both;
+  }
+  #modal-success .ms-check::before {
+    content: ""; position: absolute; inset: -8px; border-radius: 50%;
+    border: 2px solid var(--ms-blue); opacity: 0;
+    animation: checkring 1.4s cubic-bezier(.2,.7,.2,1) .3s infinite;
+  }
+  #modal-success .ms-check svg { width: 22px; height: 22px; animation: checkdraw .5s cubic-bezier(.65,0,.45,1) .25s both; }
+  #modal-success .ms-check svg path { stroke-dasharray: 28; stroke-dashoffset: 28; animation: checkdash .4s cubic-bezier(.65,0,.45,1) .35s forwards; }
+  @keyframes checkpop { 0%{transform:scale(.3);opacity:0} 60%{transform:scale(1.1);opacity:1} 100%{transform:scale(1)} }
+  @keyframes checkring { 0%{transform:scale(.9);opacity:.5} 100%{transform:scale(1.6);opacity:0} }
+  @keyframes checkdash { to{stroke-dashoffset:0} }
+  @keyframes checkdraw { from{opacity:0} to{opacity:1} }
+
+  #modal-success .ms-status { font-size: 32px; font-weight: 800; letter-spacing: -.025em; line-height: 1; margin: 0 0 12px; }
+  #modal-success .ms-num {
+    font-size: 80px; font-weight: 900; line-height: 1; letter-spacing: -.04em;
+    color: var(--ms-blue); font-variant-numeric: tabular-nums; display: inline-block;
+    text-shadow: 0 0 60px rgba(42,111,219,.4);
+  }
+  #modal-success .ms-num .ms-h { opacity: .85; }
+  #modal-success .ms-num.pop { animation: numpop .35s cubic-bezier(.2,.7,.2,1); }
+  @keyframes numpop { 0%{transform:scale(.85);filter:blur(4px)} 60%{transform:scale(1.04);filter:blur(0)} 100%{transform:scale(1)} }
+  #modal-success .ms-badges { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+  #modal-success .ms-badge {
+    padding: 8px 11px; border-radius: 999px; border: 1px solid var(--ms-line);
+    font-size: 12.5px; font-weight: 600; color: var(--fg); background: transparent;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  #modal-success .ms-badge.primary {
+    background: rgba(42,111,219,.15); border-color: rgba(42,111,219,.45); color: var(--ms-blue-2);
+    box-shadow: 0 0 24px rgba(42,111,219,.18);
+  }
+
+  /* Waves card */
+  #modal-success .ms-waves-card {
+    margin: 0 14px 14px; border: 1px solid var(--ms-line); border-radius: 14px;
+    padding: 14px 14px 12px; background: #0f1013;
+  }
+  #modal-success .ms-waves-h { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
+  #modal-success .ms-waves-h .ms-wl { font-size: 12px; font-weight: 600; color: var(--ms-mute); letter-spacing: .04em; text-transform: uppercase; }
+  #modal-success .ms-waves-h .ms-wr { font-size: 12px; color: var(--ms-blue); font-weight: 700; }
+  #modal-success .ms-bar-wrap { position: relative; padding-top: 18px; }
+  #modal-success .ms-you-marker {
+    position: absolute; top: -2px; left: 0%;
+    transform: translateX(-50%);
+    transition: left 1.4s cubic-bezier(.2,.7,.2,1) .6s;
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+  }
+  #modal-success .ms-you-marker .ms-tag {
+    font-size: 10px; font-weight: 800; letter-spacing: .06em; color: #fff;
+    background: var(--ms-blue); padding: 3px 7px; border-radius: 4px;
+    box-shadow: 0 4px 14px rgba(42,111,219,.55); white-space: nowrap;
+  }
+  #modal-success .ms-you-marker .ms-arr {
+    width: 0; height: 0;
+    border-left: 5px solid transparent; border-right: 5px solid transparent;
+    border-top: 6px solid var(--ms-blue);
+  }
+  #modal-success .ms-bar {
+    display: flex; height: 10px; border-radius: 6px; overflow: hidden;
+    background: #0a0b0d; border: 1px solid var(--ms-line);
+  }
+  #modal-success .ms-seg { height: 100%; position: relative; }
+  #modal-success .ms-seg-1 { flex: 100; background: linear-gradient(90deg, var(--ms-blue), var(--ms-blue-2)); }
+  #modal-success .ms-seg-2 { flex: 150; background: #2a2d32; }
+  #modal-success .ms-seg-3 { flex: 150; background: #1c1e22; }
+  #modal-success .ms-seg-1-fill {
+    position: absolute; left: 0; top: 0; bottom: 0; width: 0%;
+    background: rgba(255,255,255,.18);
+    transition: width 1.4s cubic-bezier(.2,.7,.2,1) .6s;
+  }
+  #modal-success .ms-wave-grid { margin-top: 12px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; }
+  #modal-success .ms-w { padding: 8px 9px; border-radius: 8px; border: 1px solid var(--ms-line); background: transparent; }
+  #modal-success .ms-w.active { border-color: rgba(42,111,219,.4); background: linear-gradient(180deg,rgba(42,111,219,.10),rgba(42,111,219,.02)); }
+  #modal-success .ms-w .ms-ww { display: flex; align-items: center; gap: 5px; font-size: 9.5px; font-weight: 700; color: var(--ms-mute); letter-spacing: .04em; text-transform: uppercase; }
+  #modal-success .ms-w.active .ms-ww { color: var(--ms-blue-2); }
+  #modal-success .ms-w .ms-sw { width: 8px; height: 8px; border-radius: 2px; background: var(--ms-mute); flex-shrink: 0; }
+  #modal-success .ms-w.active .ms-sw { background: var(--ms-blue); box-shadow: 0 0 8px var(--ms-blue); }
+  #modal-success .ms-w.ms-w2 .ms-sw { background: #5c616a; }
+  #modal-success .ms-w.ms-w3 .ms-sw { background: #3a3d42; }
+  #modal-success .ms-w .ms-vv { margin-top: 5px; font-size: 12px; font-weight: 700; color: var(--fg); line-height: 1.2; }
+  #modal-success .ms-w .ms-ss { margin-top: 2px; font-size: 10.5px; color: var(--ms-mute); }
+
+  /* Share card */
+  #modal-success .ms-share {
+    margin: 0 14px 14px; border: 1px solid var(--ms-line); border-radius: 14px;
+    padding: 16px 16px 14px; background: var(--ms-modal-2);
+  }
+  #modal-success .ms-share .ms-k { font-size: 11px; font-weight: 700; color: var(--ms-mute); letter-spacing: .08em; text-transform: uppercase; margin: 0 0 6px; }
+  #modal-success .ms-share .ms-sh3 {
+    margin: 0 0 14px; font-size: 15.5px; font-weight: 800; letter-spacing: -.01em; line-height: 1.25;
+    display: flex; align-items: center; gap: 8px;
+  }
+  #modal-success .ms-share .ms-sh3 .ms-b {
+    display: inline-grid; place-items: center;
+    background: rgba(245,182,42,.16); color: var(--ms-amber);
+    width: 24px; height: 24px; border-radius: 6px; font-size: 14px; flex-shrink: 0;
+  }
+  #modal-success .ms-btn-wa {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    width: 100%; padding: 14px; border-radius: 10px; background: var(--ms-green); color: #fff;
+    border: none; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer;
+    text-decoration: none; transition: transform .15s ease, filter .15s ease;
+  }
+  #modal-success .ms-btn-wa:hover { transform: translateY(-1px); filter: brightness(1.06); }
+  #modal-success .ms-btn-wa svg { width: 18px; height: 18px; }
+  #modal-success .ms-btn-row { margin-top: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  #modal-success .ms-btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 12px; border-radius: 10px; font-family: inherit; font-size: 13px; font-weight: 700;
+    cursor: pointer; border: 1px solid var(--ms-line); background: transparent; color: var(--fg);
+    text-decoration: none; transition: background .15s ease, border-color .15s ease;
+  }
+  #modal-success .ms-btn:hover { background: rgba(255,255,255,.04); border-color: var(--ms-line-2); }
+  #modal-success .ms-btn.ms-x-btn { background: #000; border-color: #000; }
+  #modal-success .ms-btn svg { width: 14px; height: 14px; }
+
+  /* Ref & foot */
+  #modal-success .ms-ref {
+    margin: 0 14px 12px; padding: 10px 12px;
+    background: #0a0b0d; border: 1px solid var(--ms-line); border-radius: 10px;
+    font-family: ui-monospace, monospace; font-size: 11.5px; color: var(--ms-mute);
+    text-align: center; user-select: all; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  #modal-success .ms-foot { padding: 0 22px 22px; text-align: center; color: var(--ms-dim); font-size: 11.5px; }
 
   /* Layout */
   section { padding-top: 64px; padding-bottom: 64px; }
@@ -193,7 +338,8 @@
     .faq-a-inner { padding-bottom: 16px; }
 
     /* Modal: full-screen friendly */
-    .modal-card { padding: 32px 24px 28px; }
+    .modal-card { padding: 0; }
+    #modal-form-state { padding: 28px 20px 24px; }
 
     /* Footer */
     .footer-grid { grid-template-columns: repeat(1, minmax(0, 1fr)) !important; }
@@ -676,68 +822,101 @@
     <button class="modal-close" id="modal-close" aria-label="Cerrar">
       <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2 2l14 14M16 2L2 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
     </button>
-    <div class="mb-6">
-      
-      <h3 class="display text-2xl">Reserva tu plaza</h3>
-      <p class="text-muted text-sm mt-2">Beta gratuita · Primeros 100, acceso de por vida.</p>
+
+    <!-- Estado formulario -->
+    <div id="modal-form-state">
+      <div class="mb-6">
+        <h3 class="display text-2xl">Reserva tu plaza</h3>
+        <p class="text-muted text-sm mt-2">Beta gratuita &middot; Primeros 100, acceso de por vida.</p>
+      </div>
+      <form id="modal-form" class="space-y-4">
+        <input type="email" name="email" required placeholder="tu@email.com" class="field" autocomplete="email" />
+        <button type="submit" class="btn-dark text-sm font-bold flex items-center justify-center gap-3 w-full rounded-md" id="modal-submit">
+          <span class="btn-label">Entrar a la beta</span>
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L8.5 3.5M13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"/></svg>
+        </button>
+        <div class="text-xs text-muted text-center pt-1">Sin tarjeta &middot; Sin spam &middot; Cancelas cuando quieras</div>
+      </form>
     </div>
-    <form id="modal-form" class="space-y-4">
-      <input type="email" name="email" required placeholder="tu@email.com" class="field" autocomplete="email" />
-      <button type="submit" class="btn-dark text-sm font-bold flex items-center justify-center gap-3 w-full rounded-md" id="modal-submit">
-        <span class="btn-label">Entrar a la beta</span>
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L8.5 3.5M13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"/></svg>
-      </button>
-      <div class="text-xs text-muted text-center pt-1">Sin tarjeta · Sin spam · Cancelas cuando quieras</div>
-    </form>
-    <div id="modal-success" class="hidden py-4">
-      <!-- Check animation -->
-      <div class="text-center mb-3">
-        <svg width="52" height="52" viewBox="0 0 80 80" fill="none" class="mx-auto">
-          <circle cx="40" cy="40" r="36" stroke="var(--accent)" stroke-width="2" id="check-circle" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
-          <path d="M24 41 L36 53 L57 30" stroke="var(--accent)" stroke-width="3" stroke-linecap="square" fill="none" id="check-mark" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
-        </svg>
+
+    <!-- Estado éxito (nuevo diseño) -->
+    <div id="modal-success" class="hidden">
+
+      <div class="ms-head">
+        <h3>Reserva tu plaza</h3>
+        <p>Beta gratuita &middot; Primeros 100, acceso de por vida.</p>
       </div>
 
-      <!-- Hero moment -->
-      <div class="text-center mb-5">
-        <div class="display text-3xl">Estás dentro.</div>
-        <div id="waitlist-position" style="font-size:60px;font-weight:900;letter-spacing:-4px;line-height:1;color:var(--accent);margin:6px 0;">#—</div>
-        <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:6px;margin-top:10px;">
-          <span id="wave-status-text" style="background:rgba(42,111,219,0.12);color:var(--accent);border:1px solid rgba(42,111,219,0.25);border-radius:999px;padding:5px 13px;font-size:12px;font-weight:700;">Wave 1 ⚡</span>
-          <span id="wave-status-sub" style="background:rgba(255,255,255,0.06);color:#aaa;border:1px solid rgba(255,255,255,0.1);border-radius:999px;padding:5px 13px;font-size:12px;font-weight:600;">Acceso de por vida</span>
-          <span style="background:rgba(255,255,255,0.06);color:#aaa;border:1px solid rgba(255,255,255,0.1);border-radius:999px;padding:5px 13px;font-size:12px;font-weight:600;">Gratis para siempre</span>
+      <div class="ms-hero">
+        <div class="ms-check" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"></path></svg>
+        </div>
+        <p class="ms-status">Estás dentro.</p>
+        <div class="ms-num" id="ms-num-wrap"><span class="ms-h">#</span><span id="ms-num">0</span></div>
+        <div class="ms-badges">
+          <span class="ms-badge primary" id="ms-badge-1">Wave 1 ⚡</span>
+          <span class="ms-badge" id="ms-badge-2">Acceso de por vida</span>
+          <span class="ms-badge" id="ms-badge-3">Gratis para siempre</span>
         </div>
       </div>
 
-      <!-- Share CTA -->
-      <div style="background:#0d0d0d;border:1px solid #222;border-radius:14px;padding:18px;margin-bottom:10px;">
-        <p style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#555;margin:0 0 4px;">Comparte y sube posiciones</p>
-        <p id="share-cta-text" style="font-size:14px;font-weight:700;color:#fff;margin:0 0 14px;line-height:1.4;">Ayuda a tus amigos a entrar en Wave 1 ⚡</p>
-        <a id="share-whatsapp" href="#" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:8px;background:#25d366;color:#fff;border-radius:10px;padding:13px;font-size:14px;font-weight:700;text-decoration:none;margin-bottom:8px;">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zm-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884z"/></svg>
+      <div class="ms-waves-card">
+        <div class="ms-waves-h">
+          <span class="ms-wl">Tu posición en la cola</span>
+          <span class="ms-wr" id="ms-pos-frac">— / 400</span>
+        </div>
+        <div class="ms-bar-wrap">
+          <div class="ms-you-marker" id="ms-marker">
+            <span class="ms-tag" id="ms-marker-tag">TÚ</span>
+            <span class="ms-arr"></span>
+          </div>
+          <div class="ms-bar">
+            <div class="ms-seg ms-seg-1"><div class="ms-seg-1-fill" id="ms-fill"></div></div>
+            <div class="ms-seg ms-seg-2"></div>
+            <div class="ms-seg ms-seg-3"></div>
+          </div>
+        </div>
+        <div class="ms-wave-grid">
+          <div class="ms-w" id="ms-w1">
+            <div class="ms-ww"><span class="ms-sw"></span>Wave 1 &middot; 1–100</div>
+            <div class="ms-vv">De por vida, gratis</div>
+            <div class="ms-ss">Acceso inmediato</div>
+          </div>
+          <div class="ms-w ms-w2" id="ms-w2">
+            <div class="ms-ww"><span class="ms-sw"></span>Wave 2 &middot; 101–250</div>
+            <div class="ms-vv">3 meses gratis</div>
+            <div class="ms-ss">Apertura en 2 semanas</div>
+          </div>
+          <div class="ms-w ms-w3" id="ms-w3">
+            <div class="ms-ww"><span class="ms-sw"></span>Wave 3 &middot; 251–400</div>
+            <div class="ms-vv">Acceso normal</div>
+            <div class="ms-ss">Por orden de llegada</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ms-share">
+        <p class="ms-k">Comparte y sube posiciones</p>
+        <h3 class="ms-sh3" id="ms-share-h"><span class="ms-b">⚡</span> Con 3 amigos subes al puesto #1</h3>
+        <a class="ms-btn-wa" id="ms-wa" href="#" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163a11.867 11.867 0 0 1-1.59-5.945C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 0 1 8.413 3.488 11.82 11.82 0 0 1 3.48 8.414c-.003 6.557-5.34 11.892-11.893 11.892a11.9 11.9 0 0 1-5.688-1.448L.057 24l6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
           Compartir por WhatsApp
         </a>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-          <a id="share-twitter" href="#" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:6px;background:#000;color:#fff;border:1px solid #333;border-radius:10px;padding:11px;font-size:13px;font-weight:700;text-decoration:none;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.259 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        <div class="ms-btn-row">
+          <a class="ms-btn ms-x-btn" id="ms-x" href="#" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
             X / Twitter
           </a>
-          <button id="copy-referral" style="background:#1a1a1a;color:#ccc;border:1px solid #333;border-radius:10px;padding:11px;font-size:13px;font-weight:700;cursor:pointer;">Copiar link</button>
+          <button class="ms-btn" id="ms-copy">Copiar link</button>
         </div>
       </div>
 
-      <!-- Referral link -->
-      <div style="background:#0a0a0a;border:1px solid #1a1a1a;border-radius:8px;padding:9px 12px;margin-bottom:10px;">
-        <a id="referral-link-text" href="#" target="_blank" rel="noopener" style="font-size:11px;color:#555;word-break:break-all;font-family:monospace;text-decoration:none;">2trainapp.com?ref=…</a>
-      </div>
+      <div class="ms-ref" id="ms-ref">2trainapp.com?ref=…</div>
 
-      <span id="proj-1" hidden></span>
-      <span id="proj-2" hidden></span>
-      <span id="proj-3" hidden></span>
-      <p style="font-size:11px;color:#555;text-align:center;margin:0;">Te hemos enviado el link por email también.</p>
+      <p class="ms-foot">Te hemos enviado el link por email también.</p>
     </div>
   </div>
-</div>
+</div></div>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 </body>

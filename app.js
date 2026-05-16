@@ -135,6 +135,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
   // Modal form submit
   const mForm = document.getElementById('modal-form');
+  const mFormState = document.getElementById('modal-form-state');
   const mSuccess = document.getElementById('modal-success');
   const mBtn = document.getElementById('modal-submit');
   let mError = document.getElementById('modal-error');
@@ -148,60 +149,116 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
   function showModalError(msg) { mError.textContent = msg; mError.style.display = 'block'; }
   function hideModalError() { mError.style.display = 'none'; }
 
+  function animateNumber(target) {
+    if (reduceMotion) { document.getElementById('ms-num').textContent = target; return; }
+    const numEl = document.getElementById('ms-num');
+    const numWrap = document.getElementById('ms-num-wrap');
+    let cur = target + 38;
+    numEl.textContent = cur;
+    numWrap.classList.remove('pop');
+    const step = () => {
+      if (cur <= target) {
+        numEl.textContent = target;
+        requestAnimationFrame(() => { numWrap.classList.add('pop'); });
+        return;
+      }
+      cur -= 1;
+      numEl.textContent = cur;
+      const rem = cur - target;
+      setTimeout(step, rem > 12 ? 28 : rem > 6 ? 55 : 95);
+    };
+    setTimeout(step, 400);
+  }
+
+  function animateBar(position) {
+    const marker = document.getElementById('ms-marker');
+    const fill = document.getElementById('ms-fill');
+    const totalPct = Math.min((position / 400) * 100, 100);
+    const w1Pct = Math.min(position, 100);
+    if (reduceMotion) {
+      marker.style.transition = 'none';
+      fill.style.transition = 'none';
+      marker.style.left = totalPct + '%';
+      fill.style.width = w1Pct + '%';
+      return;
+    }
+    setTimeout(() => {
+      marker.style.left = totalPct + '%';
+      fill.style.width = w1Pct + '%';
+    }, 500);
+  }
+
   function showModalSuccess(referralCode, position, projection) {
+    position = position || 1;
     const link = referralCode ? `https://2trainapp.com?ref=${referralCode}` : 'https://2trainapp.com';
 
+    // Determine wave
+    const wave = position <= 100 ? 1 : position <= 250 ? 2 : 3;
+    const waveData = {
+      1: { badge1: 'Wave 1 ⚡', badge2: 'Acceso de por vida', badge3: 'Gratis para siempre' },
+      2: { badge1: 'Wave 2', badge2: '3 meses gratis', badge3: 'Early access' },
+      3: { badge1: 'Wave 3', badge2: 'Acceso normal', badge3: 'Por orden de llegada' },
+    }[wave];
+    document.getElementById('ms-badge-1').textContent = waveData.badge1;
+    document.getElementById('ms-badge-2').textContent = waveData.badge2;
+    document.getElementById('ms-badge-3').textContent = waveData.badge3;
+
+    // Waves card
+    document.getElementById('ms-pos-frac').textContent = `${position} / 400`;
+    document.getElementById('ms-marker-tag').textContent = `TÚ #${position}`;
+    ['ms-w1', 'ms-w2', 'ms-w3'].forEach((id, i) => {
+      const el = document.getElementById(id);
+      const isActive = i + 1 === wave;
+      el.classList.toggle('active', isActive);
+      if (isActive) el.querySelector('.ms-ss').textContent = 'Tú estás aquí';
+    });
+
+    // Share heading
+    const p3 = projection && projection['3'];
+    const shareH = document.getElementById('ms-share-h');
+    if (p3 && p3 < position) {
+      shareH.innerHTML = `<span class="ms-b">⚡</span> Con 3 amigos subes al puesto #${p3}`;
+    } else {
+      shareH.innerHTML = `<span class="ms-b">⚡</span> Comparte para subir en la lista`;
+    }
+
+    // Referral & share links
     if (referralCode) {
-      const refLinkEl = document.getElementById('referral-link-text');
-      refLinkEl.textContent = `https://2trainapp.com?ref=${referralCode}`;
-      refLinkEl.href = link;
-      const copyBtn = document.getElementById('copy-referral');
+      document.getElementById('ms-ref').textContent = `2trainapp.com?ref=${referralCode}`;
+      const copyBtn = document.getElementById('ms-copy');
       copyBtn.onclick = () => {
         navigator.clipboard.writeText(link).then(() => {
-          copyBtn.textContent = '¡Copiado!';
-          setTimeout(() => { copyBtn.textContent = 'Copiar link'; }, 2000);
+          copyBtn.textContent = '✓ Copiado';
+          setTimeout(() => { copyBtn.textContent = 'Copiar link'; }, 1600);
         });
       };
-      const waMsg = encodeURIComponent(`Acabo de reservar mi plaza en 2trAIn ⚡ Un entrenador personal con IA que te explica cada decisión. Solo 100 plazas gratuitas de por vida. Entra con mi link 👉 ${link}`);
-      document.getElementById('share-whatsapp').href = `https://wa.me/?text=${waMsg}`;
-      const twText = encodeURIComponent(`Acabo de reservar mi plaza en 2trAIn ⚡\n\nIA que te explica CADA decisión de tu entrenamiento.\nSolo 100 plazas gratis para siempre →`);
-      document.getElementById('share-twitter').href = `https://twitter.com/intent/tweet?text=${twText}&url=${encodeURIComponent(link)}`;
     }
+    const waMsg = encodeURIComponent(`Acabo de reservar mi plaza en 2trAIn ⚡ Un entrenador personal con IA que te explica cada decisión. Solo 100 plazas gratuitas de por vida. Entra con mi link 👉 ${link}`);
+    document.getElementById('ms-wa').href = `https://wa.me/?text=${waMsg}`;
+    const twText = encodeURIComponent(`Acabo de reservar mi plaza en 2trAIn ⚡\n\nIA que te explica CADA decisión de tu entrenamiento.\nSolo 100 plazas gratis para siempre →`);
+    document.getElementById('ms-x').href = `https://twitter.com/intent/tweet?text=${twText}&url=${encodeURIComponent(link)}`;
 
-    if (position) {
-      document.getElementById('waitlist-position').textContent = `#${position}`;
-      const waveText = document.getElementById('wave-status-text');
-      const waveSub = document.getElementById('wave-status-sub');
-      if (waveText && waveSub) {
-        if (position <= 100) {
-          waveText.textContent = 'Wave 1 ⚡';
-          waveSub.textContent = 'Acceso de por vida';
-        } else {
-          waveText.textContent = 'Wave 2';
-          waveSub.textContent = `A ${position - 100} puestos de Wave 1`;
-        }
-      }
-    }
-
-    if (projection && position) {
-      const ctaEl = document.getElementById('share-cta-text');
-      if (ctaEl) {
-        const p3 = projection['3'];
-        if (p3 && p3 < position) {
-          ctaEl.textContent = `Con 3 amigos subes al puesto #${p3} ⚡`;
-        } else if (position > 100) {
-          ctaEl.textContent = 'Comparte para subir en la lista';
-        } else {
-          ctaEl.textContent = 'Ayuda a tus amigos a entrar en Wave 1 ⚡';
-        }
-      }
-    }
-
-    mForm.classList.add('hidden');
+    // Show success
+    mFormState.classList.add('hidden');
     mSuccess.classList.remove('hidden');
-    gsap.timeline()
-      .to('#check-circle', { strokeDashoffset: 0, duration: 0.6, ease: 'power2.out' })
-      .to('#check-mark', { strokeDashoffset: 0, duration: 0.4, ease: 'power2.out' }, '-=0.2');
+
+    // Animations
+    animateNumber(position);
+    animateBar(position);
+
+    // Click number to replay
+    const numWrap = document.getElementById('ms-num-wrap');
+    numWrap.style.cursor = 'pointer';
+    numWrap.onclick = () => {
+      const fill = document.getElementById('ms-fill');
+      const marker = document.getElementById('ms-marker');
+      fill.style.transition = 'none'; marker.style.transition = 'none';
+      fill.style.width = '0%'; marker.style.left = '0%';
+      void fill.offsetWidth;
+      fill.style.transition = ''; marker.style.transition = '';
+      animateNumber(position);
+      animateBar(position);
+    };
   }
 
   mForm.addEventListener('submit', async e => {
@@ -234,12 +291,17 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
   modal.addEventListener('transitionend', () => {
     if (!modal.classList.contains('active')) {
       setTimeout(() => {
-        mForm.classList.remove('hidden');
+        mFormState.classList.remove('hidden');
         mSuccess.classList.add('hidden');
         mForm.reset();
         hideModalError();
         mBtn.querySelector('.btn-label').textContent = 'Entrar a la beta';
         mBtn.disabled = false; mBtn.style.opacity = '';
+        // Reset bar/marker for next open
+        const fill = document.getElementById('ms-fill');
+        const marker = document.getElementById('ms-marker');
+        if (fill) { fill.style.transition = 'none'; fill.style.width = '0%'; }
+        if (marker) { marker.style.transition = 'none'; marker.style.left = '0%'; }
       }, 50);
     }
   });
