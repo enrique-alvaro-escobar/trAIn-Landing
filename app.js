@@ -49,11 +49,11 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
     if (window.scrollY > 50) {
       nav.style.background = 'rgba(10,10,10,0.85)';
       nav.style.backdropFilter = 'blur(12px)';
-      nav.style.borderBottom = '1px solid var(--line)';
+      nav.classList.add('nav-scrolled');
     } else {
       nav.style.background = 'transparent';
       nav.style.backdropFilter = 'none';
-      nav.style.borderBottom = '1px solid transparent';
+      nav.classList.remove('nav-scrolled');
     }
   }
   syncNav();

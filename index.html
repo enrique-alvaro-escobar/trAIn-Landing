@@ -21,13 +21,13 @@
 <meta name="twitter:image" content="https://2trainapp.com/og-image.png" />
 <link rel="icon" href="/favicon.png">
 <link rel="preload" as="image" href="/assets/weekly-plan.webp" type="image/webp">
-<link rel="preload" as="image" href="/assets/while-training.webp" type="image/webp">
-<link rel="preload" as="image" href="/assets/summary.webp" type="image/webp">
+<link rel="preload" as="font" type="font/woff2" href="https://fonts.gstatic.com/s/intertight/v9/NGSnv5HMAFg6IuGlBNMjxJEL2VmU3NS7Z2mjjwiaWy5S.woff2" crossorigin>
 
 <link rel="stylesheet" href="/dist/tailwind.css">
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,800;1,900&display=swap" rel="stylesheet" />
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,800;1,900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,800;1,900&display=swap" rel="stylesheet"></noscript>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
 <script src="/app.js" defer></script>
@@ -35,9 +35,9 @@
 <style>
   :root {
     --bg: #0A0A0A; --bg-2: #0d0d0d; --bg-3: #111;
-    --fg: #FAFAFA; --muted: #8a8a8a; --muted-2: #5a5a5a;
+    --fg: #FAFAFA; --muted: #8a8a8a; --muted-2: #808080;
     --line: #1f1f1f; --line-2: #2a2a2a;
-    --accent: #2A6FDB; --accent-2: #5a8fe3; --accent-soft: rgba(42, 111, 219, 0.12);
+    --accent: #2A6FDB; --accent-2: #5a8fe3; --accent-soft: rgba(42, 111, 219, 0.12); --accent-text: #5a8fe3;
     --warm: #FF8A3D; --danger: #ff5555;
   }
   * { box-sizing: border-box; }
@@ -49,7 +49,7 @@
   .display { font-family: 'Inter Tight', sans-serif; font-weight: 800; letter-spacing: -0.035em; line-height: 0.95; }
   .display-tight { font-weight: 900; letter-spacing: -0.05em; line-height: 0.85; }
   .hairline { border-color: var(--line); }
-  .accent { color: var(--accent); } .bg-accent { background: var(--accent); }
+  .accent { color: var(--accent-text); } .bg-accent { background: var(--accent); }
   .text-muted { color: var(--muted); } .text-muted-2 { color: var(--muted-2); }
   .label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted); }
 
@@ -74,12 +74,13 @@
   .reveal-line { overflow: hidden; display: block; }
 
   /* Live dot */
-  .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 0 rgba(42, 111, 219,0.6); animation: pulse 1.8s ease-out infinite; flex-shrink: 0; }
-  @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(42, 111, 219,0.6); } 70% { box-shadow: 0 0 0 12px rgba(42, 111, 219,0); } 100% { box-shadow: 0 0 0 0 rgba(42, 111, 219,0); } }
+  .live-dot { position: relative; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+  .live-dot::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: rgba(42, 111, 219, 0.6); animation: pulse 1.8s ease-out infinite; }
+  @keyframes pulse { 0% { transform: scale(0); opacity: 0.6; } 70% { transform: scale(3.5); opacity: 0; } 100% { transform: scale(0); opacity: 0; } }
 
   /* PRIMARY HERO FORM (email + button) */
   .hero-form { display: flex; gap: 8px; padding: 6px; background: #161616; border: 1px solid var(--line-2); border-radius: 999px; max-width: 480px; transition: border-color 0.2s; }
-  .hero-form:focus-within { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(42, 111, 219,0.1); }
+  .hero-form:focus-within { border-color: var(--accent-text); box-shadow: 0 0 0 4px rgba(42, 111, 219,0.1); }
   .hero-form input { flex: 1; min-width: 0; background: transparent; border: 0; outline: 0; color: var(--fg); padding: 0 18px; font-size: 15px; font-family: inherit; }
   .hero-form input::placeholder { color: var(--muted); }
   .hero-form button { background: var(--accent); color: #fff; font-weight: 700; padding: 12px 22px; border-radius: 999px; font-size: 14px; white-space: nowrap; display: inline-flex; align-items: center; gap: 8px; transition: transform 0.15s, box-shadow 0.2s; flex-shrink: 0; }
@@ -88,18 +89,18 @@
   /* Trust strip under form */
   .trust-row { display: flex; flex-wrap: wrap; gap: 14px 18px; align-items: center; font-size: 12px; color: var(--muted); margin-top: 14px; }
   .trust-row .item { display: inline-flex; align-items: center; gap: 6px; }
-  .trust-row svg { color: var(--accent); flex-shrink: 0; }
+  .trust-row svg { color: var(--accent-text); flex-shrink: 0; }
 
   /* Buttons */
-  @keyframes cta-glow { 0%, 100% { box-shadow: 0 0 0 3px rgba(42, 111, 219,0); } 50% { box-shadow: 0 0 0 3px rgba(42, 111, 219,0.3); } }
+  @keyframes cta-glow { 0%, 100% { filter: drop-shadow(0 0 0px rgba(42, 111, 219, 0)); } 50% { filter: drop-shadow(0 0 6px rgba(42, 111, 219, 0.45)); } }
   .btn-accent { background: var(--accent); color: #fff; font-weight: 600; padding: 14px 24px; border-radius: 999px; display: inline-flex; align-items: center; gap: 10px; transition: transform 0.15s ease, box-shadow 0.2s ease; position: relative; overflow: hidden; animation: cta-glow 3s ease-in-out infinite; }
   .btn-accent::before { content: ''; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.45) 50%, transparent 70%); transform: translateX(-100%); transition: transform 0.6s ease; }
   .btn-accent:hover::before { transform: translateX(100%); }
   .btn-accent:hover { transform: translateY(-1px); box-shadow: 0 12px 30px -10px rgba(42, 111, 219,0.5); }
-  .btn-dark { background: #000; color: var(--accent); font-weight: 600; padding: 16px 24px; transition: all 0.2s ease; }
+  .btn-dark { background: #000; color: var(--accent-text); font-weight: 600; padding: 16px 24px; transition: all 0.2s ease; }
   .btn-dark:hover { background: #1a1a1a; }
   .btn-ghost { border: 1px solid var(--line-2); color: var(--fg); padding: 13px 22px; border-radius: 999px; display: inline-flex; align-items: center; gap: 10px; transition: all 0.2s ease; }
-  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-ghost:hover { border-color: var(--accent-text); color: var(--accent-text); }
 
   /* Counter / progress */
   .progress-track { height: 6px; background: var(--line); border-radius: 999px; overflow: hidden; }
@@ -108,9 +109,9 @@
   /* FAQ */
   .faq-item { border-bottom: 1px solid var(--line); }
   .faq-q { width: 100%; padding: 22px 0; display: flex; align-items: center; justify-content: space-between; gap: 24px; text-align: left; transition: color 0.2s ease; }
-  .faq-q:hover { color: var(--accent); }
+  .faq-q:hover { color: var(--accent-text); }
   .faq-q .ico { width: 14px; height: 14px; flex-shrink: 0; transition: transform 0.3s ease; color: var(--muted); }
-  .faq-item.open .faq-q .ico { transform: rotate(45deg); color: var(--accent); }
+  .faq-item.open .faq-q .ico { transform: rotate(45deg); color: var(--accent-text); }
   .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
   .faq-item.open .faq-a { max-height: 320px; }
   .faq-a-inner { padding-bottom: 24px; color: var(--muted); line-height: 1.65; max-width: 760px; }
@@ -127,7 +128,7 @@
   .modal-close:hover { color: white; }
   .modal-card .field { background: #0d0d0d; border: 1px solid rgba(255,255,255,0.12); color: var(--fg); border-radius: 6px; padding: 14px 16px; font-size: 16px; width: 100%; font-family: inherit; outline: none; transition: border-color 0.2s ease; }
   .modal-card .field::placeholder { color: var(--muted); }
-  .modal-card .field:focus { border-color: var(--accent); }
+  .modal-card .field:focus { border-color: var(--accent-text); }
 
   /* ── Modal de éxito (nuevo diseño) ─────────────────── */
   #modal-success {
@@ -322,6 +323,9 @@
     .footer-brand { grid-column: span 1 !important; }
   }
 
+  #nav::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px; background: var(--line); opacity: 0; transition: opacity 0.3s ease; }
+  #nav.nav-scrolled::after { opacity: 1; }
+
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
 </style>
 <script type="application/ld+json">
@@ -329,7 +333,7 @@
 </script>
 </head>
 <body>
-<a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[999] focus:bg-white focus:text-black focus:px-4 focus:py-2 focus:rounded focus:font-semibold">Saltar al contenido principal</a>
+<a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-white focus:text-black focus:rounded focus:shadow-lg">Saltar al contenido principal</a>
 
 <div class="grain" aria-hidden="true"></div>
 
@@ -337,19 +341,20 @@
 <nav id="nav" class="fixed top-0 left-0 right-0 z-50 transition-colors">
   <div class="max-w-page pad-x h-16 flex items-center justify-between">
     <a href="#" class="flex items-center gap-2">
-      <picture><source type="image/webp" srcset="/assets/logo.webp"><img src="/assets/logo.png" alt="2trAIn" style="height:24px;width:auto;"></picture>
+      <picture><source type="image/webp" srcset="/assets/logo.webp"><img src="/assets/logo.png" alt="2trAIn" width="336" height="84" style="height:24px;width:auto;"></picture>
     </a>
     <div class="hidden md:flex items-center gap-8 text-sm text-muted">
       <a href="#como" class="hover:text-white transition-colors">Cómo funciona</a>
-      <a href="#fundador" class="hover:text-white transition-colors">El fundador</a>
+      <a href="#fundador" class="hover:text-white transition-colors">Nosotros</a>
       <a href="#faq" class="hover:text-white transition-colors">FAQ</a>
     </div>
     <button class="open-modal btn-accent text-sm" style="padding: 9px 18px;">Reservar plaza</button>
   </div>
 </nav>
+<main id="main-content">
 
 <!-- HERO -->
-<section id="main-content" class="relative pt-24 md:pt-28 pb-12 overflow-hidden" style="min-height: 92vh; display: flex; align-items: center;">
+<section class="relative pt-24 md:pt-28 pb-12 overflow-hidden" style="min-height: 92vh; display: flex; align-items: center;">
   <div class="hero-glow" style="width: 700px; height: 700px; top: -150px; right: -150px;"></div>
   <div class="hero-glow" style="width: 500px; height: 500px; bottom: -100px; left: -150px; background: radial-gradient(circle, rgba(255,140,40,0.08) 0%, transparent 60%);"></div>
 
@@ -378,7 +383,7 @@
 
         <!-- PRIMARY CTA: Inline email form -->
         <form id="hero-form" class="hero-form mt-7">
-          <input type="email" name="email" required placeholder="tu@email.com" autocomplete="email" aria-label="Tu correo electrónico" />
+          <input id="email-hero" type="email" name="email" required placeholder="tu@email.com" autocomplete="email" aria-label="Tu correo electrónico" />
           <button type="submit">
             Reservar mi plaza
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L8.5 3.5M13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"/></svg>
@@ -397,17 +402,17 @@
         <div class="phone-stack" id="hero-phone">
           <div class="phone phone-item" id="ph0">
             <div class="phone-screen">
-              <picture><source type="image/webp" srcset="/assets/weekly-plan.webp"><img style="display:block;width:102%;height:102%;object-fit:cover;margin:-1%;object-position:center top;transform:translateY(-3px) translateX(5px);" src="/assets/weekly-plan.png" alt="Pantalla de planificación semanal en 2trAIn" loading="eager" fetchpriority="high" decoding="async"></picture>
+              <picture><source type="image/webp" srcset="/assets/weekly-plan-1x.webp 260w, /assets/weekly-plan.webp 512w" sizes="(max-width:767px) 165px,(max-width:1023px) 220px,260px"><img style="display:block;width:102%;height:102%;object-fit:cover;margin:-1%;object-position:center top;transform:translateY(-3px) translateX(5px);" src="/assets/weekly-plan.png" alt="Pantalla de planificación semanal en 2trAIn" loading="eager" fetchpriority="high" decoding="async"></picture>
             </div>
           </div>
           <div class="phone phone-item" id="ph1">
             <div class="phone-screen">
-              <picture><source type="image/webp" srcset="/assets/while-training.webp"><img style="display:block;width:100%;height:100%;object-fit:cover;object-position:center top;transform:translateX(5px);" src="/assets/while-training.png" alt="Vista de sesión de entrenamiento activa en 2trAIn" loading="lazy" decoding="async"></picture>
+              <picture><source type="image/webp" srcset="/assets/while-training-1x.webp 260w, /assets/while-training.webp 502w" sizes="(max-width:767px) 165px,(max-width:1023px) 220px,260px"><img style="display:block;width:100%;height:100%;object-fit:cover;object-position:center top;transform:translateX(5px);" src="/assets/while-training.png" alt="Vista de sesión de entrenamiento activa en 2trAIn" loading="lazy" decoding="async"></picture>
             </div>
           </div>
           <div class="phone phone-item" id="ph2">
             <div class="phone-screen">
-              <picture><source type="image/webp" srcset="/assets/summary.webp"><img style="display:block;width:102%;height:102%;object-fit:cover;margin:-1%;object-position:center top;transform:translateY(-3px) translateX(5px);" src="/assets/summary.png" alt="Resumen y estadísticas de entrenamiento en 2trAIn" loading="lazy" decoding="async"></picture>
+              <picture><source type="image/webp" srcset="/assets/summary-1x.webp 260w, /assets/summary.webp 578w" sizes="(max-width:767px) 165px,(max-width:1023px) 220px,260px"><img style="display:block;width:102%;height:102%;object-fit:cover;margin:-1%;object-position:center top;transform:translateY(-3px) translateX(5px);" src="/assets/summary.png" alt="Resumen y estadísticas de entrenamiento en 2trAIn" loading="lazy" decoding="async"></picture>
             </div>
           </div>
         </div>
@@ -487,7 +492,7 @@
     </div>
 
     <div class="mt-16 max-w-3xl">
-      <span class="label" style="color: var(--accent);">La solución</span>
+      <span class="label" style="color: var(--accent-text);">La solución</span>
       <h2 class="display text-3xl md:text-5xl mt-3">
         Tres cosas que <span class="text-muted">ninguna otra app hace.</span>
       </h2>
@@ -525,34 +530,34 @@
         <thead>
           <tr>
             <th class="cmp-cell" style="text-align: left; padding: 12px 20px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted-2); border-bottom: 1px solid var(--line); font-weight: 700; width: 58%;"></th>
-            <th class="cmp-cell" style="text-align: center; padding: 12px 20px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); border-bottom: 1px solid var(--line); font-weight: 700; background: rgba(42, 111, 219,0.04);">2trAIn</th>
+            <th class="cmp-cell" style="text-align: center; padding: 12px 20px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent-text); border-bottom: 1px solid var(--line); font-weight: 700; background: rgba(42, 111, 219,0.04);">2trAIn</th>
             <th class="cmp-cell" style="text-align: center; padding: 12px 20px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted-2); border-bottom: 1px solid var(--line); font-weight: 700;">El resto</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td class="cmp-cell" style="padding: 14px 20px; font-size: 14px; border-bottom: 1px solid var(--line); color: var(--fg);">Te dice qué hacer</td>
-            <td class="cmp-cell" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: var(--accent); font-size: 16px; background: rgba(42, 111, 219,0.03);">✓</td>
-            <td class="cmp-cell" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: var(--accent); font-size: 16px;">✓</td>
+            <td class="cmp-cell" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: var(--accent-text); font-size: 16px; background: rgba(42, 111, 219,0.03);">✓</td>
+            <td class="cmp-cell" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: var(--accent-text); font-size: 16px;">✓</td>
           </tr>
           <tr>
             <td class="cmp-cell" style="padding: 14px 20px; font-size: 14px; border-bottom: 1px solid var(--line); color: var(--fg);">Te explica por qué</td>
-            <td class="cmp-cell" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: var(--accent); font-size: 16px; background: rgba(42, 111, 219,0.03);">✓</td>
+            <td class="cmp-cell" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: var(--accent-text); font-size: 16px; background: rgba(42, 111, 219,0.03);">✓</td>
             <td class="cmp-cell" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: var(--muted-2); font-size: 14px;">✗</td>
           </tr>
           <tr>
             <td class="cmp-cell" style="padding: 14px 20px; font-size: 14px; border-bottom: 1px solid var(--line); color: var(--fg);">Adapta según tu fatiga real</td>
-            <td class="cmp-cell" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: var(--accent); font-size: 16px; background: rgba(42, 111, 219,0.03);">✓</td>
+            <td class="cmp-cell" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: var(--accent-text); font-size: 16px; background: rgba(42, 111, 219,0.03);">✓</td>
             <td class="cmp-cell" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: var(--muted); font-size: 13px;">A veces</td>
           </tr>
           <tr>
             <td class="cmp-cell" style="padding: 14px 20px; font-size: 14px; border-bottom: 1px solid var(--line); color: var(--fg);">Razona sobre tu historial</td>
-            <td class="cmp-cell" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: var(--accent); font-size: 16px; background: rgba(42, 111, 219,0.03);">✓</td>
+            <td class="cmp-cell" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: var(--accent-text); font-size: 16px; background: rgba(42, 111, 219,0.03);">✓</td>
             <td class="cmp-cell" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: var(--muted-2); font-size: 14px;">✗</td>
           </tr>
           <tr>
             <td class="cmp-cell" style="padding: 14px 20px; font-size: 14px; color: var(--fg);">Sin planes genéricos</td>
-            <td class="cmp-cell" style="text-align: center; padding: 14px 20px; color: var(--accent); font-size: 16px; background: rgba(42, 111, 219,0.03);">✓</td>
+            <td class="cmp-cell" style="text-align: center; padding: 14px 20px; color: var(--accent-text); font-size: 16px; background: rgba(42, 111, 219,0.03);">✓</td>
             <td class="cmp-cell" style="text-align: center; padding: 14px 20px; color: var(--muted-2); font-size: 14px;">✗</td>
           </tr>
         </tbody>
@@ -606,37 +611,67 @@
   </div>
 </section>
 
-<!-- FOUNDER NOTE — earlier, builds trust -->
+<!-- ABOUT -->
 <section id="fundador" class="border-t hairline">
   <div class="max-w-page pad-x">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-      <div class="lg:col-span-4">
-        <span class="label">Carta del fundador</span>
-        <div class="flex items-center gap-4 mt-6">
+
+    <div class="max-w-3xl mb-12">
+      <span class="label">Sobre nosotros</span>
+      <h2 class="display text-3xl md:text-5xl mt-3">Un equipo pequeño. <span class="text-muted">Una obsesión concreta.</span></h2>
+      <p class="text-muted text-base mt-5 leading-relaxed max-w-2xl">Somos un equipo de Madrid construyendo la herramienta de entrenamiento que siempre quisimos tener y nunca encontramos.</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+      <!-- Founder card -->
+      <div class="lg:col-span-5 p-7 md:p-9 border hairline rounded-2xl flex flex-col gap-6">
+        <div class="flex items-center gap-4">
           <div style="width: 56px; height: 56px; font-size: 18px; background: linear-gradient(135deg, #2A6FDB, #1a4fa8); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #fff; overflow: hidden; flex-shrink: 0;">
             <img src="/assets/nacho.jpg" alt="Nacho, fundador de 2trAIn" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.style.display='none'">
             <span aria-hidden="true">N</span>
           </div>
           <div>
             <div class="font-semibold text-lg">Nacho</div>
-            <div class="text-xs text-muted-2">Fundador, 2trAIn · Madrid</div>
+            <div class="text-xs text-muted-2">Fundador &amp; CEO · Madrid</div>
           </div>
         </div>
-        <div class="flex flex-wrap gap-2 mt-5">
+        <p class="text-muted text-sm leading-relaxed">Ingeniero Matemático con MSc en Computación Cuántica y años dando clases de IA. Tres veces finalista en hackathones internacionales. Lleva entrenando desde los 17 años y nunca encontró una app que realmente aprendiera de él.</p>
+        <div class="flex flex-wrap gap-2">
           <span class="text-xs px-2.5 py-1 rounded-md" style="background: var(--line); color: var(--muted);">Ing. Matemático</span>
           <span class="text-xs px-2.5 py-1 rounded-md" style="background: var(--line); color: var(--muted);">MSc Computación Cuántica</span>
           <span class="text-xs px-2.5 py-1 rounded-md" style="background: var(--line); color: var(--muted);">3× hackathon internacional</span>
           <span class="text-xs px-2.5 py-1 rounded-md" style="background: var(--line); color: var(--muted);">Profesor de IA</span>
         </div>
+        <a href="https://twitter.com/nachoing__" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-sm text-muted-2 hover:text-white transition-colors">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.259 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          @nachoing__
+        </a>
       </div>
-      <div class="lg:col-span-8 space-y-5 text-base md:text-lg leading-relaxed">
-        <p>Hola.</p>
-        <p>Hice 2trAIn porque me cansé de que las apps de fitness "inteligentes" fueran cajas negras. Te montan una rutina, no te explican por qué, no la ajustan, y a las dos semanas estás <span class="accent">improvisando</span>.</p>
-        <p>2trAIn está construido al revés. Cada sesión que registras cambia lo que te toca después. Es la primera vez que una IA de entrenamiento <span class="accent">aprende de ti</span>. De ti, no de un promedio de usuarios.</p>
-        <p>Aprovecha. Habla con ella: cuéntale que la sentadilla del lunes te dejó reventado, que el hombro todavía no quiere press, que esta semana solo tienes mancuernas. Lo tiene en cuenta. Cuanto más le cuentes, mejor te entrena.</p>
-        <p>Si entras ahora, no eres un usuario más. Eres <span class="accent">parte de cómo esto aprende</span>.</p>
-        <p class="text-muted font-semibold">— Nacho</p>
+
+      <!-- Values grid -->
+      <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4 content-start">
+        <div class="p-7 border hairline rounded-2xl flex flex-col gap-3">
+          <div class="text-xs accent font-bold uppercase tracking-[0.12em]">Misión</div>
+          <h3 class="display text-xl">Transparencia total.</h3>
+          <p class="text-muted text-sm leading-relaxed">Cada decisión de tu plan viene explicada. No un algoritmo opaco, no la opinión de un gurú. Una razón real, con tus datos.</p>
+        </div>
+        <div class="p-7 border hairline rounded-2xl flex flex-col gap-3">
+          <div class="text-xs accent font-bold uppercase tracking-[0.12em]">Enfoque</div>
+          <h3 class="display text-xl">Ciencia, no hype.</h3>
+          <p class="text-muted text-sm leading-relaxed">Periodización, biomecánica, fatiga acumulada. Los principios que usan los mejores preparadores del mundo, automatizados para cualquiera.</p>
+        </div>
+        <div class="p-7 border hairline rounded-2xl flex flex-col gap-3">
+          <div class="text-xs accent font-bold uppercase tracking-[0.12em]">Producto</div>
+          <h3 class="display text-xl">Construido en público.</h3>
+          <p class="text-muted text-sm leading-relaxed">Sin inversores que apurar. Lo que construimos lo decidimos con los primeros 100 usuarios. Si entras en la beta, tu voz cuenta.</p>
+        </div>
+        <div class="p-7 border hairline rounded-2xl flex flex-col gap-3">
+          <div class="text-xs accent font-bold uppercase tracking-[0.12em]">Origen</div>
+          <h3 class="display text-xl">Nacido del problema.</h3>
+          <p class="text-muted text-sm leading-relaxed">2trAIn no es una idea de negocio. Es la herramienta que el fundador quiso tener, no encontró en ningún sitio, y decidió construir.</p>
+        </div>
       </div>
+
     </div>
   </div>
 </section>
@@ -736,7 +771,7 @@
           <div class="bg-black text-white p-7 rounded-xl">
             <div class="text-xs uppercase tracking-[0.12em] font-bold mb-3 accent">Tu plaza</div>
             <form id="beta-form-2" class="space-y-3">
-              <input type="email" name="email" required placeholder="tu@email.com" autocomplete="email" aria-label="Tu correo electrónico" style="background: #0d0d0d; border: 1px solid var(--line-2); color: var(--fg); padding: 14px 16px; font-size: 16px; width: 100%; outline: none; border-radius: 6px;" />
+              <input id="email-cta" type="email" name="email" required placeholder="tu@email.com" autocomplete="email" aria-label="Tu correo electrónico" style="background: #0d0d0d; border: 1px solid var(--line-2); color: var(--fg); padding: 14px 16px; font-size: 16px; width: 100%; outline: none; border-radius: 6px;" />
               <button type="submit" class="btn-accent w-full justify-center" style="padding: 16px;">
                 Reservar mi plaza gratis
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L8.5 3.5M13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"/></svg>
@@ -750,19 +785,21 @@
   </div>
 </section>
 
+</main>
+
 <!-- FOOTER -->
 <footer class="border-t hairline pt-14 pb-10 px-5 md:px-8" style="padding-top: 56px; padding-bottom: 40px;">
   <div class="max-w-page">
     <div class="footer-grid grid grid-cols-2 md:grid-cols-12 gap-8 mb-10">
       <div class="footer-brand col-span-2 md:col-span-6">
-        <picture><source type="image/webp" srcset="/assets/logo.webp"><img src="/assets/logo.png" alt="2trAIn" style="height:56px;width:auto;" class="mb-4"></picture>
+        <picture><source type="image/webp" srcset="/assets/logo.webp"><img src="/assets/logo.png" alt="2trAIn" width="336" height="84" style="height:56px;width:auto;" class="mb-4"></picture>
         <div class="text-muted max-w-sm text-sm leading-relaxed">La única app de fitness que te explica por qué.</div>
       </div>
       <div class="md:col-span-2">
         <div class="text-xs text-muted-2 uppercase tracking-[0.1em] font-semibold mb-4">Producto</div>
         <ul class="space-y-2 text-sm">
           <li><a href="#como" class="text-muted hover:text-white">Cómo funciona</a></li>
-          <li><a href="#fundador" class="text-muted hover:text-white">El fundador</a></li>
+          <li><a href="#fundador" class="text-muted hover:text-white">Nosotros</a></li>
           <li><a href="#faq" class="text-muted hover:text-white">FAQ</a></li>
         </ul>
       </div>
@@ -789,7 +826,7 @@
 </footer>
 
 <!-- MODAL -->
-<div id="beta-modal" class="modal-overlay" role="dialog" aria-modal="true">
+<div id="beta-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
   <div class="modal-card">
     <button class="modal-close" id="modal-close" aria-label="Cerrar">
       <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2 2l14 14M16 2L2 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
@@ -798,11 +835,11 @@
     <!-- Estado formulario -->
     <div id="modal-form-state">
       <div class="mb-6">
-        <h3 class="display text-2xl">Reserva tu plaza</h3>
+        <h3 id="modal-title" class="display text-2xl">Reserva tu plaza</h3>
         <p class="text-muted text-sm mt-2">Beta gratuita &middot; Primeros 100, acceso de por vida.</p>
       </div>
       <form id="modal-form" class="space-y-4">
-        <input type="email" name="email" required placeholder="tu@email.com" class="field" autocomplete="email" aria-label="Tu correo electrónico" />
+        <input id="email-modal" type="email" name="email" required placeholder="tu@email.com" class="field" autocomplete="email" aria-label="Tu correo electrónico" />
         <button type="submit" class="btn-dark text-sm font-bold flex items-center justify-center gap-3 w-full rounded-md" id="modal-submit">
           <span class="btn-label">Entrar a la beta</span>
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L8.5 3.5M13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"/></svg>
