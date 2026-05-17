@@ -20,6 +20,8 @@
 <meta name="twitter:description" content="La única app de fitness que te explica por qué te manda lo que te manda. Beta gratuita para los primeros 100." />
 <meta name="twitter:image" content="https://2trainapp.com/og-image.png" />
 <link rel="icon" href="/favicon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="preload" href="/assets/logo.webp" as="image" type="image/webp">
 <link rel="preload" as="image" href="/assets/weekly-plan.webp" type="image/webp">
 <link rel="preload" as="font" type="font/woff2" href="https://fonts.gstatic.com/s/intertight/v9/NGSnv5HMAFg6IuGlBNMjxJEL2VmU3NS7Z2mjjwiaWy5S.woff2" crossorigin>
 
@@ -28,8 +30,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,800;1,900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,800;1,900&display=swap" rel="stylesheet"></noscript>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+<script src="/assets/js/gsap.min.js" defer></script>
+<script src="/assets/js/ScrollTrigger.min.js" defer></script>
 <script src="/app.js" defer></script>
 
 <style>
@@ -92,7 +94,7 @@
   .trust-row svg { color: var(--accent-text); flex-shrink: 0; }
 
   /* Buttons */
-  @keyframes cta-glow { 0%, 100% { filter: drop-shadow(0 0 0px rgba(42, 111, 219, 0)); } 50% { filter: drop-shadow(0 0 6px rgba(42, 111, 219, 0.45)); } }
+  @keyframes cta-glow { 0%, 100% { box-shadow: 0 0 0 0 rgba(42, 111, 219, 0); } 50% { box-shadow: 0 0 18px 2px rgba(42, 111, 219, 0.4); } }
   .btn-accent { background: var(--accent); color: #fff; font-weight: 600; padding: 14px 24px; border-radius: 999px; display: inline-flex; align-items: center; gap: 10px; transition: transform 0.15s ease, box-shadow 0.2s ease; position: relative; overflow: hidden; animation: cta-glow 3s ease-in-out infinite; }
   .btn-accent::before { content: ''; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.45) 50%, transparent 70%); transform: translateX(-100%); transition: transform 0.6s ease; }
   .btn-accent:hover::before { transform: translateX(100%); }
@@ -326,7 +328,7 @@
   #nav::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px; background: var(--line); opacity: 0; transition: opacity 0.3s ease; }
   #nav.nav-scrolled::after { opacity: 1; }
 
-  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } html { scroll-behavior: auto !important; } }
 </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"SoftwareApplication","name":"2trAIn","url":"https://2trainapp.com","image":"https://2trainapp.com/og-image.png","operatingSystem":"Android, iOS","applicationCategory":"HealthApplication","description":"La única app de fitness que te explica por qué te manda lo que te manda.","author":{"@type":"Person","name":"Nacho"},"offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"}}
@@ -338,7 +340,7 @@
 <div class="grain" aria-hidden="true"></div>
 
 <!-- NAV -->
-<nav id="nav" class="fixed top-0 left-0 right-0 z-50 transition-colors">
+<nav id="nav" class="fixed top-0 left-0 right-0 z-50 transition-colors" aria-label="Navegación principal">
   <div class="max-w-page pad-x h-16 flex items-center justify-between">
     <a href="#" class="flex items-center gap-2">
       <picture><source type="image/webp" srcset="/assets/logo.webp"><img src="/assets/logo.png" alt="2trAIn" width="336" height="84" style="height:24px;width:auto;"></picture>
@@ -382,7 +384,7 @@
         </p>
 
         <!-- PRIMARY CTA: Inline email form -->
-        <form id="hero-form" class="hero-form mt-7">
+        <form id="hero-form" class="hero-form mt-7" method="post">
           <input id="email-hero" type="email" name="email" required placeholder="tu@email.com" autocomplete="email" aria-label="Tu correo electrónico" />
           <button type="submit">
             Reservar mi plaza
@@ -402,17 +404,17 @@
         <div class="phone-stack" id="hero-phone">
           <div class="phone phone-item" id="ph0">
             <div class="phone-screen">
-              <picture><source type="image/webp" srcset="/assets/weekly-plan-1x.webp 260w, /assets/weekly-plan.webp 512w" sizes="(max-width:767px) 165px,(max-width:1023px) 220px,260px"><img style="display:block;width:102%;height:102%;object-fit:cover;margin:-1%;object-position:center top;transform:translateY(-3px) translateX(5px);" src="/assets/weekly-plan.png" alt="Pantalla de planificación semanal en 2trAIn" loading="eager" fetchpriority="high" decoding="async"></picture>
+              <picture><source type="image/webp" srcset="/assets/weekly-plan-1x.webp 260w, /assets/weekly-plan.webp 512w" sizes="(max-width:767px) 165px,(max-width:1023px) 220px,260px"><img style="display:block;width:102%;height:102%;object-fit:cover;margin:-1%;object-position:center top;transform:translateY(-3px) translateX(5px);" src="/assets/weekly-plan.png" alt="Pantalla de planificación semanal en 2trAIn" width="512" height="1084" loading="eager" fetchpriority="high" decoding="async"></picture>
             </div>
           </div>
           <div class="phone phone-item" id="ph1">
             <div class="phone-screen">
-              <picture><source type="image/webp" srcset="/assets/while-training-1x.webp 260w, /assets/while-training.webp 502w" sizes="(max-width:767px) 165px,(max-width:1023px) 220px,260px"><img style="display:block;width:100%;height:100%;object-fit:cover;object-position:center top;transform:translateX(5px);" src="/assets/while-training.png" alt="Vista de sesión de entrenamiento activa en 2trAIn" loading="lazy" decoding="async"></picture>
+              <picture><source type="image/webp" srcset="/assets/while-training-1x.webp 260w, /assets/while-training.webp 502w" sizes="(max-width:767px) 165px,(max-width:1023px) 220px,260px"><img style="display:block;width:100%;height:100%;object-fit:cover;object-position:center top;transform:translateX(5px);" src="/assets/while-training.png" alt="Vista de sesión de entrenamiento activa en 2trAIn" width="502" height="1072" loading="lazy" decoding="async"></picture>
             </div>
           </div>
           <div class="phone phone-item" id="ph2">
             <div class="phone-screen">
-              <picture><source type="image/webp" srcset="/assets/summary-1x.webp 260w, /assets/summary.webp 578w" sizes="(max-width:767px) 165px,(max-width:1023px) 220px,260px"><img style="display:block;width:102%;height:102%;object-fit:cover;margin:-1%;object-position:center top;transform:translateY(-3px) translateX(5px);" src="/assets/summary.png" alt="Resumen y estadísticas de entrenamiento en 2trAIn" loading="lazy" decoding="async"></picture>
+              <picture><source type="image/webp" srcset="/assets/summary-1x.webp 260w, /assets/summary.webp 578w" sizes="(max-width:767px) 165px,(max-width:1023px) 220px,260px"><img style="display:block;width:102%;height:102%;object-fit:cover;margin:-1%;object-position:center top;transform:translateY(-3px) translateX(5px);" src="/assets/summary.png" alt="Resumen y estadísticas de entrenamiento en 2trAIn" width="578" height="1256" loading="lazy" decoding="async"></picture>
             </div>
           </div>
         </div>
@@ -529,9 +531,9 @@
       <table style="width: 100%; border-collapse: separate; border-spacing: 0; min-width: 360px;">
         <thead>
           <tr>
-            <th class="cmp-cell" style="text-align: left; padding: 12px 20px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted-2); border-bottom: 1px solid var(--line); font-weight: 700; width: 58%;"></th>
-            <th class="cmp-cell" style="text-align: center; padding: 12px 20px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent-text); border-bottom: 1px solid var(--line); font-weight: 700; background: rgba(42, 111, 219,0.04);">2trAIn</th>
-            <th class="cmp-cell" style="text-align: center; padding: 12px 20px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted-2); border-bottom: 1px solid var(--line); font-weight: 700;">El resto</th>
+            <th class="cmp-cell" scope="col" style="text-align: left; padding: 12px 20px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted-2); border-bottom: 1px solid var(--line); font-weight: 700; width: 58%;"></th>
+            <th class="cmp-cell" scope="col" style="text-align: center; padding: 12px 20px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent-text); border-bottom: 1px solid var(--line); font-weight: 700; background: rgba(42, 111, 219,0.04);">2trAIn</th>
+            <th class="cmp-cell" scope="col" style="text-align: center; padding: 12px 20px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted-2); border-bottom: 1px solid var(--line); font-weight: 700;">El resto</th>
           </tr>
         </thead>
         <tbody>
@@ -627,8 +629,7 @@
       <div class="lg:col-span-5 p-7 md:p-9 border hairline rounded-2xl flex flex-col gap-6">
         <div class="flex items-center gap-4">
           <div style="width: 56px; height: 56px; font-size: 18px; background: linear-gradient(135deg, #2A6FDB, #1a4fa8); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #fff; overflow: hidden; flex-shrink: 0;">
-            <img src="/assets/nacho.jpg" alt="Nacho, fundador de 2trAIn" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.style.display='none'">
-            <span aria-hidden="true">N</span>
+<span aria-hidden="true">N</span>
           </div>
           <div>
             <div class="font-semibold text-lg">Nacho</div>
@@ -688,28 +689,28 @@
       <div class="lg:col-span-8">
         <div class="border-t hairline">
           <div class="faq-item">
-            <button class="faq-q display text-base md:text-lg"><span>¿Necesito wearable o material especial?</span><svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg></button>
-            <div class="faq-a"><div class="faq-a-inner">No. Solo tu móvil. Si tienes mancuernas, barras o máquinas, perfecto — los usa. Si solo tienes tu peso corporal, también funciona. El plan se adapta exactamente a lo que tienes.</div></div>
+            <button type="button" class="faq-q display text-base md:text-lg" aria-expanded="false" aria-controls="faq-a-1"><span>¿Necesito wearable o material especial?</span><svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg></button>
+            <div id="faq-a-1" class="faq-a"><div class="faq-a-inner">No. Solo tu móvil. Si tienes mancuernas, barras o máquinas, perfecto — los usa. Si solo tienes tu peso corporal, también funciona. El plan se adapta exactamente a lo que tienes.</div></div>
           </div>
           <div class="faq-item">
-            <button class="faq-q display text-base md:text-lg"><span>¿Sirve si entreno en casa / sin gimnasio?</span><svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg></button>
-            <div class="faq-a"><div class="faq-a-inner">Sí. Al configurar tu perfil le dices el material disponible y si entrenas en casa o en gym. El plan se construye exactamente con lo que tienes, sin ejercicios que no puedas hacer.</div></div>
+            <button type="button" class="faq-q display text-base md:text-lg" aria-expanded="false" aria-controls="faq-a-2"><span>¿Sirve si entreno en casa / sin gimnasio?</span><svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg></button>
+            <div id="faq-a-2" class="faq-a"><div class="faq-a-inner">Sí. Al configurar tu perfil le dices el material disponible y si entrenas en casa o en gym. El plan se construye exactamente con lo que tienes, sin ejercicios que no puedas hacer.</div></div>
           </div>
           <div class="faq-item">
-            <button class="faq-q display text-base md:text-lg"><span>¿Cuándo recibo acceso?</span><svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg></button>
-            <div class="faq-a"><div class="faq-a-inner">La beta abre por oleadas a partir de septiembre 2026. Cuando te toque, recibes un email con instrucciones. Los primeros en apuntarse entran antes. Invitando amigos subes puestos en la cola.</div></div>
+            <button type="button" class="faq-q display text-base md:text-lg" aria-expanded="false" aria-controls="faq-a-3"><span>¿Cuándo recibo acceso?</span><svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg></button>
+            <div id="faq-a-3" class="faq-a"><div class="faq-a-inner">La beta abre por oleadas a partir de septiembre 2026. Cuando te toque, recibes un email con instrucciones. Los primeros en apuntarse entran antes. Invitando amigos subes puestos en la cola.</div></div>
           </div>
           <div class="faq-item">
-            <button class="faq-q display text-base md:text-lg"><span>¿Mis datos están seguros?</span><svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg></button>
-            <div class="faq-a"><div class="faq-a-inner">Sí. Tus logs son tuyos. Si en algún momento usamos datos para mejorar el modelo, serán agregados y anonimizados — y te avisaremos antes. Puedes decir que no.</div></div>
+            <button type="button" class="faq-q display text-base md:text-lg" aria-expanded="false" aria-controls="faq-a-4"><span>¿Mis datos están seguros?</span><svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg></button>
+            <div id="faq-a-4" class="faq-a"><div class="faq-a-inner">Sí. Tus logs son tuyos. Si en algún momento usamos datos para mejorar el modelo, serán agregados y anonimizados — y te avisaremos antes. Puedes decir que no.</div></div>
           </div>
           <div class="faq-item">
-            <button class="faq-q display text-base md:text-lg"><span>¿Qué pasa cuando termina la beta? ¿Pago?</span><svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg></button>
-            <div class="faq-a"><div class="faq-a-inner">Los primeros 3 meses son gratis. Después tendrás precio fundador para siempre — el más bajo que existirá. Nadie de la beta pagará precio normal.</div></div>
+            <button type="button" class="faq-q display text-base md:text-lg" aria-expanded="false" aria-controls="faq-a-5"><span>¿Qué pasa cuando termina la beta? ¿Pago?</span><svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg></button>
+            <div id="faq-a-5" class="faq-a"><div class="faq-a-inner">Los primeros 3 meses son gratis. Después tendrás precio fundador para siempre — el más bajo que existirá. Nadie de la beta pagará precio normal.</div></div>
           </div>
           <div class="faq-item">
-            <button class="faq-q display text-base md:text-lg"><span>¿Es solo otra envoltura de ChatGPT?</span><svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg></button>
-            <div class="faq-a"><div class="faq-a-inner">No. Es un modelo entrenado con periodización, biomecánica y logs reales. Hablar con él te lo confirma a los 30 segundos.</div></div>
+            <button type="button" class="faq-q display text-base md:text-lg" aria-expanded="false" aria-controls="faq-a-6"><span>¿Es solo otra envoltura de ChatGPT?</span><svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg></button>
+            <div id="faq-a-6" class="faq-a"><div class="faq-a-inner">No. Es un modelo entrenado con periodización, biomecánica y logs reales. Hablar con él te lo confirma a los 30 segundos.</div></div>
           </div>
         </div>
       </div>
@@ -770,7 +771,7 @@
         <div class="lg:col-span-5">
           <div class="bg-black text-white p-7 rounded-xl">
             <div class="text-xs uppercase tracking-[0.12em] font-bold mb-3 accent">Tu plaza</div>
-            <form id="beta-form-2" class="space-y-3">
+            <form id="beta-form-2" class="space-y-3" method="post">
               <input id="email-cta" type="email" name="email" required placeholder="tu@email.com" autocomplete="email" aria-label="Tu correo electrónico" style="background: #0d0d0d; border: 1px solid var(--line-2); color: var(--fg); padding: 14px 16px; font-size: 16px; width: 100%; outline: none; border-radius: 6px;" />
               <button type="submit" class="btn-accent w-full justify-center" style="padding: 16px;">
                 Reservar mi plaza gratis
@@ -813,7 +814,7 @@
       <div class="md:col-span-2">
         <div class="text-xs text-muted-2 uppercase tracking-[0.1em] font-semibold mb-4">Contacto</div>
         <ul class="space-y-2 text-sm">
-          <li><a href="/cdn-cgi/l/email-protection#41292e2d2001353320282f2031316f2432" class="text-muted hover:text-white"><span class="__cf_email__" data-cfemail="f39b9c9f92b38781929a9d928383dd9680">[email&#160;protected]</span></a></li>
+          <li><a href="mailto:hola@trainapp.es" class="text-muted hover:text-white">hola@trainapp.es</a></li>
           <li><a href="https://twitter.com/nachoing__" target="_blank" rel="noopener noreferrer" class="text-muted hover:text-white">Twitter</a></li>
         </ul>
       </div>
@@ -838,7 +839,7 @@
         <h3 id="modal-title" class="display text-2xl">Reserva tu plaza</h3>
         <p class="text-muted text-sm mt-2">Beta gratuita &middot; Primeros 100, acceso de por vida.</p>
       </div>
-      <form id="modal-form" class="space-y-4">
+      <form id="modal-form" class="space-y-4" method="post">
         <input id="email-modal" type="email" name="email" required placeholder="tu@email.com" class="field" autocomplete="email" aria-label="Tu correo electrónico" />
         <button type="submit" class="btn-dark text-sm font-bold flex items-center justify-center gap-3 w-full rounded-md" id="modal-submit">
           <span class="btn-label">Entrar a la beta</span>
@@ -923,7 +924,6 @@
   </div>
 </div></div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 
 <!-- Cookie consent banner -->
 <div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:500;background:#0A0A0A;border-top:1px solid #1f1f1f;padding:14px 20px;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">

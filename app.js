@@ -65,7 +65,6 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
     gsap.from('#hero-sub', { y: 20, opacity: 0, duration: 0.8, delay: 0.6, ease: 'power3.out' });
     gsap.from('#hero-form', { y: 20, opacity: 0, duration: 0.8, delay: 0.8, ease: 'power3.out' });
     gsap.from('.trust-row', { y: 10, opacity: 0, duration: 0.6, delay: 1.0, ease: 'power3.out' });
-    gsap.set('#hero-phone .phone-front, #hero-phone .phone-back', { force3D: true, backfaceVisibility: 'hidden' });
     // 3-phone carousel — wait for images to decode first to avoid paint jank on first load
     (function() {
       var phones = [
@@ -132,7 +131,10 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
   }
 
   // FAQ
-  document.querySelectorAll('.faq-q').forEach(q => q.addEventListener('click', () => q.closest('.faq-item').classList.toggle('open')));
+  document.querySelectorAll('.faq-q').forEach(q => q.addEventListener('click', () => {
+    const isOpen = q.closest('.faq-item').classList.toggle('open');
+    q.setAttribute('aria-expanded', isOpen);
+  }));
 
   // Capture referral code from URL
   const _refCode = new URLSearchParams(window.location.search).get('ref') || null;
