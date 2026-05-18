@@ -14,7 +14,11 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
   }
-  function closeModal() { modal.classList.remove('active'); document.body.style.overflow = ''; }
+  function closeModal() {
+    modal.classList.remove('active');
+    const mm = document.getElementById('mobile-menu');
+    if (!mm || !mm.classList.contains('open')) document.body.style.overflow = '';
+  }
   document.getElementById('modal-close').addEventListener('click', closeModal);
   modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
@@ -330,4 +334,47 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
   }
   tick();
   setInterval(tick, 60000);
+})();
+
+// Mobile menu
+(function() {
+  const toggle = document.getElementById('nav-toggle');
+  const menu   = document.getElementById('mobile-menu');
+  const nav    = document.getElementById('nav');
+  if (!toggle || !menu) return;
+
+  function openMenu() {
+    menu.classList.add('open');
+    menu.setAttribute('aria-hidden', 'false');
+    nav.classList.add('nav-open');
+    toggle.setAttribute('aria-label', 'Cerrar menú');
+    toggle.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+    const first = menu.querySelector('a, button');
+    if (first) first.focus();
+  }
+
+  function closeMenu() {
+    menu.classList.remove('open');
+    menu.setAttribute('aria-hidden', 'true');
+    nav.classList.remove('nav-open');
+    toggle.setAttribute('aria-label', 'Abrir menú');
+    toggle.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+    toggle.focus();
+  }
+
+  toggle.addEventListener('click', function() {
+    menu.classList.contains('open') ? closeMenu() : openMenu();
+  });
+
+  // Close on any link click inside the menu
+  menu.querySelectorAll('a').forEach(function(a) {
+    a.addEventListener('click', closeMenu);
+  });
+
+  // Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && menu.classList.contains('open')) closeMenu();
+  });
 })();
