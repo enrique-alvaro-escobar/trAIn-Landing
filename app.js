@@ -323,7 +323,10 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
     var d = Math.floor(diff / 86400000);
     var h = Math.floor((diff % 86400000) / 3600000);
     var m = Math.floor((diff % 3600000) / 60000);
-    el.textContent = d + 'd ' + h + 'h ' + m + 'm';
+    el.innerHTML =
+      '<span aria-label="' + d + ' días">' + d + 'd</span> ' +
+      '<span aria-label="' + h + ' horas">' + h + 'h</span> ' +
+      '<span aria-label="' + m + ' minutos">' + m + 'm</span>';
   }
   tick();
   setInterval(tick, 60000);

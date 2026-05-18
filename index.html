@@ -19,22 +19,35 @@
 <meta name="twitter:title" content="2trAIn · Entrena con cabeza." />
 <meta name="twitter:description" content="La única app de fitness que te explica por qué te manda lo que te manda. Beta gratuita para los primeros 100." />
 <meta name="twitter:image" content="https://2trainapp.com/og-image.png" />
+<link rel="icon" href="/favicon.ico" sizes="16x16 32x32">
 <link rel="icon" href="/favicon.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+<link rel="sitemap" type="application/xml" href="/sitemap.xml">
 <link rel="preload" href="/assets/logo.webp" as="image" type="image/webp">
 <link rel="preload" as="image" href="/assets/weekly-plan.webp" type="image/webp">
-<link rel="preload" as="font" type="font/woff2" href="https://fonts.gstatic.com/s/intertight/v9/NGSnv5HMAFg6IuGlBNMjxJEL2VmU3NS7Z2mjjwiaWy5S.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-tight/inter-tight-latin-normal.woff2" crossorigin>
 
 <link rel="stylesheet" href="/dist/tailwind.css">
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,800;1,900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,800;1,900&display=swap" rel="stylesheet"></noscript>
 <script src="/assets/js/gsap.min.js" defer></script>
 <script src="/assets/js/ScrollTrigger.min.js" defer></script>
 <script src="/app.js" defer></script>
 
 <style>
+  @font-face {
+    font-family: 'Inter Tight';
+    font-style: normal;
+    font-weight: 400 900;
+    font-display: swap;
+    src: url('/assets/fonts/inter-tight/inter-tight-latin-normal.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'Inter Tight';
+    font-style: italic;
+    font-weight: 800 900;
+    font-display: swap;
+    src: url('/assets/fonts/inter-tight/inter-tight-latin-italic.woff2') format('woff2');
+  }
   :root {
     --bg: #0A0A0A; --bg-2: #0d0d0d; --bg-3: #111;
     --fg: #FAFAFA; --muted: #8a8a8a; --muted-2: #808080;
@@ -94,8 +107,8 @@
   .trust-row svg { color: var(--accent-text); flex-shrink: 0; }
 
   /* Buttons */
-  @keyframes cta-glow { 0%, 100% { box-shadow: 0 0 0 0 rgba(42, 111, 219, 0); } 50% { box-shadow: 0 0 18px 2px rgba(42, 111, 219, 0.4); } }
-  .btn-accent { background: var(--accent); color: #fff; font-weight: 600; padding: 14px 24px; border-radius: 999px; display: inline-flex; align-items: center; gap: 10px; transition: transform 0.15s ease, box-shadow 0.2s ease; position: relative; overflow: hidden; animation: cta-glow 3s ease-in-out infinite; }
+  @keyframes cta-glow { 0%, 100% { filter: drop-shadow(0 0 0px rgba(42, 111, 219, 0)); } 50% { filter: drop-shadow(0 0 9px rgba(42, 111, 219, 0.5)); } }
+  .btn-accent { background: var(--accent); color: #fff; font-weight: 600; padding: 14px 24px; border-radius: 999px; display: inline-flex; align-items: center; gap: 10px; transition: transform 0.15s ease, box-shadow 0.2s ease; position: relative; overflow: hidden; animation: cta-glow 3s ease-in-out infinite; will-change: filter; }
   .btn-accent::before { content: ''; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.45) 50%, transparent 70%); transform: translateX(-100%); transition: transform 0.6s ease; }
   .btn-accent:hover::before { transform: translateX(100%); }
   .btn-accent:hover { transform: translateY(-1px); box-shadow: 0 12px 30px -10px rgba(42, 111, 219,0.5); }
@@ -538,29 +551,29 @@
         </thead>
         <tbody>
           <tr>
-            <td class="cmp-cell" style="padding: 14px 20px; font-size: 14px; border-bottom: 1px solid var(--line); color: var(--fg);">Te dice qué hacer</td>
-            <td class="cmp-cell" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: var(--accent-text); font-size: 16px; background: rgba(42, 111, 219,0.03);">✓</td>
-            <td class="cmp-cell" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: var(--accent-text); font-size: 16px;">✓</td>
+            <th scope="row" class="cmp-cell" style="padding: 14px 20px; font-size: 14px; border-bottom: 1px solid var(--line); color: var(--fg); font-weight: 400; text-align: left;">Te dice qué hacer</th>
+            <td class="cmp-cell" aria-label="Sí" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: #22c55e; font-size: 16px; background: rgba(42, 111, 219,0.03);">✓</td>
+            <td class="cmp-cell" aria-label="Sí" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: #22c55e; font-size: 16px;">✓</td>
           </tr>
           <tr>
-            <td class="cmp-cell" style="padding: 14px 20px; font-size: 14px; border-bottom: 1px solid var(--line); color: var(--fg);">Te explica por qué</td>
-            <td class="cmp-cell" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: var(--accent-text); font-size: 16px; background: rgba(42, 111, 219,0.03);">✓</td>
-            <td class="cmp-cell" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: var(--muted-2); font-size: 14px;">✗</td>
+            <th scope="row" class="cmp-cell" style="padding: 14px 20px; font-size: 14px; border-bottom: 1px solid var(--line); color: var(--fg); font-weight: 400; text-align: left;">Te explica por qué</th>
+            <td class="cmp-cell" aria-label="Sí" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: #22c55e; font-size: 16px; background: rgba(42, 111, 219,0.03);">✓</td>
+            <td class="cmp-cell" aria-label="No" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: var(--danger); font-size: 14px;">✗</td>
           </tr>
           <tr>
-            <td class="cmp-cell" style="padding: 14px 20px; font-size: 14px; border-bottom: 1px solid var(--line); color: var(--fg);">Adapta según tu fatiga real</td>
-            <td class="cmp-cell" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: var(--accent-text); font-size: 16px; background: rgba(42, 111, 219,0.03);">✓</td>
-            <td class="cmp-cell" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: var(--muted); font-size: 13px;">A veces</td>
+            <th scope="row" class="cmp-cell" style="padding: 14px 20px; font-size: 14px; border-bottom: 1px solid var(--line); color: var(--fg); font-weight: 400; text-align: left;">Adapta según tu fatiga real</th>
+            <td class="cmp-cell" aria-label="Sí" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: #22c55e; font-size: 16px; background: rgba(42, 111, 219,0.03);">✓</td>
+            <td class="cmp-cell" aria-label="No" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: var(--danger); font-size: 14px;">✗</td>
           </tr>
           <tr>
-            <td class="cmp-cell" style="padding: 14px 20px; font-size: 14px; border-bottom: 1px solid var(--line); color: var(--fg);">Razona sobre tu historial</td>
-            <td class="cmp-cell" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: var(--accent-text); font-size: 16px; background: rgba(42, 111, 219,0.03);">✓</td>
-            <td class="cmp-cell" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: var(--muted-2); font-size: 14px;">✗</td>
+            <th scope="row" class="cmp-cell" style="padding: 14px 20px; font-size: 14px; border-bottom: 1px solid var(--line); color: var(--fg); font-weight: 400; text-align: left;">Razona sobre tu historial</th>
+            <td class="cmp-cell" aria-label="Sí" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: #22c55e; font-size: 16px; background: rgba(42, 111, 219,0.03);">✓</td>
+            <td class="cmp-cell" aria-label="No" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: var(--danger); font-size: 14px;">✗</td>
           </tr>
           <tr>
-            <td class="cmp-cell" style="padding: 14px 20px; font-size: 14px; color: var(--fg);">Sin planes genéricos</td>
-            <td class="cmp-cell" style="text-align: center; padding: 14px 20px; color: var(--accent-text); font-size: 16px; background: rgba(42, 111, 219,0.03);">✓</td>
-            <td class="cmp-cell" style="text-align: center; padding: 14px 20px; color: var(--muted-2); font-size: 14px;">✗</td>
+            <th scope="row" class="cmp-cell" style="padding: 14px 20px; font-size: 14px; color: var(--fg); font-weight: 400; text-align: left;">Sin planes genéricos</th>
+            <td class="cmp-cell" aria-label="Sí" style="text-align: center; padding: 14px 20px; color: #22c55e; font-size: 16px; background: rgba(42, 111, 219,0.03);">✓</td>
+            <td class="cmp-cell" aria-label="No" style="text-align: center; padding: 14px 20px; color: var(--danger); font-size: 14px;">✗</td>
           </tr>
         </tbody>
       </table>
@@ -759,7 +772,7 @@
             </div>
             <div class="mt-5">
               <p style="font-size:11px;font-weight:700;opacity:0.6;margin:0 0 4px;">La beta abre el 1 de septiembre · faltan</p>
-              <p id="countdown-display" style="font-size:28px;font-weight:900;letter-spacing:-0.02em;margin:0;">…</p>
+              <p id="countdown-display" aria-label="Cuenta atrás para el lanzamiento" style="font-size:28px;font-weight:900;letter-spacing:-0.02em;margin:0;">…</p>
             </div>
           </div>
 
@@ -814,7 +827,7 @@
       <div class="md:col-span-2">
         <div class="text-xs text-muted-2 uppercase tracking-[0.1em] font-semibold mb-4">Contacto</div>
         <ul class="space-y-2 text-sm">
-          <li><a href="mailto:hola@trainapp.es" class="text-muted hover:text-white">hola@trainapp.es</a></li>
+          <li><a href="mailto:contact@2trainapp.com" class="text-muted hover:text-white">contact@2trainapp.com</a></li>
           <li><a href="https://twitter.com/nachoing__" target="_blank" rel="noopener noreferrer" class="text-muted hover:text-white">Twitter</a></li>
         </ul>
       </div>
