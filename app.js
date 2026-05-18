@@ -1,4 +1,5 @@
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ydXpqdHFld2pha2Z3c2hmYWd6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg5MjAyMzcsImV4cCI6MjA5NDQ5NjIzN30.GC0IRyXF1QppjbvQJNoYhe_FbWIAa6mjOZQkplrEbfM';
+const isEn = document.documentElement.lang === 'en';
 
 (function() {
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -186,18 +187,18 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
     let pct, taken, free, waveLabel;
     if (wave === 1) {
       taken = position; free = 100 - position;
-      pct = position; waveLabel = 'PLAZAS WAVE 1';
+      pct = position; waveLabel = isEn ? 'WAVE 1 SPOTS' : 'PLAZAS WAVE 1';
     } else if (wave === 2) {
       taken = position - 100; free = 250 - position + 1;
-      pct = Math.round((position - 100) / 150 * 100); waveLabel = 'PLAZAS WAVE 2';
+      pct = Math.round((position - 100) / 150 * 100); waveLabel = isEn ? 'WAVE 2 SPOTS' : 'PLAZAS WAVE 2';
     } else {
       taken = position - 250; free = Math.max(400 - position + 1, 0);
-      pct = Math.round((position - 250) / 150 * 100); waveLabel = 'PLAZAS WAVE 3';
+      pct = Math.round((position - 250) / 150 * 100); waveLabel = isEn ? 'WAVE 3 SPOTS' : 'PLAZAS WAVE 3';
     }
     document.getElementById('ms-wl-text').textContent = waveLabel;
-    document.getElementById('ms-pos-frac').textContent = `${free} libres`;
-    document.getElementById('ms-scarcity-taken').textContent = `${taken} ocupada${taken !== 1 ? 's' : ''}`;
-    document.getElementById('ms-scarcity-free').textContent = `${free} disponible${free !== 1 ? 's' : ''} →`;
+    document.getElementById('ms-pos-frac').textContent = isEn ? `${free} available` : `${free} libres`;
+    document.getElementById('ms-scarcity-taken').textContent = isEn ? `${taken} taken` : `${taken} ocupada${taken !== 1 ? 's' : ''}`;
+    document.getElementById('ms-scarcity-free').textContent = isEn ? `${free} available →` : `${free} disponible${free !== 1 ? 's' : ''} →`;
     if (reduceMotion) { fill.style.transition = 'none'; fill.style.width = pct + '%'; return; }
     setTimeout(() => { fill.style.width = pct + '%'; }, 500);
   }
@@ -209,30 +210,31 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
     // Determine wave
     const wave = position <= 100 ? 1 : position <= 250 ? 2 : 3;
     const waveData = {
-      1: { badge1: 'Wave 1 ⚡', badge2: 'Acceso de por vida', badge3: 'Gratis para siempre' },
-      2: { badge1: 'Wave 2', badge2: '3 meses gratis', badge3: 'Early access' },
-      3: { badge1: 'Wave 3', badge2: 'Acceso normal', badge3: 'Por orden de llegada' },
+      1: { badge1: 'Wave 1 ⚡', badge2: isEn ? 'Lifetime access' : 'Acceso de por vida', badge3: isEn ? 'Free forever' : 'Gratis para siempre' },
+      2: { badge1: 'Wave 2', badge2: isEn ? '3 months free' : '3 meses gratis', badge3: 'Early access' },
+      3: { badge1: 'Wave 3', badge2: isEn ? 'Standard access' : 'Acceso normal', badge3: isEn ? 'First come first served' : 'Por orden de llegada' },
     }[wave];
     document.getElementById('ms-badge-1').textContent = waveData.badge1;
     document.getElementById('ms-badge-2').textContent = waveData.badge2;
     document.getElementById('ms-badge-3').textContent = waveData.badge3;
 
     // Waves card
-    document.getElementById('ms-pos-frac').textContent = `${position <= 100 ? 100 - position : position <= 250 ? 251 - position : Math.max(401 - position, 0)} libres`;
+    const _free = position <= 100 ? 100 - position : position <= 250 ? 251 - position : Math.max(401 - position, 0);
+    document.getElementById('ms-pos-frac').textContent = isEn ? `${_free} available` : `${_free} libres`;
     ['ms-w1', 'ms-w2', 'ms-w3'].forEach((id, i) => {
       const el = document.getElementById(id);
       const isActive = i + 1 === wave;
       el.classList.toggle('active', isActive);
-      if (isActive) el.querySelector('.ms-ss').textContent = 'Tú estás aquí';
+      if (isActive) el.querySelector('.ms-ss').textContent = isEn ? "You're here" : 'Tú estás aquí';
     });
 
     // Share heading
     const p3 = projection && projection['3'];
     const shareH = document.getElementById('ms-share-h');
     if (p3 && p3 < position) {
-      shareH.innerHTML = `<span class="ms-b">⚡</span> Con 3 amigos subes al puesto #${p3}`;
+      shareH.innerHTML = isEn ? `<span class="ms-b">⚡</span> With 3 friends you jump to #${p3}` : `<span class="ms-b">⚡</span> Con 3 amigos subes al puesto #${p3}`;
     } else {
-      shareH.innerHTML = `<span class="ms-b">⚡</span> Comparte para subir en la lista`;
+      shareH.innerHTML = isEn ? `<span class="ms-b">⚡</span> Share to move up the list` : `<span class="ms-b">⚡</span> Comparte para subir en la lista`;
     }
 
     // Referral & share links
@@ -241,14 +243,18 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
       const copyBtn = document.getElementById('ms-copy');
       copyBtn.onclick = () => {
         navigator.clipboard.writeText(link).then(() => {
-          copyBtn.textContent = '✓ Copiado';
-          setTimeout(() => { copyBtn.textContent = 'Copiar link'; }, 1600);
+          copyBtn.textContent = isEn ? '✓ Copied' : '✓ Copiado';
+          setTimeout(() => { copyBtn.textContent = isEn ? 'Copy link' : 'Copiar link'; }, 1600);
         });
       };
     }
-    const waMsg = encodeURIComponent(`Acabo de reservar mi plaza en 2trAIn ⚡ Un entrenador personal con IA que te explica cada decisión. Solo 100 plazas gratuitas de por vida. Entra con mi link 👉 ${link}`);
+    const waMsg = isEn
+      ? encodeURIComponent(`I just reserved my spot on 2trAIn ⚡ An AI personal trainer that explains every decision. Only 100 lifetime-free spots. Join with my link 👉 ${link}`)
+      : encodeURIComponent(`Acabo de reservar mi plaza en 2trAIn ⚡ Un entrenador personal con IA que te explica cada decisión. Solo 100 plazas gratuitas de por vida. Entra con mi link 👉 ${link}`);
     document.getElementById('ms-wa').href = `https://wa.me/?text=${waMsg}`;
-    const twText = encodeURIComponent(`Acabo de reservar mi plaza en 2trAIn ⚡\n\nIA que te explica CADA decisión de tu entrenamiento.\nSolo 100 plazas gratis para siempre →`);
+    const twText = isEn
+      ? encodeURIComponent(`I just reserved my spot on 2trAIn ⚡\n\nAI that explains EVERY decision in your training.\nOnly 100 free-forever spots →`)
+      : encodeURIComponent(`Acabo de reservar mi plaza en 2trAIn ⚡\n\nIA que te explica CADA decisión de tu entrenamiento.\nSolo 100 plazas gratis para siempre →`);
     document.getElementById('ms-x').href = `https://twitter.com/intent/tweet?text=${twText}&url=${encodeURIComponent(link)}`;
 
     // Show success
@@ -277,7 +283,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
     e.preventDefault();
     hideModalError();
     const email = mForm.querySelector('input[name="email"]').value.trim();
-    mBtn.querySelector('.btn-label').textContent = 'Enviando…';
+    mBtn.querySelector('.btn-label').textContent = isEn ? 'Sending…' : 'Enviando…';
     mBtn.disabled = true; mBtn.style.opacity = '0.6';
 
     try {
@@ -294,8 +300,8 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
       showModalSuccess(data.referral_code, data.position, data.projection);
     } catch (err) {
       console.error('Waitlist error:', err);
-      showModalError('Algo salió mal. Inténtalo de nuevo o escríbenos.');
-      mBtn.querySelector('.btn-label').textContent = 'Entrar a la beta';
+      showModalError(isEn ? 'Something went wrong. Try again or contact us.' : 'Algo salió mal. Inténtalo de nuevo o escríbenos.');
+      mBtn.querySelector('.btn-label').textContent = isEn ? 'Join the beta' : 'Entrar a la beta';
       mBtn.disabled = false; mBtn.style.opacity = '';
     }
   });
@@ -307,7 +313,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
         mSuccess.classList.add('hidden');
         mForm.reset();
         hideModalError();
-        mBtn.querySelector('.btn-label').textContent = 'Entrar a la beta';
+        mBtn.querySelector('.btn-label').textContent = isEn ? 'Join the beta' : 'Entrar a la beta';
         mBtn.disabled = false; mBtn.style.opacity = '';
         // Reset bar for next open
         const fill = document.getElementById('ms-fill');
@@ -323,14 +329,14 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
     var el = document.getElementById('countdown-display');
     if (!el) return;
     var diff = target - new Date();
-    if (diff <= 0) { el.textContent = 'Beta disponible'; return; }
+    if (diff <= 0) { el.textContent = isEn ? 'Beta available' : 'Beta disponible'; return; }
     var d = Math.floor(diff / 86400000);
     var h = Math.floor((diff % 86400000) / 3600000);
     var m = Math.floor((diff % 3600000) / 60000);
     el.innerHTML =
-      '<span aria-label="' + d + ' días">' + d + 'd</span> ' +
-      '<span aria-label="' + h + ' horas">' + h + 'h</span> ' +
-      '<span aria-label="' + m + ' minutos">' + m + 'm</span>';
+      '<span aria-label="' + d + (isEn ? ' days' : ' días') + '">' + d + 'd</span> ' +
+      '<span aria-label="' + h + (isEn ? ' hours' : ' horas') + '">' + h + 'h</span> ' +
+      '<span aria-label="' + m + (isEn ? ' minutes' : ' minutos') + '">' + m + 'm</span>';
   }
   tick();
   setInterval(tick, 60000);
@@ -347,7 +353,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
     menu.classList.add('open');
     menu.setAttribute('aria-hidden', 'false');
     nav.classList.add('nav-open');
-    toggle.setAttribute('aria-label', 'Cerrar menú');
+    toggle.setAttribute('aria-label', isEn ? 'Close menu' : 'Cerrar menú');
     toggle.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden';
     const first = menu.querySelector('a, button');
@@ -358,7 +364,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
     menu.classList.remove('open');
     menu.setAttribute('aria-hidden', 'true');
     nav.classList.remove('nav-open');
-    toggle.setAttribute('aria-label', 'Abrir menú');
+    toggle.setAttribute('aria-label', isEn ? 'Open menu' : 'Abrir menú');
     toggle.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
     toggle.focus();
