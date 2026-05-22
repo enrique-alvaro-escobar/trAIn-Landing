@@ -48,21 +48,8 @@ const isEn = document.documentElement.lang === 'en';
     });
   });
 
-  // Nav scroll
+  // Nav — el estilo (degradado) lo define el CSS; aquí solo lo referenciamos
   const nav = document.getElementById('nav');
-  function syncNav() {
-    if (window.scrollY > 50) {
-      nav.style.background = 'rgba(10,10,10,0.85)';
-      nav.style.backdropFilter = 'blur(12px)';
-      nav.classList.add('nav-scrolled');
-    } else {
-      nav.style.background = 'transparent';
-      nav.style.backdropFilter = 'none';
-      nav.classList.remove('nav-scrolled');
-    }
-  }
-  syncNav();
-  window.addEventListener('scroll', syncNav, { passive: true });
 
   // Animations
   if (!reduceMotion) {
@@ -70,70 +57,76 @@ const isEn = document.documentElement.lang === 'en';
     gsap.from('#hero-sub', { y: 20, opacity: 0, duration: 0.8, delay: 0.6, ease: 'power3.out' });
     gsap.from('#hero-form', { y: 20, opacity: 0, duration: 0.8, delay: 0.8, ease: 'power3.out' });
     gsap.from('.trust-row', { y: 10, opacity: 0, duration: 0.6, delay: 1.0, ease: 'power3.out' });
-    // 3-phone carousel — wait for images to decode first to avoid paint jank on first load
-    (function() {
-      var phones = [
-        document.getElementById('ph0'),
-        document.getElementById('ph1'),
-        document.getElementById('ph2')
-      ];
-
-      var _w = window.innerWidth;
-      var POS = _w < 768 ? [
-        { x: 57,  y: 0,  rotation: 3,  scale: 1,    opacity: 1,    zIndex: 3 },
-        { x: 136, y: 39, rotation: 9,  scale: 0.82, opacity: 0.45, zIndex: 1 },
-        { x: -18, y: 36, rotation: -9, scale: 0.82, opacity: 0.45, zIndex: 2 }
-      ] : _w < 1024 ? [
-        { x: 70,  y: 0,  rotation: 3,  scale: 1,    opacity: 1,    zIndex: 3 },
-        { x: 165, y: 48, rotation: 9,  scale: 0.82, opacity: 0.45, zIndex: 1 },
-        { x: -20, y: 44, rotation: -9, scale: 0.82, opacity: 0.45, zIndex: 2 }
-      ] : [
-        { x: 80,  y: 0,  rotation: 3,  scale: 1,    opacity: 1,    zIndex: 3 },
-        { x: 190, y: 55, rotation: 9,  scale: 0.82, opacity: 0.45, zIndex: 1 },
-        { x: -25, y: 50, rotation: -9, scale: 0.82, opacity: 0.45, zIndex: 2 }
-      ];
-
-      // Set positions immediately (no GPU paint yet, just CSS vars)
-      var posIdx = [0, 1, 2];
-      phones.forEach(function(ph, i) {
-        gsap.set(ph, Object.assign({}, POS[posIdx[i]], { opacity: 0, force3D: true }));
-      });
-
-      function startCarousel() {
-        // Fade in staggered after positions are set
-        phones.forEach(function(ph, i) {
-          gsap.to(ph, { opacity: POS[posIdx[i]].opacity, duration: 0.6, delay: i * 0.08, ease: 'power2.out' });
-        });
-
-        var floatTl = null;
-        function startFloat(ph) {
-          if (floatTl) floatTl.kill();
-          floatTl = gsap.timeline({ repeat: -1, yoyo: true });
-          floatTl.to(ph, { y: '-=7', duration: 3.2, ease: 'sine.inOut' });
-        }
-        setTimeout(function() { startFloat(phones[0]); }, 800);
-
-        setInterval(function() {
-          floatTl.kill();
-          posIdx = posIdx.map(function(p) { return (p + 1) % 3; });
-          phones.forEach(function(ph, i) {
-            gsap.to(ph, Object.assign({}, POS[posIdx[i]], { duration: 0.85, ease: 'power3.inOut' }));
-          });
-          var frontPh = phones[posIdx.indexOf(0)];
-          setTimeout(function() { startFloat(frontPh); }, 900);
-        }, 3600);
-      }
-
-      // Wait for all phone images to decode before starting animation
-      var imgs = Array.from(document.querySelectorAll('#hero-phone img'));
-      Promise.all(imgs.map(function(img) {
-        if (img.complete && img.naturalWidth) return Promise.resolve();
-        return img.decode ? img.decode().catch(function() {}) : new Promise(function(res) { img.onload = res; img.onerror = res; });
-      })).then(startCarousel);
-    })();
     gsap.to('#hero-phone', { y: -60, scrollTrigger: { trigger: 'section', start: 'top top', end: 'bottom top', scrub: 0.5 }});
     gsap.from('#beta-block', { scale: 0.96, opacity: 0, duration: 0.9, ease: 'power3.out', scrollTrigger: { trigger: '#beta-block', start: 'top 85%' } });
   }
+
+  // 3-phone carousel — los 3 móviles SIEMPRE se posicionan y se ven;
+  // el giro automático solo se activa si no se pide movimiento reducido.
+  (function() {
+    var phones = [
+      document.getElementById('ph0'),
+      document.getElementById('ph1'),
+      document.getElementById('ph2')
+    ];
+    if (phones.some(function(p) { return !p; })) return;
+
+    var _w = window.innerWidth;
+    var POS = _w < 768 ? [
+      { x: 71,  y: 0,  rotation: 3,  scale: 1,    opacity: 1,    zIndex: 3 },
+      { x: 132, y: 34, rotation: 8,  scale: 0.82, opacity: 0.4,  zIndex: 1 },
+      { x: 10,  y: 34, rotation: -8, scale: 0.82, opacity: 0.4,  zIndex: 2 }
+    ] : _w < 1024 ? [
+      { x: 70,  y: 0,  rotation: 3,  scale: 1,    opacity: 1,    zIndex: 3 },
+      { x: 165, y: 48, rotation: 9,  scale: 0.82, opacity: 0.45, zIndex: 1 },
+      { x: -20, y: 44, rotation: -9, scale: 0.82, opacity: 0.45, zIndex: 2 }
+    ] : [
+      { x: 80,  y: 0,  rotation: 3,  scale: 1,    opacity: 1,    zIndex: 3 },
+      { x: 190, y: 55, rotation: 9,  scale: 0.82, opacity: 0.45, zIndex: 1 },
+      { x: -25, y: 50, rotation: -9, scale: 0.82, opacity: 0.45, zIndex: 2 }
+    ];
+
+    // Posiciones iniciales (invisibles hasta que las imágenes decodifiquen)
+    var posIdx = [0, 1, 2];
+    phones.forEach(function(ph, i) {
+      gsap.set(ph, Object.assign({}, POS[posIdx[i]], { opacity: 0, force3D: true }));
+    });
+
+    function startCarousel() {
+      // Fade in escalonado: los 3 móviles quedan visibles
+      phones.forEach(function(ph, i) {
+        gsap.to(ph, { opacity: POS[posIdx[i]].opacity, duration: 0.6, delay: i * 0.08, ease: 'power2.out' });
+      });
+
+      // Sin animación de giro si el usuario pide movimiento reducido
+      if (reduceMotion) return;
+
+      var floatTl = null;
+      function startFloat(ph) {
+        if (floatTl) floatTl.kill();
+        floatTl = gsap.timeline({ repeat: -1, yoyo: true });
+        floatTl.to(ph, { y: '-=7', duration: 3.2, ease: 'sine.inOut' });
+      }
+      setTimeout(function() { startFloat(phones[0]); }, 800);
+
+      setInterval(function() {
+        floatTl.kill();
+        posIdx = posIdx.map(function(p) { return (p + 1) % 3; });
+        phones.forEach(function(ph, i) {
+          gsap.to(ph, Object.assign({}, POS[posIdx[i]], { duration: 0.85, ease: 'power3.inOut' }));
+        });
+        var frontPh = phones[posIdx.indexOf(0)];
+        setTimeout(function() { startFloat(frontPh); }, 900);
+      }, 3600);
+    }
+
+    // Esperar a que las imágenes decodifiquen antes de mostrar
+    var imgs = Array.from(document.querySelectorAll('#hero-phone img'));
+    Promise.all(imgs.map(function(img) {
+      if (img.complete && img.naturalWidth) return Promise.resolve();
+      return img.decode ? img.decode().catch(function() {}) : new Promise(function(res) { img.onload = res; img.onerror = res; });
+    })).then(startCarousel);
+  })();
 
   // FAQ
   document.querySelectorAll('.faq-q').forEach(q => q.addEventListener('click', () => {

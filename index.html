@@ -77,11 +77,12 @@
   }
 
   /* Phone */
-  .phone { width: 260px; aspect-ratio: 9 / 19.5; will-change: transform, opacity; background: linear-gradient(160deg, #1a1a1a 0%, #050505 50%, #1a1a1a 100%); border-radius: 40px; padding: 8px; position: relative; box-shadow: 0 0 0 1.5px #2e2e2e, inset 0 0 0 1.5px rgba(255,255,255,0.04), 0 60px 120px -30px rgba(42, 111, 219, 0.18), 0 30px 60px -20px rgba(0,0,0,0.8); }
+  .phone { width: 260px; will-change: transform, opacity; background: linear-gradient(160deg, #1a1a1a 0%, #050505 50%, #1a1a1a 100%); border-radius: 40px; padding: 8px; position: relative; box-shadow: 0 0 0 1.5px #2e2e2e, inset 0 0 0 1.5px rgba(255,255,255,0.04), 0 60px 120px -30px rgba(42, 111, 219, 0.18), 0 30px 60px -20px rgba(0,0,0,0.8); }
   .phone::before { display: none; }
   .phone::after { display: none; }
-  .phone-screen { position: relative; width: 100%; height: 100%; border-radius: 32px; overflow: hidden; background: var(--bg); box-shadow: inset 0 0 0 1px #000; }
-  .phone-screen > img { display: block; width: 102%; height: 102%; object-fit: cover; margin: -1%; }
+  /* La pantalla manda la proporción (9:19.5) → imágenes 9:19.5 encajan sin recortes */
+  .phone-screen { position: relative; width: 100%; aspect-ratio: 9 / 19.5; border-radius: 32px; overflow: hidden; background: var(--bg); box-shadow: inset 0 0 0 1px #000; }
+  .phone-screen img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
   .phone-screen picture { display: block; width: 100%; height: 100%; }
   .phone-screen::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, transparent 30%, transparent 70%, rgba(255,255,255,0.03) 100%); pointer-events: none; z-index: 5; border-radius: 32px; }
   .phone-stack { position: relative; width: 420px; height: 572px; }
@@ -296,24 +297,30 @@
   /* ── MOBILE (< 768px) ───────────────────────────────── */
   @media (max-width: 767px) {
     /* Hero */
-    #hero { min-height: 0 !important; padding-top: 80px !important; }
+    #hero { min-height: 0 !important; padding-top: 76px !important; }
+    /* Texto + formulario primero, móvil arriba del todo sin scroll */
+    .hero-text-col     { order: 1; text-align: center; }
+    .hero-phone-wrapper { order: 2; }
     /* Phone carousel */
-    .phone { width: 165px; border-radius: 28px; padding: 5px; }
-    .phone-screen { border-radius: 23px; }
-    .phone-stack { width: 300px; height: 370px; }
-    .hero-phone-wrapper { margin-bottom: 36px; }
+    .phone { width: 188px; border-radius: 32px; padding: 6px; }
+    .phone-screen { border-radius: 27px; }
+    .phone-stack { width: 330px; height: 402px; }
+    .hero-phone-wrapper { margin: 14px 0 0 !important; }
 
-    /* Hero text */
-    .hero-text-col { text-align: center; }
-    .hero-text-col .badge-row { justify-content: center; }
+    /* Hero text — compactado para que el formulario quede visible sin scroll */
+    .hero-text-col .badge-row { justify-content: center; margin-bottom: 14px !important; }
+    #hero-sub { margin-top: 14px !important; }
+    .hero-text-col .hero-form { margin-top: 18px !important; }
 
     /* Hide second badge pill on very small screens to avoid clutter */
     .badge-row .badge-context { display: none; }
 
-    /* CTA form: stacked */
-    .hero-form { flex-direction: column; gap: 6px; padding: 8px; border-radius: 16px; }
-    .hero-form input { padding: 12px 16px; }
-    .hero-form button { width: 100%; justify-content: center; padding: 14px; }
+    /* CTA form: barra única tipo píldora con botón circular de flecha */
+    .hero-form { gap: 6px; padding: 5px; max-width: 380px; margin-left: auto; margin-right: auto; }
+    .hero-form input { padding: 0 16px; font-size: 16px; }
+    .hero-form button { width: 46px; height: 46px; min-width: 46px; padding: 0; border-radius: 50%; justify-content: center; gap: 0; }
+    .hero-form .btn-label { display: none; }
+    .hero-form button svg { width: 17px; height: 17px; }
     .trust-row { justify-content: center; }
 
     /* Body & section spacing */
@@ -322,8 +329,22 @@
     /* Tighten hero headline on narrow screens */
     #hero-headline { font-size: clamp(26px, 8.5vw, 36px) !important; }
 
-    /* Beta CTA */
-    #beta-block h2 { font-size: 1.875rem !important; }
+    /* Beta CTA — ligeramente compactado, manteniendo la legibilidad */
+    #beta { padding-top: 40px; padding-bottom: 40px; }
+    #beta-block { padding: 32px 24px !important; }
+    #beta-block > .grid { gap: 30px !important; }
+    #beta-block h2 { font-size: 2rem !important; }
+    #beta-offer { margin-top: 26px !important; }
+    #beta-intro { margin-top: 24px !important; }
+    #beta-card { padding: 24px !important; }
+    /* Todo el texto de la última sección centrado en móvil */
+    #beta-block { text-align: center; }
+    #beta .beta-badge { justify-content: center; }
+    /* Ocultar el punto decorativo: descolocado al centrar el texto en 2 líneas */
+    #beta .beta-badge span:first-child { display: none; }
+    #beta-offer { margin-left: auto !important; margin-right: auto !important; }
+    #beta-offer .beta-pills { justify-content: center; }
+    #beta-intro { margin-left: auto; margin-right: auto; }
 
     /* Comparison table: smaller padding */
     .cmp-cell { padding-left: 12px !important; padding-right: 12px !important; }
@@ -341,8 +362,10 @@
     .footer-brand { grid-column: span 1 !important; }
   }
 
-  #nav::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px; background: var(--line); opacity: 0; transition: opacity 0.3s ease; }
-  #nav.nav-scrolled::after { opacity: 1; }
+  /* Navbar — degradado oscuro que se funde con el contenido al hacer scroll */
+  #nav { background: linear-gradient(180deg, rgba(10,10,10,0.96) 0%, rgba(10,10,10,0.82) 58%, rgba(10,10,10,0.55) 100%); }
+  #nav::after { content: ''; position: absolute; top: 100%; left: 0; right: 0; height: 52px; background: linear-gradient(180deg, rgba(10,10,10,0.55) 0%, rgba(10,10,10,0) 100%); pointer-events: none; }
+  #nav.nav-open { background: #0d0d0d; }
 
   /* Nav responsive — hamburger visible below 1024px, desktop links above */
   #nav-links { display: none; }
@@ -416,7 +439,7 @@
 <main id="main-content">
 
 <!-- HERO -->
-<section class="relative pt-24 md:pt-28 pb-12 overflow-hidden" style="min-height: 92vh; display: flex; align-items: center;">
+<section id="hero" class="relative pt-24 md:pt-28 pb-12 overflow-hidden" style="min-height: 92vh; display: flex; align-items: center;">
   <div class="hero-glow" style="width: 700px; height: 700px; top: -150px; right: -150px;"></div>
   <div class="hero-glow" style="width: 500px; height: 500px; bottom: -100px; left: -150px; background: radial-gradient(circle, rgba(255,140,40,0.08) 0%, transparent 60%);"></div>
 
@@ -446,9 +469,9 @@
         <!-- PRIMARY CTA: Inline email form -->
         <form id="hero-form" class="hero-form mt-7" method="post">
           <input id="email-hero" type="email" name="email" required placeholder="tu@email.com" autocomplete="email" aria-label="Tu correo electrónico" />
-          <button type="submit">
-            Reservar mi plaza
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L8.5 3.5M13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"/></svg>
+          <button type="submit" aria-label="Reservar mi plaza">
+            <span class="btn-label">Reservar mi plaza</span>
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10m0 0L8.5 3.5M13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"/></svg>
           </button>
         </form>
 
@@ -464,17 +487,17 @@
         <div class="phone-stack" id="hero-phone">
           <div class="phone phone-item" id="ph0">
             <div class="phone-screen">
-              <picture><source type="image/webp" srcset="/assets/weekly-plan-1x.webp 260w, /assets/weekly-plan.webp 512w" sizes="(max-width:767px) 165px,(max-width:1023px) 220px,260px"><img style="display:block;width:102%;height:102%;object-fit:cover;margin:-1%;object-position:center top;transform:translateY(-3px) translateX(5px);" src="/assets/weekly-plan.png" alt="Pantalla de planificación semanal en 2trAIn" width="512" height="1084" loading="eager" fetchpriority="high" decoding="async"></picture>
+              <picture><source type="image/webp" srcset="/assets/weekly-plan-1x.webp 260w, /assets/weekly-plan.webp 512w" sizes="(max-width:767px) 188px,(max-width:1023px) 220px,260px"><img src="/assets/weekly-plan.png" alt="Pantalla de planificación semanal en 2trAIn" width="540" height="1170" loading="eager" fetchpriority="high" decoding="async"></picture>
             </div>
           </div>
           <div class="phone phone-item" id="ph1">
             <div class="phone-screen">
-              <picture><source type="image/webp" srcset="/assets/while-training-1x.webp 260w, /assets/while-training.webp 502w" sizes="(max-width:767px) 165px,(max-width:1023px) 220px,260px"><img style="display:block;width:100%;height:100%;object-fit:cover;object-position:center top;transform:translateX(5px);" src="/assets/while-training.png" alt="Vista de sesión de entrenamiento activa en 2trAIn" width="502" height="1072" loading="lazy" decoding="async"></picture>
+              <picture><source type="image/webp" srcset="/assets/while-training-1x.webp 260w, /assets/while-training.webp 502w" sizes="(max-width:767px) 188px,(max-width:1023px) 220px,260px"><img src="/assets/while-training.png" alt="Vista de sesión de entrenamiento activa en 2trAIn" width="540" height="1170" loading="lazy" decoding="async"></picture>
             </div>
           </div>
           <div class="phone phone-item" id="ph2">
             <div class="phone-screen">
-              <picture><source type="image/webp" srcset="/assets/summary-1x.webp 260w, /assets/summary.webp 578w" sizes="(max-width:767px) 165px,(max-width:1023px) 220px,260px"><img style="display:block;width:102%;height:102%;object-fit:cover;margin:-1%;object-position:center top;transform:translateY(-3px) translateX(5px);" src="/assets/summary.png" alt="Resumen y estadísticas de entrenamiento en 2trAIn" width="578" height="1256" loading="lazy" decoding="async"></picture>
+              <picture><source type="image/webp" srcset="/assets/summary-1x.webp 260w, /assets/summary.webp 578w" sizes="(max-width:767px) 188px,(max-width:1023px) 220px,260px"><img src="/assets/summary.png" alt="Resumen y estadísticas de entrenamiento en 2trAIn" width="540" height="1170" loading="lazy" decoding="async"></picture>
             </div>
           </div>
         </div>
@@ -813,7 +836,7 @@
     <div class="bg-accent text-black p-8 md:p-14 lg:p-16 relative overflow-hidden rounded-2xl" id="beta-block">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
         <div class="lg:col-span-7">
-          <div class="text-xs uppercase tracking-[0.12em] font-bold mb-5 flex items-center gap-3">
+          <div class="beta-badge text-xs uppercase tracking-[0.12em] font-bold mb-5 flex items-center gap-3">
             <span class="w-2 h-2 rounded-full bg-black"></span>
             <span>Solo 100 plazas · gratis para siempre</span>
           </div>
@@ -823,29 +846,29 @@
           </h2>
 
           <!-- Oferta limitada -->
-          <div class="mt-8 max-w-md">
-            <div class="flex flex-wrap gap-2">
+          <div id="beta-offer" class="mt-8 max-w-md">
+            <div class="beta-pills flex flex-wrap gap-2">
               <span style="background:rgba(0,0,0,0.1);border:1px solid rgba(0,0,0,0.2);border-radius:999px;padding:4px 12px;font-size:12px;font-weight:700;">Acceso de por vida</span>
               <span style="background:rgba(0,0,0,0.1);border:1px solid rgba(0,0,0,0.2);border-radius:999px;padding:4px 12px;font-size:12px;font-weight:700;">Gratis para siempre</span>
               <span style="background:rgba(0,0,0,0.1);border:1px solid rgba(0,0,0,0.2);border-radius:999px;padding:4px 12px;font-size:12px;font-weight:700;">Cuando se cierren, no vuelven</span>
             </div>
-            <div class="mt-5">
+            <div class="beta-countdown mt-5">
               <p style="font-size:11px;font-weight:700;opacity:0.6;margin:0 0 4px;">La beta abre el 1 de septiembre · faltan</p>
               <p id="countdown-display" aria-label="Cuenta atrás para el lanzamiento" style="font-size:28px;font-weight:900;letter-spacing:-0.02em;margin:0;">…</p>
             </div>
           </div>
 
-          <p class="text-base md:text-lg mt-8 max-w-lg leading-relaxed">
+          <p id="beta-intro" class="text-base md:text-lg mt-8 max-w-lg leading-relaxed">
             Los primeros 100 reciben acceso gratuito de por vida y figuran como Founding Members en los créditos de la app.
           </p>
         </div>
 
         <div class="lg:col-span-5">
-          <div class="bg-black text-white p-7 rounded-xl">
+          <div id="beta-card" class="bg-black text-white p-7 rounded-xl">
             <div class="text-xs uppercase tracking-[0.12em] font-bold mb-3 accent">Tu plaza</div>
             <form id="beta-form-2" class="space-y-3" method="post">
-              <input id="email-cta" type="email" name="email" required placeholder="tu@email.com" autocomplete="email" aria-label="Tu correo electrónico" style="background: #0d0d0d; border: 1px solid var(--line-2); color: var(--fg); padding: 14px 16px; font-size: 16px; width: 100%; outline: none; border-radius: 6px;" />
-              <button type="submit" class="btn-accent w-full justify-center" style="padding: 16px;">
+              <input id="email-cta" type="email" name="email" required placeholder="tu@email.com" autocomplete="email" aria-label="Tu correo electrónico" style="background: #0d0d0d; border: 1px solid var(--line-2); color: var(--fg); padding: 15px 16px; font-size: 16px; width: 100%; outline: none; border-radius: 12px;" />
+              <button type="submit" class="btn-accent w-full justify-center" style="padding: 16px; border-radius: 12px;">
                 Reservar mi plaza gratis
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L8.5 3.5M13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"/></svg>
               </button>

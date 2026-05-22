@@ -13,3 +13,6 @@ supabase/.temp/
 
 # Vercel CLI local state
 .vercel/
+
+# Claude Code local config
+.claude/
