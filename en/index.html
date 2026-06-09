@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <meta name="theme-color" content="#0A0A0A" />
 <title>2trAIn · The fitness app that explains why</title>
-<meta name="description" content="Train smart. The only fitness app that explains every decision it makes. Free beta for the first 100." />
+<meta name="description" content="Your AI coach, built around your body, your goals, your progress. The only fitness app that explains every decision it makes. Free beta for the first 100." />
 <link rel="canonical" href="https://2trainapp.com/en/" />
 <link rel="alternate" hreflang="es" href="https://2trainapp.com/">
 <link rel="alternate" hreflang="en" href="https://2trainapp.com/en/">
@@ -13,13 +13,13 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://2trainapp.com/en/" />
 <meta property="og:site_name" content="2trAIn" />
-<meta property="og:title" content="2trAIn · Train smart." />
+<meta property="og:title" content="2trAIn · The AI that reasons your training." />
 <meta property="og:description" content="The only fitness app that explains every decision it makes. Free beta for the first 100." />
 <meta property="og:image" content="https://2trainapp.com/og-image.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="2trAIn · Train smart." />
+<meta name="twitter:title" content="2trAIn · The AI that reasons your training." />
 <meta name="twitter:description" content="The only fitness app that explains every decision it makes. Free beta for the first 100." />
 <meta name="twitter:image" content="https://2trainapp.com/og-image.png" />
 <link rel="icon" href="/favicon.ico" sizes="16x16 32x32">
@@ -28,8 +28,8 @@
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
 <link rel="sitemap" type="application/xml" href="/sitemap.xml">
 <link rel="preload" href="/assets/logo3.png" as="image" type="image/png">
-<link rel="preload" as="image" href="/assets/weekly-plan.webp" type="image/webp">
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-tight/inter-tight-latin-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/archivo/archivo-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/anton/anton-latin-400-normal.woff2" crossorigin>
 
 <link rel="stylesheet" href="/dist/tailwind.css">
 <script src="/assets/js/gsap.min.js" defer></script>
@@ -38,18 +38,25 @@
 
 <style>
   @font-face {
-    font-family: 'Inter Tight';
+    font-family: 'Archivo';
     font-style: normal;
-    font-weight: 400 900;
+    font-weight: 100 900;
     font-display: swap;
-    src: url('/assets/fonts/inter-tight/inter-tight-latin-normal.woff2') format('woff2');
+    src: url('/assets/fonts/archivo/archivo-latin-wght-normal.woff2') format('woff2');
   }
   @font-face {
-    font-family: 'Inter Tight';
+    font-family: 'Archivo';
     font-style: italic;
-    font-weight: 800 900;
+    font-weight: 100 900;
     font-display: swap;
-    src: url('/assets/fonts/inter-tight/inter-tight-latin-italic.woff2') format('woff2');
+    src: url('/assets/fonts/archivo/archivo-latin-wght-italic.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'Anton';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('/assets/fonts/anton/anton-latin-400-normal.woff2') format('woff2');
   }
   :root {
     --bg: #0A0A0A; --bg-2: #0d0d0d; --bg-3: #111;
@@ -60,12 +67,14 @@
   }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
-  html, body { background: var(--bg); color: var(--fg); font-family: 'Inter Tight', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  html, body { background: var(--bg); color: var(--fg); font-family: 'Archivo', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
   body { overflow-x: hidden; }
   ::selection { background: var(--accent); color: #fff; }
 
-  .display { font-family: 'Inter Tight', sans-serif; font-weight: 800; letter-spacing: -0.035em; line-height: 0.95; }
-  .display-tight { font-weight: 900; letter-spacing: -0.05em; line-height: 0.85; }
+  .display { font-family: 'Anton', 'Archivo', sans-serif; font-weight: 400; letter-spacing: -0.005em; line-height: 0.96; }
+  .display-tight { font-weight: 400; letter-spacing: -0.02em; line-height: 0.86; }
+  /* Anton es display puro: en textos largos/pequeños (FAQ) volvemos a Archivo pesada para legibilidad */
+  .faq-q.display { font-family: 'Archivo', sans-serif; font-weight: 800; letter-spacing: -0.01em; line-height: 1.25; }
   .hairline { border-color: var(--line); }
   .accent { color: var(--accent-text); } .bg-accent { background: var(--accent); }
   .text-muted { color: var(--muted); } .text-muted-2 { color: var(--muted-2); }
@@ -89,7 +98,77 @@
 
   .hero-glow { position: absolute; border-radius: 50%; background: radial-gradient(circle, rgba(42, 111, 219,0.18) 0%, rgba(255,140,40,0.08) 35%, transparent 70%); filter: blur(40px); pointer-events: none; }
   .word { display: inline-block; will-change: transform, opacity; }
-  .reveal-line { overflow: hidden; display: block; }
+  /* Reveal por palabra (fade + subida). Sin overflow:hidden: la máscara recorta a Anton
+     (sus métricas llenan la caja-em y colapsan líneas posteriores). El word entra con opacity:0, no hace falta máscara. */
+  .reveal-line { display: block; }
+
+  /* ===== Hero cinematográfico (vídeo de fondo) =====
+     Nota: tamaños/espaciados en CSS propio (NO clases Tailwind tipo text-7xl/mt-9),
+     porque dist/tailwind.css está precompilado y no incluye clases nuevas. */
+  .hero-cine { position: relative; min-height: 100svh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; overflow: hidden; }
+  .hero-cine__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; transform: scale(1.15); }
+  .hero-cine__scrim { position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background:
+      radial-gradient(130% 105% at 50% 32%, rgba(10,10,10,0.20) 0%, rgba(10,10,10,0.55) 55%, rgba(10,10,10,0.92) 100%),
+      linear-gradient(to bottom, rgba(10,10,10,0.6) 0%, rgba(10,10,10,0.1) 24%, rgba(10,10,10,0.18) 58%, var(--bg) 100%); }
+  .hero-cine__content { position: relative; z-index: 2; width: 100%; max-width: 900px; padding: 96px 24px 0; }
+  .hero-cine__title { color: #fff; text-transform: uppercase; text-shadow: 0 2px 50px rgba(0,0,0,0.55); font-size: clamp(40px, 11vw, 104px); line-height: 0.92; }
+  .hero-cine__sub { color: rgba(255,255,255,0.82); max-width: 600px; margin: 26px auto 0; font-size: clamp(15px, 2.2vw, 20px); line-height: 1.55; }
+  .hero-cine__cta { margin-top: 36px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  .hero-cine__chevron { position: absolute; bottom: 26px; left: 50%; z-index: 2; color: rgba(255,255,255,0.55); animation: heroChev 2s ease-in-out infinite; }
+  @keyframes heroChev { 0%, 100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 9px); } }
+  @media (max-width: 640px) { .hero-cine__content { padding-top: 80px; } }
+  @media (prefers-reduced-motion: reduce) { .hero-cine__video { transform: none; } .hero-cine__chevron { animation: none; } }
+
+  /* ===== Secciones VÍDEO + TEXTO (alternando lados) ===== */
+  .vsec__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+  .vsec--reverse .vsec__media { order: 2; }
+  .vsec__media { position: relative; border-radius: 18px; overflow: hidden; border: 1px solid var(--line-2);
+    background: #0d0d0d; aspect-ratio: 16 / 10; }   /* ← si tu vídeo es vertical, cambia a aspect-ratio: 9 / 16 */
+  .vsec__media video, .vsec__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+  .vsec__placeholder { position: absolute; inset: 0; z-index: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 10px; color: var(--muted-2); font-size: 13px; font-weight: 600;
+    letter-spacing: .02em; text-align: center; padding: 16px;
+    background: repeating-linear-gradient(45deg, #0d0d0d, #0d0d0d 12px, #111 12px, #111 24px); }
+  .vsec__text { max-width: 520px; }
+  .vsec__list { display: flex; flex-direction: column; gap: 16px; margin-top: 24px; padding: 0; }
+  .vsec__list li { display: flex; gap: 12px; align-items: flex-start; list-style: none; }
+  .vsec__list p { color: var(--muted); font-size: 14px; line-height: 1.55; margin: 0; }
+  .vsec__list strong { color: var(--fg); font-weight: 600; }
+  .vsec__list .n { flex-shrink: 0; font-size: 12px; font-weight: 700; letter-spacing: .06em; color: var(--accent-text);
+    border: 1px solid rgba(42,111,219,0.25); background: var(--accent-soft); border-radius: 999px; padding: 3px 9px; }
+  .vsec__list .x { flex-shrink: 0; color: var(--danger); font-weight: 700; line-height: 1.4; }
+  @media (max-width: 860px) {
+    .vsec__inner { grid-template-columns: 1fr; gap: 28px; }
+    .vsec--reverse .vsec__media { order: 0; }
+    .vsec__text { max-width: none; }
+  }
+
+  /* ===== SCROLLYTELLING: móvil fijo + reels que cambian al hacer scroll ===== */
+  .reels__grid { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 64px; align-items: start; }
+  .reels__phone-col { position: sticky; top: 0; height: 100svh; display: flex; align-items: center; justify-content: center; }
+  .reels__phone { width: 300px; }
+  .reels__reel { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 2; opacity: 0; transition: opacity .5s ease; }
+  .reels__reel.on { opacity: 1; }
+  .reels__placeholder { position: absolute; inset: 0; z-index: 1; display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 8px; color: var(--muted-2); font-size: 12px; font-weight: 600; text-align: center; padding: 16px; line-height: 1.4;
+    background: repeating-linear-gradient(45deg, #0d0d0d, #0d0d0d 12px, #111 12px, #111 24px); }
+  .reels__steps { display: flex; flex-direction: column; }
+  .reels__step { min-height: 100svh; display: flex; flex-direction: column; justify-content: center; max-width: 460px; }
+  .reels.js-active .reels__step { opacity: 0.22; transition: opacity .45s ease; }
+  .reels.js-active .reels__step.on { opacity: 1; }
+  @media (max-width: 860px) {
+    .reels__grid { grid-template-columns: 1fr; gap: 0; }
+    .reels { padding-top: 0; }   /* menos hueco vacío al aterrizar desde la flecha */
+    /* Móvil fijo arriba con fondo OPACO → el texto nunca se transparenta detrás */
+    .reels__phone-col { position: sticky; top: 0; height: auto; padding: 64px 0 64px; z-index: 6;
+      background: linear-gradient(to bottom, var(--bg-2), var(--bg-2) calc(100% - 64px), transparent); }
+    .reels__phone { width: 152px; }
+    .reels__steps { margin-top: 2px; }
+    /* El texto se coloca DEBAJO del móvil (no centrado tras él) y se lee como lista */
+    .reels__step { min-height: 52svh; justify-content: flex-start; padding-top: 92px; max-width: none; }
+    .reels.js-active .reels__step { opacity: 1; }
+  }
 
   /* Live dot */
   .live-dot { position: relative; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
@@ -98,11 +177,30 @@
 
   /* PRIMARY HERO FORM (email + button) */
   .hero-form { display: flex; gap: 8px; padding: 6px; background: #161616; border: 1px solid var(--line-2); border-radius: 999px; max-width: 480px; transition: border-color 0.2s; }
-  .hero-form:focus-within { border-color: var(--accent-text); box-shadow: 0 0 0 4px rgba(42, 111, 219,0.1); }
+  .hero-form:focus-within { border-color: var(--accent-text); box-shadow: 0 0 0 4px rgba(42, 111, 219,0.1); animation: none; }
+  /* Llama la atención: el input "respira" para que se vea que hay que escribir ahí */
+  .hero-form { animation: heroPulse 2.6s ease-in-out infinite; }
+  @keyframes heroPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(42, 111, 219, 0); border-color: var(--line-2); }
+    50% { box-shadow: 0 0 0 6px rgba(42, 111, 219, 0.14); border-color: var(--accent-text); }
+  }
+  @media (prefers-reduced-motion: reduce) { .hero-form { animation: none; } }
   .hero-form input { flex: 1; min-width: 0; background: transparent; border: 0; outline: 0; color: var(--fg); padding: 0 18px; font-size: 15px; font-family: inherit; }
   .hero-form input::placeholder { color: var(--muted); }
   .hero-form button { background: var(--accent); color: #fff; font-weight: 700; padding: 12px 22px; border-radius: 999px; font-size: 14px; white-space: nowrap; display: inline-flex; align-items: center; gap: 8px; transition: transform 0.15s, box-shadow 0.2s; flex-shrink: 0; }
   .hero-form button:hover { transform: translateY(-1px); box-shadow: 0 10px 24px -8px rgba(42, 111, 219,0.5); }
+
+  /* Chat-style hero composer */
+  .chat-hint { display: inline-flex; align-items: center; gap: 9px; margin: 0 auto 14px; font-size: 13px; color: var(--muted); max-width: 100%; }
+  .chat-ava { width: 24px; height: 24px; border-radius: 50%; overflow: hidden; background: #000; flex-shrink: 0; display: inline-flex; }
+  .chat-ava img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .chat-hint__txt strong { color: var(--fg); font-weight: 700; }
+  .typing-dots { display: inline-flex; gap: 3px; align-items: center; flex-shrink: 0; }
+  .typing-dots i { width: 4px; height: 4px; border-radius: 50%; background: var(--accent-text); animation: typingBlink 1.4s infinite ease-in-out; }
+  .typing-dots i:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dots i:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes typingBlink { 0%, 60%, 100% { opacity: 0.25; transform: translateY(0); } 30% { opacity: 1; transform: translateY(-2px); } }
+  .hero-form button.hero-send { padding: 0; width: 46px; height: 46px; border-radius: 50%; justify-content: center; gap: 0; }
 
   /* Trust strip under form */
   .trust-row { display: flex; flex-wrap: wrap; gap: 14px 18px; align-items: center; font-size: 12px; color: var(--muted); margin-top: 14px; }
@@ -133,6 +231,14 @@
   .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
   .faq-item.open .faq-a { max-height: 320px; }
   .faq-a-inner { padding-bottom: 24px; color: var(--muted); line-height: 1.65; max-width: 760px; }
+  /* FAQ filtros */
+  .faq-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 6px; }
+  .faq-chip { font-size: 12.5px; font-weight: 700; letter-spacing: 0.02em; padding: 7px 15px; border-radius: 999px;
+    border: 1px solid var(--line-2); background: transparent; color: var(--muted); cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease; white-space: nowrap; }
+  .faq-chip:hover { color: var(--fg); border-color: var(--muted-2); }
+  .faq-chip.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .faq-item.hidden { display: none; }
 
   .stat-num { font-feature-settings: 'tnum'; font-variant-numeric: tabular-nums; }
 
@@ -275,7 +381,6 @@
     .hero-phone-wrapper { order: 1; display: flex !important; justify-content: center; }
     .hero-text-col { order: 2; text-align: center; }
     .hero-text-col .badge-row { justify-content: center; }
-    #hero { min-height: 0 !important; align-items: flex-start !important; }
   }
 
   @media (min-width: 768px) and (max-width: 1023px) {
@@ -286,7 +391,6 @@
   }
 
   @media (max-width: 767px) {
-    #hero { min-height: 0 !important; padding-top: 80px !important; }
     .phone { width: 165px; border-radius: 28px; padding: 5px; }
     .phone-screen { border-radius: 23px; }
     .phone-stack { width: 300px; height: 370px; }
@@ -294,12 +398,13 @@
     .hero-text-col { text-align: center; }
     .hero-text-col .badge-row { justify-content: center; }
     .badge-row .badge-context { display: none; }
-    .hero-form { flex-direction: column; gap: 6px; padding: 8px; border-radius: 16px; }
-    .hero-form input { padding: 12px 16px; }
-    .hero-form button { width: 100%; justify-content: center; padding: 14px; }
+    .hero-form { gap: 6px; padding: 5px; }
+    .hero-form input { font-size: 14px; padding: 0 12px; text-overflow: ellipsis; }
+    .hero-form button { padding: 11px 16px; font-size: 13px; }
+    .hero-form button.hero-send { width: 42px; height: 42px; padding: 0; }
+    .chat-hint { font-size: 12px; }
     .trust-row { justify-content: center; }
     section { padding-top: 48px; padding-bottom: 48px; }
-    #hero-headline { font-size: clamp(26px, 8.5vw, 36px) !important; }
     #beta-block h2 { font-size: 1.875rem !important; }
     .cmp-cell { padding-left: 12px !important; padding-right: 12px !important; }
     .faq-q { padding: 16px 0; }
@@ -310,8 +415,11 @@
     .footer-brand { grid-column: span 1 !important; }
   }
 
-  #nav::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px; background: var(--line); opacity: 0; transition: opacity 0.3s ease; }
-  #nav.nav-scrolled::after { opacity: 1; }
+  #nav { background: linear-gradient(180deg, rgba(10,10,10,0.96) 0%, rgba(10,10,10,0.82) 58%, rgba(10,10,10,0.55) 100%); transition: background-color .4s ease; }
+  #nav::after { content: ''; position: absolute; top: 100%; left: 0; right: 0; height: 52px; background: linear-gradient(180deg, rgba(10,10,10,0.55) 0%, rgba(10,10,10,0) 100%); pointer-events: none; transition: opacity .4s ease; }
+  #nav.nav-open { background: #0d0d0d; }
+  #nav.nav-compact { background: transparent; }
+  #nav.nav-compact::after { opacity: 0; }
 
   #nav-links { display: none; }
   #nav-cta   { display: none; }
@@ -325,6 +433,27 @@
   #nav.nav-open .nav-bar-1 { transform: translateY(7px) rotate(45deg); }
   #nav.nav-open .nav-bar-2 { opacity: 0; transform: scaleX(0); }
   #nav.nav-open .nav-bar-3 { transform: translateY(-7px) rotate(-45deg); }
+
+  /* ===== Navbar: compacto al cargar (pill con el logo) → se despliega al hacer scroll y se queda ===== */
+  #nav-inner { transition: max-width .55s cubic-bezier(.4,0,.2,1), margin-top .4s ease, height .35s ease,
+    background-color .4s ease, border-color .4s ease, border-radius .4s ease, box-shadow .4s ease, padding .4s ease; }
+  #nav-links, #nav .nav-lang, #nav-cta { transition: opacity .3s ease .15s; }
+  /* Mismo justify-content (space-between) en compacto y expandido → el logo NO salta al abrirse. */
+  #nav.nav-compact #nav-inner {
+    max-width: 124px; margin-top: 12px; height: 52px; overflow: hidden;
+    background: rgba(13,13,13,0.5); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.10); border-radius: 999px;
+    padding-left: 22px; padding-right: 22px; box-shadow: 0 10px 30px -14px rgba(0,0,0,0.7);
+  }
+  #nav.nav-compact #nav-inner > a { flex: 0 0 auto; }      /* el logo no se encoge ni se mueve */
+  #nav.nav-compact #nav-links,
+  #nav.nav-compact .nav-lang,
+  #nav.nav-compact #nav-cta { opacity: 0; pointer-events: none; }  /* en flujo pero invisibles → aparecen con fade, sin pop */
+  @media (max-width: 1023px) {                              /* móvil: pill algo más ancho (logo + hamburguesa) */
+    #nav.nav-compact #nav-inner { max-width: 200px; }
+  }
+  #nav.no-nav-anim, #nav.no-nav-anim #nav-inner, #nav.no-nav-anim #nav-links,
+  #nav.no-nav-anim .nav-lang, #nav.no-nav-anim #nav-cta { transition: none !important; }
 
   #mobile-menu { position: fixed; top: 64px; left: 0; right: 0; z-index: 49; background: #0d0d0d; border-bottom: 1px solid var(--line); transform: translateY(-6px); opacity: 0; pointer-events: none; visibility: hidden; transition: transform 0.25s ease, opacity 0.25s ease, visibility 0s linear 0.25s; }
   #mobile-menu.open { transform: translateY(0); opacity: 1; pointer-events: auto; visibility: visible; transition: transform 0.25s ease, opacity 0.25s ease, visibility 0s linear 0s; }
@@ -345,8 +474,8 @@
 <div class="grain" aria-hidden="true"></div>
 
 <!-- NAV -->
-<nav id="nav" class="fixed top-0 left-0 right-0 z-50 transition-colors" aria-label="Main navigation">
-  <div class="max-w-page pad-x h-16 flex items-center justify-between">
+<nav id="nav" class="fixed top-0 left-0 right-0 z-50 transition-colors nav-compact" aria-label="Main navigation">
+  <div id="nav-inner" class="max-w-page pad-x h-16 flex items-center justify-between">
     <a href="/en/" class="flex items-center gap-2">
       <picture><img src="/assets/logo3.png" alt="2trAIn" width="336" height="84" style="height:24px;width:auto;"></picture>
     </a>
@@ -382,166 +511,114 @@
 </div>
 <main id="main-content">
 
-<!-- HERO -->
-<section class="relative pt-24 md:pt-28 pb-12 overflow-hidden" style="min-height: 92vh; display: flex; align-items: center;">
-  <div class="hero-glow" style="width: 700px; height: 700px; top: -150px; right: -150px;"></div>
-  <div class="hero-glow" style="width: 500px; height: 500px; bottom: -100px; left: -150px; background: radial-gradient(circle, rgba(255,140,40,0.08) 0%, transparent 60%);"></div>
+<!-- HERO (cinematic video) -->
+<section id="hero" class="hero-cine">
+  <video class="hero-cine__video" autoplay muted loop playsinline preload="auto" poster="/assets/og-image.png" aria-hidden="true">
+    <source src="/assets/prueba_header.mp4" type="video/mp4">
+  </video>
+  <div class="hero-cine__scrim"></div>
 
-  <div class="max-w-page pad-x relative w-full">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-8 lg:gap-12 items-center">
-      <div class="lg:col-span-7 hero-text-col">
-        <div class="flex items-center gap-3 mb-5 flex-wrap badge-row">
-          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full" style="border: 1px solid rgba(42, 111, 219,0.3); background: rgba(42, 111, 219,0.06);">
-            <span class="live-dot"></span>
-            <span class="text-xs font-semibold accent">100 spots · lifetime access</span>
-          </div>
-          <div class="badge-context inline-flex items-center gap-2 px-3 py-1.5 rounded-full" style="border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04);">
-            <span class="text-xs" style="color: var(--muted);">For those who've been training for months without clear results</span>
-          </div>
-        </div>
+  <div class="hero-cine__content">
 
-        <h1 id="hero-headline" class="display text-[36px] md:text-6xl lg:text-[68px]">
-          <span class="reveal-line"><span class="word">The only fitness</span></span>
-          <span class="reveal-line"><span class="word">app that explains</span></span>
-          <span class="reveal-line"><span class="word accent">why.</span></span>
-        </h1>
+    <h1 id="hero-headline" class="display display-tight hero-cine__title">
+      <span class="reveal-line"><span class="word">The</span> <span class="word">AI</span> <span class="word">that</span> <span class="word">reasons</span></span>
+      <span class="reveal-line"><span class="word">your</span> <span class="word accent">training.</span></span>
+    </h1>
 
-        <p id="hero-sub" class="text-muted text-base md:text-lg mt-5 max-w-xl leading-relaxed">
-          <span class="text-white">Train smart.</span> Every decision 2trAIn makes about your plan comes explained. No gurus, no cheap motivation, no generic plans.
-        </p>
+    <p id="hero-sub" class="hero-cine__sub">
+      Built around <span class="text-white">your body, your goals, your progress.</span> Every decision, backed by your data. No generic plans.
+    </p>
 
-        <form id="hero-form" class="hero-form mt-7" method="post">
-          <input id="email-hero" type="email" name="email" required placeholder="your@email.com" autocomplete="email" aria-label="Your email address" />
-          <button type="submit">
-            Reserve my spot
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L8.5 3.5M13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"/></svg>
-          </button>
-        </form>
-
-        <div class="trust-row">
-          <span class="item"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8l3 3 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg> Free</span>
-          <span class="item"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8l3 3 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg> Zero spam</span>
-          <span class="item"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8l3 3 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg> Cancel anytime</span>
-        </div>
+    <div id="hero-cta" class="hero-cine__cta">
+      <div class="chat-hint">
+        <span class="chat-ava"><img src="/assets/Icono2TrainVector.svg" alt="2trAIn" width="24" height="24" /></span>
+        <span class="chat-hint__txt"><strong>Type your goal here</strong> and I'll build a plan instantly</span>
+        <span class="typing-dots" aria-hidden="true"><i></i><i></i><i></i></span>
       </div>
+      <form id="goal-form" class="hero-form" style="margin: 0 auto; width: 100%;">
+        <input id="goal-input" type="text" name="goal" required maxlength="140" placeholder="What's your goal? e.g. build muscle" aria-label="Your goal" autocomplete="off" />
+        <button type="submit" class="hero-send" aria-label="Send and build my plan">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </form>
+    </div>
+  </div>
 
-      <!-- Hero phone -->
-      <div class="lg:col-span-5 flex justify-center hero-phone-wrapper">
-        <div class="phone-stack" id="hero-phone">
-          <div class="phone phone-item" id="ph0">
-            <div class="phone-screen">
-              <picture><source type="image/webp" srcset="/assets/weekly-plan-1x.webp 260w, /assets/weekly-plan.webp 512w" sizes="(max-width:767px) 165px,(max-width:1023px) 220px,260px"><img style="display:block;width:102%;height:102%;object-fit:cover;margin:-1%;object-position:center top;transform:translateY(-3px) translateX(5px);" src="/assets/weekly-plan.png" alt="Weekly training plan screen in 2trAIn" width="512" height="1084" loading="eager" fetchpriority="high" decoding="async"></picture>
-            </div>
-          </div>
-          <div class="phone phone-item" id="ph1">
-            <div class="phone-screen">
-              <picture><source type="image/webp" srcset="/assets/while-training-1x.webp 260w, /assets/while-training.webp 502w" sizes="(max-width:767px) 165px,(max-width:1023px) 220px,260px"><img style="display:block;width:100%;height:100%;object-fit:cover;object-position:center top;transform:translateX(5px);" src="/assets/while-training.png" alt="Active training session view in 2trAIn" width="502" height="1072" loading="lazy" decoding="async"></picture>
-            </div>
-          </div>
-          <div class="phone phone-item" id="ph2">
-            <div class="phone-screen">
-              <picture><source type="image/webp" srcset="/assets/summary-1x.webp 260w, /assets/summary.webp 578w" sizes="(max-width:767px) 165px,(max-width:1023px) 220px,260px"><img style="display:block;width:102%;height:102%;object-fit:cover;margin:-1%;object-position:center top;transform:translateY(-3px) translateX(5px);" src="/assets/summary.png" alt="Training summary and stats in 2trAIn" width="578" height="1256" loading="lazy" decoding="async"></picture>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-    </div>
-  </div>
-    </div>
-  </div>
-    </div>
-  </div>
+  <a href="#why" class="hero-cine__chevron" aria-label="Scroll down">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </a>
 </section>
 
-<!-- WHY EXAMPLE -->
-<section class="border-t hairline" style="background: var(--bg-2);">
+<!-- ░░░ FEATURES · sticky phone + reels changing on scroll (scrollytelling) ░░░ -->
+<section id="why" class="reels border-t hairline" style="background: var(--bg-2); scroll-margin-top: 60px;">
   <div class="max-w-page pad-x">
-    <div class="text-center mb-10">
-      <h2 class="display text-2xl md:text-4xl mt-3">Doesn't just send you exercises. <span class="accent">It explains them.</span></h2>
-    </div>
-    <div class="max-w-xl mx-auto">
-      <div class="rounded-2xl overflow-hidden" style="border: 1px solid var(--line-2); background: #111;">
-        <div class="px-5 py-4" style="border-bottom: 1px solid var(--line);">
-          <div class="flex items-center justify-between">
-            <div>
-              <div class="text-xs mb-1" style="color: var(--muted-2);">Today · Session 14</div>
-              <div class="font-bold text-base">Push — Upper body</div>
-            </div>
-            <div class="text-xs font-bold px-2.5 py-1 rounded-full accent" style="background: var(--accent-soft); border: 1px solid rgba(42, 111, 219,0.2);">Accumulated fatigue: 3 weeks</div>
-          </div>
-        </div>
-        <div class="px-5 py-4">
-          <div class="flex items-start justify-between mb-3">
-            <div>
-              <div class="font-semibold text-base">Overhead press</div>
-              <div class="text-sm mt-0.5" style="color: var(--muted);">4 × 10 · Dumbbells</div>
-            </div>
-            <div class="text-right">
-              <div class="font-semibold">16 kg ↓</div>
-              <div class="text-xs" style="color: var(--muted);">−2 vs last</div>
-            </div>
-          </div>
-          <div class="rounded-xl px-4 py-3" style="background: rgba(42, 111, 219,0.06); border: 1px solid rgba(42, 111, 219,0.18);">
-            <div class="text-xs font-bold accent mb-2">Why less weight today?</div>
-            <p class="text-xs leading-relaxed" style="color: #b0b0b0;">You've been training hard for <strong class="text-white">3 weeks without a lower intensity day</strong>. Your performance dropped 8% this week even if you don't feel it. We're reducing the load today so you'll be stronger next week.</p>
+    <div class="reels__grid">
+
+      <!-- ===== STICKY PHONE with the 4 reels =====
+           ▼▼ Drop your 4 vertical reels (9:16) into /assets/ with these names and they play automatically ▼▼ -->
+      <div class="reels__phone-col">
+        <div class="phone reels__phone">
+          <div class="phone-screen">
+            <video class="reels__reel on" data-reel="0" muted loop playsinline preload="metadata"><source src="/assets/reel-why.mp4" type="video/mp4"></video>
+            <video class="reels__reel"    data-reel="1" muted loop playsinline preload="metadata"><source src="/assets/reel-problema.mp4" type="video/mp4"></video>
+            <video class="reels__reel"    data-reel="2" muted loop playsinline preload="metadata"><source src="/assets/reel-solucion.mp4" type="video/mp4"></video>
+            <video class="reels__reel"    data-reel="3" muted loop playsinline preload="metadata"><source src="/assets/reel-como.mp4" type="video/mp4"></video>
+            <span class="reels__placeholder"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>Vertical reels 9:16<br>/assets/reel-*.mp4</span>
           </div>
         </div>
       </div>
-      <p class="text-center text-sm mt-5" style="color: var(--muted);">This specific. With your data. Every day.</p>
-    </div>
-  </div>
-</section>
 
-<!-- PROBLEM → SOLUTION -->
-<section class="border-t hairline">
-  <div class="max-w-page pad-x">
-    <div class="max-w-3xl">
-      <span class="label">The problem</span>
-      <h2 class="display text-3xl md:text-5xl mt-3">
-        You've been copying other people's routines for years. <span class="text-muted">People you look nothing like.</span>
-      </h2>
+      <!-- ===== TEXT that changes on scroll (one .reels__step per reel) ===== -->
+      <div class="reels__steps">
+        <!-- ▼ STEP 1 -->
+        <div class="reels__step on" data-step="0">
+          <span class="label">The why</span>
+          <h2 class="display text-3xl md:text-5xl mt-3">Doesn't just send you exercises. <span class="accent">It explains them.</span></h2>
+          <p class="text-muted text-base leading-relaxed mt-5">Every time it raises the weight, lowers the volume or swaps an exercise, it tells you why — with your data, not stock phrases.</p>
+        </div>
+        <!-- ▼ STEP 2 -->
+        <div class="reels__step" data-step="1">
+          <span class="label">The problem</span>
+          <h2 class="display text-3xl md:text-5xl mt-3">You've been copying other people's routines for years. <span class="text-muted">People you look nothing like.</span></h2>
+          <ul class="vsec__list">
+            <li><span class="x">✕</span><p><strong>Generic plan.</strong> The same routine for beginners and advanced athletes.</p></li>
+            <li><span class="x">✕</span><p><strong>Marketing "AI".</strong> The plan is the same for everyone.</p></li>
+            <li><span class="x">✕</span><p><strong>Empty motivation.</strong> Emojis instead of telling you to train hard or rest today.</p></li>
+          </ul>
+        </div>
+        <!-- ▼ STEP 3 -->
+        <div class="reels__step" data-step="2">
+          <span class="label" style="color: var(--accent-text);">The solution</span>
+          <h2 class="display text-3xl md:text-5xl mt-3">Three things <span class="text-muted">no other app does.</span></h2>
+          <ul class="vsec__list">
+            <li><span class="n">01</span><p><strong>Explains the why.</strong> Every decision, justified with your data.</p></li>
+            <li><span class="n">02</span><p><strong>Improves with you.</strong> Adjusts load and volume after every session.</p></li>
+            <li><span class="n">03</span><p><strong>5,000+ exercises.</strong> With a proven reason behind it.</p></li>
+          </ul>
+        </div>
+        <!-- ▼ STEP 4 -->
+        <div class="reels__step" id="como" data-step="3">
+          <span class="label">How it works</span>
+          <h2 class="display text-3xl md:text-5xl mt-3">Three steps. <span class="accent">Simple.</span></h2>
+          <ul class="vsec__list">
+            <li><span class="n">01</span><p><strong>Tell it what you want.</strong> Goal, days, equipment, injuries. 2 min.</p></li>
+            <li><span class="n">02</span><p><strong>Train with your plan.</strong> Full plan with videos.</p></li>
+            <li><span class="n">03</span><p><strong>It adapts on its own.</strong> Rewrites the plan in seconds.</p></li>
+          </ul>
+        </div>
+      </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-12">
-      <div class="p-7 border hairline rounded-2xl">
-        <div class="text-xs uppercase tracking-[0.1em] font-bold mb-3" style="color: var(--danger);">✕ Generic plan</div>
-        <p class="text-muted text-sm leading-relaxed">The same routine for beginners and advanced athletes. Only the weight changes.</p>
+    <!-- Repeated CTA -->
+    <div class="mt-12 p-6 md:p-8 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-5" style="background: var(--accent-soft); border: 1px solid rgba(42, 111, 219,0.18);">
+      <div>
+        <div class="display text-xl md:text-2xl">Want to try it before anyone else?</div>
+        <div class="text-muted text-sm mt-1">Free beta · First 100, lifetime access.</div>
       </div>
-      <div class="p-7 border hairline rounded-2xl">
-        <div class="text-xs uppercase tracking-[0.1em] font-bold mb-3" style="color: var(--danger);">✕ Marketing "AI"</div>
-        <p class="text-muted text-sm leading-relaxed">They add "AI" to the name but the plan is the same for everyone.</p>
-      </div>
-      <div class="p-7 border hairline rounded-2xl">
-        <div class="text-xs uppercase tracking-[0.1em] font-bold mb-3" style="color: var(--danger);">✕ Empty motivation</div>
-        <p class="text-muted text-sm leading-relaxed">They send you emojis instead of telling you whether to train hard or rest today.</p>
-      </div>
-    </div>
-
-    <div class="mt-16 max-w-3xl">
-      <span class="label" style="color: var(--accent-text);">The solution</span>
-      <h2 class="display text-3xl md:text-5xl mt-3">
-        Three things <span class="text-muted">no other app does.</span>
-      </h2>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-px hairline border bg-[var(--line)] mt-8">
-      <div class="bg-[var(--bg)] p-7 md:p-9 flex flex-col gap-3">
-        <div class="text-xs accent font-bold uppercase tracking-[0.12em]">01 · Transparency</div>
-        <h3 class="display text-2xl">Explains the why.</h3>
-        <p class="text-muted text-sm leading-relaxed">Every time it increases weight, lowers volume or changes an exercise, it justifies it with your data.</p>
-      </div>
-      <div class="bg-[var(--bg)] p-7 md:p-9 flex flex-col gap-3">
-        <div class="text-xs accent font-bold uppercase tracking-[0.12em]">02 · Real adaptation</div>
-        <h3 class="display text-2xl">Improves with you.</h3>
-        <p class="text-muted text-sm leading-relaxed">The more you train, the better it knows you. It adjusts load and volume after each session.</p>
-      </div>
-      <div class="bg-[var(--bg)] p-7 md:p-9 flex flex-col gap-3">
-        <div class="text-xs accent font-bold uppercase tracking-[0.12em]">03 · Science-based</div>
-        <h3 class="display text-2xl">5,000+ exercises.</h3>
-        <p class="text-muted text-sm leading-relaxed">Every decision has a proven reason behind it. Not a guru's opinion.</p>
-      </div>
+      <button class="open-modal btn-accent flex-shrink-0">
+        Reserve my spot
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L8.5 3.5M13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"/></svg>
+      </button>
     </div>
   </div>
 </section>
@@ -590,50 +667,6 @@
           </tr>
         </tbody>
       </table>
-    </div>
-  </div>
-</section>
-
-<!-- HOW -->
-<section id="como" class="border-t hairline">
-  <div class="max-w-page pad-x">
-    <div class="flex items-end justify-between flex-wrap gap-6 mb-12">
-      <div class="max-w-3xl">
-        <span class="label">How it works</span>
-        <h2 class="display text-3xl md:text-5xl mt-3">Three steps. <span class="accent">Simple.</span></h2>
-      </div>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div class="p-7 md:p-9 border hairline rounded-2xl flex flex-col gap-3">
-        <span class="display text-5xl text-muted-2">01</span>
-        <h3 class="display text-2xl">Tell it what you want.</h3>
-        <p class="text-muted text-sm leading-relaxed flex-1">Goal, days, equipment, injuries. No selfies, no magazine-style questions.</p>
-        <div class="text-xs text-muted-2 mt-2">2 minutes</div>
-      </div>
-      <div class="p-7 md:p-9 border hairline rounded-2xl flex flex-col gap-3">
-        <span class="display text-5xl text-muted-2">02</span>
-        <h3 class="display text-2xl">Train with your plan.</h3>
-        <p class="text-muted text-sm leading-relaxed flex-1">Full plan with videos. Mark your sets, leave a note about how it went, done.</p>
-        <div class="text-xs text-muted-2 mt-2">On your phone</div>
-      </div>
-      <div class="p-7 md:p-9 border hairline rounded-2xl flex flex-col gap-3">
-        <span class="display text-5xl text-muted-2">03</span>
-        <h3 class="display text-2xl">It adapts on its own.</h3>
-        <p class="text-muted text-sm leading-relaxed flex-1">Trip? Injury? Tell it what's happening. It rewrites the plan in seconds.</p>
-        <div class="text-xs text-muted-2 mt-2">In seconds</div>
-      </div>
-    </div>
-
-    <div class="mt-12 p-6 md:p-8 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-5" style="background: var(--accent-soft); border: 1px solid rgba(42, 111, 219,0.18);">
-      <div>
-        <div class="display text-xl md:text-2xl">Want to try it before anyone else?</div>
-        <div class="text-muted text-sm mt-1">Free beta · First 100, lifetime access.</div>
-      </div>
-      <button class="open-modal btn-accent flex-shrink-0">
-        Reserve my spot
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L8.5 3.5M13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"/></svg>
-      </button>
     </div>
   </div>
 </section>
@@ -724,28 +757,35 @@
         <p class="text-muted mt-5 text-sm">Another question? Write to me when you join the beta. I'll read it myself.</p>
       </div>
       <div class="lg:col-span-8">
+        <div class="faq-filters" role="group" aria-label="Filter questions">
+          <button type="button" class="faq-chip active" data-filter="all">All</button>
+          <button type="button" class="faq-chip" data-filter="uso">Training</button>
+          <button type="button" class="faq-chip" data-filter="beta">Beta &amp; price</button>
+          <button type="button" class="faq-chip" data-filter="datos">Data</button>
+          <button type="button" class="faq-chip" data-filter="producto">Product</button>
+        </div>
         <div class="border-t hairline">
-          <div class="faq-item">
+          <div class="faq-item" data-cat="uso">
             <button type="button" class="faq-q display text-base md:text-lg" aria-expanded="false" aria-controls="faq-a-1"><span>Do I need a wearable or special equipment?</span><svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg></button>
             <div id="faq-a-1" class="faq-a"><div class="faq-a-inner">No. Just your phone. If you have dumbbells, bars or machines, great — it uses them. If you only have bodyweight, it works too. The plan adapts to exactly what you have.</div></div>
           </div>
-          <div class="faq-item">
+          <div class="faq-item" data-cat="uso">
             <button type="button" class="faq-q display text-base md:text-lg" aria-expanded="false" aria-controls="faq-a-2"><span>Does it work if I train at home / without a gym?</span><svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg></button>
             <div id="faq-a-2" class="faq-a"><div class="faq-a-inner">Yes. When setting up your profile you tell it what equipment you have and whether you train at home or in a gym. The plan is built with exactly what you have, without exercises you can't do.</div></div>
           </div>
-          <div class="faq-item">
+          <div class="faq-item" data-cat="beta">
             <button type="button" class="faq-q display text-base md:text-lg" aria-expanded="false" aria-controls="faq-a-3"><span>When do I get access?</span><svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg></button>
             <div id="faq-a-3" class="faq-a"><div class="faq-a-inner">The beta opens in waves starting September 2026. When your turn comes, you'll receive an email with instructions. Those who sign up first get in first. By inviting friends you move up in the queue.</div></div>
           </div>
-          <div class="faq-item">
+          <div class="faq-item" data-cat="datos">
             <button type="button" class="faq-q display text-base md:text-lg" aria-expanded="false" aria-controls="faq-a-4"><span>Is my data safe?</span><svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg></button>
             <div id="faq-a-4" class="faq-a"><div class="faq-a-inner">Yes. Your logs are yours. If at any point we use data to improve the model, it will be aggregated and anonymized — and we'll let you know beforehand. You can say no.</div></div>
           </div>
-          <div class="faq-item">
+          <div class="faq-item" data-cat="beta">
             <button type="button" class="faq-q display text-base md:text-lg" aria-expanded="false" aria-controls="faq-a-5"><span>What happens when the beta ends? Do I pay?</span><svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg></button>
             <div id="faq-a-5" class="faq-a"><div class="faq-a-inner">The first 3 months are free. After that you'll have a founder price forever — the lowest that will ever exist. No one from the beta will pay the regular price.</div></div>
           </div>
-          <div class="faq-item">
+          <div class="faq-item" data-cat="producto">
             <button type="button" class="faq-q display text-base md:text-lg" aria-expanded="false" aria-controls="faq-a-6"><span>Is this just another ChatGPT wrapper?</span><svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg></button>
             <div id="faq-a-6" class="faq-a"><div class="faq-a-inner">No. It's a model trained on periodization, biomechanics and real logs. Talk to it for 30 seconds and you'll see the difference.</div></div>
           </div>
