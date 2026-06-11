@@ -523,6 +523,42 @@
   .nav-lang { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; padding: 5px 10px; border-radius: 999px; border: 1px solid var(--line-2); color: var(--muted); text-decoration: none; transition: border-color 0.2s, color 0.2s; text-transform: uppercase; }
   .nav-lang:hover { border-color: var(--accent-text); color: var(--accent-text); }
 
+  /* ===== DEMO "Míralo pensar": conversación que razona con tus datos ===== */
+  .demo-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 56px; align-items: center; }
+  .demo-head { max-width: 460px; }
+  .demo-head .demo-sub { color: var(--muted); font-size: 15px; line-height: 1.6; margin-top: 18px; }
+  .demo-head .demo-note { display: inline-flex; align-items: center; gap: 8px; margin-top: 22px; font-size: 12px; color: var(--muted-2); }
+  .demo-head .demo-note svg { color: var(--accent-text); flex-shrink: 0; }
+
+  .demo-chat { background: #0d0d0d; border: 1px solid var(--line-2); border-radius: 22px; padding: 22px; box-shadow: 0 28px 70px rgba(0,0,0,0.45); display: flex; flex-direction: column; gap: 12px; }
+  .demo-chat__bar { display: flex; align-items: center; gap: 9px; padding-bottom: 14px; margin-bottom: 4px; border-bottom: 1px solid var(--line); }
+  .demo-chat__ava { width: 28px; height: 28px; border-radius: 50%; background: var(--accent-soft); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .demo-chat__name { font-size: 13px; font-weight: 700; color: var(--fg); }
+  .demo-chat__status { font-size: 11px; color: var(--accent-text); display: flex; align-items: center; gap: 5px; }
+
+  .demo-step { opacity: 1; }
+  .demo-bubble { max-width: 88%; padding: 13px 16px; border-radius: 16px; font-size: 14px; line-height: 1.55; }
+  .demo-bubble strong { color: var(--fg); font-weight: 700; }
+  .demo-bubble--user { align-self: flex-end; background: var(--accent); color: #fff; border-bottom-right-radius: 5px; }
+  .demo-bubble--ai { align-self: flex-start; background: #161616; border: 1px solid var(--line-2); color: var(--muted); border-bottom-left-radius: 5px; }
+
+  .demo-reason { align-self: flex-start; max-width: 92%; background: rgba(42,111,219,0.06); border: 1px solid rgba(42,111,219,0.22); border-radius: 16px; border-bottom-left-radius: 5px; padding: 14px 16px; }
+  .demo-reason__head { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent-text); margin-bottom: 12px; }
+  .demo-reason__list { display: flex; flex-direction: column; gap: 9px; }
+  .demo-reason__line { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: var(--muted); line-height: 1.45; }
+  .demo-reason__line strong { color: var(--fg); font-weight: 600; }
+  .demo-reason__line .tick { flex-shrink: 0; width: 15px; height: 15px; margin-top: 1px; color: var(--accent-text); }
+
+  .demo-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 11px; }
+  .demo-chip { font-size: 12px; font-weight: 600; color: var(--fg); background: #161616; border: 1px solid var(--line-2); border-radius: 999px; padding: 5px 11px; }
+  .demo-chip .demo-chip__hl { color: var(--accent-text); }
+
+  @media (max-width: 860px) {
+    .demo-grid { grid-template-columns: 1fr; gap: 32px; }
+    .demo-head { max-width: none; }
+    .demo-bubble, .demo-reason { max-width: 100%; }
+  }
+
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } html { scroll-behavior: auto !important; } }
 </style>
 <script type="application/ld+json">
@@ -679,6 +715,64 @@
         Reservar mi plaza
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L8.5 3.5M13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"/></svg>
       </button>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO · "Míralo pensar": la IA razona con tus datos -->
+<section id="demo" class="border-t hairline" style="background: var(--bg-2);">
+  <div class="max-w-page pad-x">
+    <div class="demo-grid">
+
+      <!-- Texto -->
+      <div class="demo-head">
+        <span class="label">Míralo pensar</span>
+        <h2 class="display text-3xl md:text-5xl mt-3">No te da órdenes. <span class="text-muted">Te da motivos.</span></h2>
+        <p class="demo-sub">Escríbele un objetivo y, antes de mandarte nada, te enseña el razonamiento: qué mira de tu historial, qué decide y por qué. Sin cajas negras.</p>
+        <span class="demo-note">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 7.4H22l-6 4.4 2.3 7.2-6.3-4.6L5.7 21l2.3-7.2-6-4.4h7.6z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          Conversación real con el modelo
+        </span>
+      </div>
+
+      <!-- Chat -->
+      <div class="demo-chat" aria-label="Ejemplo de conversación con la IA">
+        <div class="demo-chat__bar">
+          <span class="demo-chat__ava"><img src="/assets/Icono2TrainVector.svg" alt="" width="18" height="18" /></span>
+          <div>
+            <div class="demo-chat__name">2trAIn</div>
+            <div class="demo-chat__status"><span class="live-dot"></span>razonando con tus datos</div>
+          </div>
+        </div>
+
+        <!-- 1 · usuario -->
+        <div class="demo-step demo-bubble demo-bubble--user">Quiero ganar fuerza en press de banca. Entreno 4 días por semana.</div>
+
+        <!-- 2 · razonamiento -->
+        <div class="demo-step demo-reason">
+          <div class="demo-reason__head">
+            <span class="typing-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            Razonando con tus datos
+          </div>
+          <div class="demo-reason__list">
+            <div class="demo-step demo-reason__line"><svg class="tick" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Últimas 6 semanas: <strong>5×5 · 80 kg · 0 fallos.</strong></span></div>
+            <div class="demo-step demo-reason__line"><svg class="tick" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Hay margen de progresión → toca subir carga.</span></div>
+            <div class="demo-step demo-reason__line"><svg class="tick" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Codo derecho: <strong>molestia anotada el martes.</strong></span></div>
+            <div class="demo-step demo-reason__line"><svg class="tick" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Fatiga acumulada: <strong>baja.</strong></span></div>
+          </div>
+        </div>
+
+        <!-- 3 · respuesta -->
+        <div class="demo-step demo-bubble demo-bubble--ai">
+          Subo la barra a <strong>82,5 kg</strong> esta semana y recorto una serie de tríceps para cuidar el codo. Te he montado la sesión de hoy 👇
+          <div class="demo-chips">
+            <span class="demo-chip">Press banca 4×5 · <span class="demo-chip__hl">82,5 kg</span></span>
+            <span class="demo-chip">Remo con barra 4×8</span>
+            <span class="demo-chip">Tríceps 2×12 <span class="demo-chip__hl">(–1 serie)</span></span>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>

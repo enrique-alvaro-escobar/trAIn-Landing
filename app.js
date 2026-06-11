@@ -572,3 +572,20 @@ const WEBAPP_URL = 'https://app.2trainapp.com';
     if (e.key === 'Escape' && menu.classList.contains('open')) closeMenu();
   });
 })();
+
+// ===== Demo "Míralo pensar": revela la conversación paso a paso al entrar en viewport =====
+(function() {
+  var demo = document.querySelector('#demo .demo-chat');
+  if (!demo) return;
+  var steps = demo.querySelectorAll('.demo-step');
+  if (!steps.length) return;
+
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduceMotion || typeof gsap === 'undefined') return;  // CSS deja todo visible por defecto
+
+  gsap.set(steps, { opacity: 0, y: 12 });
+  gsap.to(steps, {
+    opacity: 1, y: 0, duration: 0.5, ease: 'power2.out', stagger: 0.28,
+    scrollTrigger: { trigger: demo, start: 'top 75%', once: true }
+  });
+})();
