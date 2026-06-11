@@ -16,3 +16,6 @@ supabase/.temp/
 
 # Claude Code local config
 .claude/
+
+# Capturas de prueba de fuentes (artefactos locales)
+caps/
