@@ -106,6 +106,17 @@ const WEBAPP_URL = 'https://app.2trainapp.com';
     }
   }
 
+  // Demo "Míralo pensar" input → redirige a la web app con el caso del usuario como primer mensaje.
+  const demoGoalForm = document.getElementById('demo-goal-form');
+  if (demoGoalForm) {
+    demoGoalForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const goal = demoGoalForm.querySelector('input[name="goal"]').value.trim();
+      if (!goal) return;
+      window.location.href = WEBAPP_URL + '?q=' + encodeURIComponent(goal);
+    });
+  }
+
   // Hero form & beta-form-2 → open modal with prefill (so user gets the same success state)
   ['hero-form', 'beta-form-2'].forEach(id => {
     const f = document.getElementById(id);
@@ -573,19 +584,140 @@ const WEBAPP_URL = 'https://app.2trainapp.com';
   });
 })();
 
-// ===== Demo "Míralo pensar": revela la conversación paso a paso al entrar en viewport =====
+// ===== Demo "Míralo pensar": pensar (razonamiento) → colapsar → generar (carrusel), tamaño fijo =====
 (function() {
-  var demo = document.querySelector('#demo .demo-chat');
-  if (!demo) return;
-  var steps = demo.querySelectorAll('.demo-step');
-  if (!steps.length) return;
+  var section = document.querySelector('#demo');
+  if (!section) return;
+  var chat = section.querySelector('.demo-chat');
 
+  // Carrusel siempre en movimiento: duplicamos las tarjetas para un bucle sin saltos (-50%).
+  var track = section.querySelector('.demo-carousel__track');
+  if (track) {
+    var clone = track.cloneNode(true);
+    clone.querySelectorAll('*').forEach(function(el) { el.setAttribute('aria-hidden', 'true'); });
+    while (clone.firstChild) track.appendChild(clone.firstChild);
+  }
+
+  var statusEl = section.querySelector('.demo-chat__status-text');
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduceMotion || typeof gsap === 'undefined') return;  // CSS deja todo visible por defecto
+  if (!chat || reduceMotion || typeof gsap === 'undefined') return;  // CSS deja todo visible por defecto
 
-  gsap.set(steps, { opacity: 0, y: 12 });
-  gsap.to(steps, {
-    opacity: 1, y: 0, duration: 0.5, ease: 'power2.out', stagger: 0.28,
-    scrollTrigger: { trigger: demo, start: 'top 75%', once: true }
+  var user = chat.querySelector('.demo-bubble--user');
+  var reasonBox = chat.querySelector('.demo-reason');
+  var reasonBody = chat.querySelector('.demo-reason__body');
+  var reasonLines = chat.querySelectorAll('.demo-reason__line');
+  var toggle = chat.querySelector('.demo-reason__toggle');
+  var label = chat.querySelector('.demo-reason__label');
+  var aiBubble = chat.querySelector('.demo-bubble--ai');
+  var genWrap = chat.querySelector('.demo-gen');
+  var genHead = chat.querySelector('.demo-gen__head');
+  var carousel = chat.querySelector('.demo-carousel');
+  var goBtn = chat.querySelector('.demo-go');
+
+  // Cambia el texto de estado de arriba (debajo de "2trAIn") con un fundido.
+  function setStatus(t) {
+    if (!statusEl) return;
+    gsap.to(statusEl, { opacity: 0, duration: 0.18, onComplete: function() {
+      statusEl.textContent = t;
+      gsap.to(statusEl, { opacity: 1, duration: 0.18 });
+    }});
+  }
+
+  // Cambia la cabecera del razonamiento (donde pone "Razonando con tus datos") con un fundido.
+  function setPhrase(t) {
+    if (!label) return;
+    gsap.to(label, { opacity: 0, duration: 0.18, onComplete: function() {
+      label.textContent = t;
+      gsap.to(label, { opacity: 1, duration: 0.18 });
+    }});
+  }
+
+  // 5 frases de "pensamiento" — se animan en la cabecera del razonamiento, una por línea.
+  var phrases = [
+    'Leyendo tu historial…',
+    'Detectando molestia en el hombro…',
+    'Descartando ejercicios de riesgo…',
+    'Buscando ángulos seguros…',
+    'Añadiendo calentamiento preventivo…'
+  ];
+
+  // Tamaño fijo + lo generado oculto hasta que "genere" (no reserva espacio mientras piensa).
+  chat.classList.add('demo-chat--seq');
+  aiBubble.classList.add('demo-pending');
+  genWrap.classList.add('demo-pending');
+  gsap.set([user, reasonBox], { opacity: 0, y: 14 });
+  gsap.set(reasonLines, { opacity: 0, y: 8 });
+
+  var tl = gsap.timeline({ scrollTrigger: { trigger: chat, start: 'top 72%', once: true } });
+
+  // 1 · la pregunta del usuario
+  tl.to(user, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' });
+
+  // 2 · se abre la caja de razonamiento
+  tl.to(reasonBox, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, '+=0.3');
+
+  // 3 · PENSAR: la cabecera del razonamiento va cambiando de subproceso y aparece cada línea
+  reasonLines.forEach(function(line, i) {
+    tl.call(setPhrase, [phrases[i % phrases.length]]);
+    tl.to(line, { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' }, '+=0.05');
+    tl.to({}, { duration: 0.55 });  // pausa para "pensar"
   });
+
+  // 4 · COLAPSAR el razonamiento a un chip ("✓ Razonado · 5 pasos") para hacer sitio
+  tl.call(function() {
+    reasonBox.classList.add('is-interactive', 'is-collapsed');
+    if (label) { gsap.set(label, { opacity: 1 }); label.textContent = 'Razonado con tus datos'; }
+    if (toggle) toggle.setAttribute('aria-expanded', 'false');
+  }, null, '+=0.3');
+  tl.to(reasonBody, { height: 0, opacity: 0, duration: 0.45, ease: 'power2.inOut' });
+  tl.call(setStatus, ['Generando tu sesión…']);
+
+  // 5 · respuesta de la IA
+  tl.call(function() { aiBubble.classList.remove('demo-pending'); });
+  tl.fromTo(aiBubble, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, '+=0.05');
+
+  // 6 · GENERAR: aparece la sesión (carrusel) y el botón
+  tl.call(function() { genWrap.classList.remove('demo-pending'); });
+  tl.fromTo(genHead, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' }, '+=0.1');
+  tl.fromTo(carousel, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, '-=0.1');
+  tl.call(setStatus, ['Sesión generada ✓']);
+  tl.fromTo(goBtn, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, '+=0.05');
+
+  // Toggle: reabrir / colapsar el razonamiento a mano (habilita scroll si se desborda).
+  if (toggle) {
+    toggle.addEventListener('click', function() {
+      if (!reasonBox.classList.contains('is-interactive')) return;
+      var willCollapse = !reasonBox.classList.contains('is-collapsed');
+      reasonBox.classList.toggle('is-collapsed');
+      toggle.setAttribute('aria-expanded', String(!willCollapse));
+      if (willCollapse) {
+        chat.classList.remove('is-open');
+        gsap.to(reasonBody, { height: 0, opacity: 0, duration: 0.35, ease: 'power2.inOut' });
+      } else {
+        chat.classList.add('is-open');
+        gsap.fromTo(reasonBody, { height: 0, opacity: 0 }, { height: 'auto', opacity: 1, duration: 0.35, ease: 'power2.out' });
+      }
+    });
+  }
+})();
+
+// ===== "Pruébalo ya mismo": en móvil va DESPUÉS del chat (primero ves la demo, luego la usas) =====
+(function() {
+  var cta = document.querySelector('.demo-head__cta');
+  var head = document.querySelector('.demo-head');
+  var chat = document.querySelector('#demo .demo-chat');
+  if (!cta || !head || !chat) return;
+  var mq = window.matchMedia('(max-width: 860px)');
+  function place() {
+    if (mq.matches) {
+      // móvil: el CTA justo después del chat
+      if (chat.nextElementSibling !== cta) chat.parentNode.insertBefore(cta, chat.nextSibling);
+    } else {
+      // desktop: de vuelta a la columna izquierda, bajo el badge
+      if (cta.parentNode !== head) head.appendChild(cta);
+    }
+  }
+  place();
+  if (mq.addEventListener) mq.addEventListener('change', place);
+  else if (mq.addListener) mq.addListener(place);
 })();

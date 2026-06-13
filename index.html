@@ -524,28 +524,46 @@
   .nav-lang:hover { border-color: var(--accent-text); color: var(--accent-text); }
 
   /* ===== DEMO "Míralo pensar": conversación que razona con tus datos ===== */
-  .demo-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 56px; align-items: center; }
+  .demo-grid { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 56px; align-items: start; }
   .demo-head { max-width: 460px; }
   .demo-head .demo-sub { color: var(--muted); font-size: 15px; line-height: 1.6; margin-top: 18px; }
   .demo-head .demo-note { display: inline-flex; align-items: center; gap: 8px; margin-top: 22px; font-size: 12px; color: var(--muted-2); }
   .demo-head .demo-note svg { color: var(--accent-text); flex-shrink: 0; }
 
-  .demo-chat { background: #0d0d0d; border: 1px solid var(--line-2); border-radius: 22px; padding: 22px; box-shadow: 0 28px 70px rgba(0,0,0,0.45); display: flex; flex-direction: column; gap: 12px; }
+  .demo-chat { background: #0d0d0d; border: 1px solid var(--line-2); border-radius: 22px; padding: 22px; box-shadow: 0 28px 70px rgba(0,0,0,0.45); display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+  /* Modo secuencia (lo activa el JS): tamaño fijo; el razonamiento se colapsa para que quepa todo. */
+  .demo-chat--seq { height: 610px; overflow: hidden; }
+  .demo-chat--seq.is-open { overflow-y: auto; overflow-x: hidden; }
+  .demo-chat--seq::-webkit-scrollbar { width: 6px; }
+  .demo-chat--seq::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 999px; }
+  .demo-pending { display: none !important; }
   .demo-chat__bar { display: flex; align-items: center; gap: 9px; padding-bottom: 14px; margin-bottom: 4px; border-bottom: 1px solid var(--line); }
   .demo-chat__ava { width: 28px; height: 28px; border-radius: 50%; background: var(--accent-soft); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .demo-chat__name { font-size: 13px; font-weight: 700; color: var(--fg); }
   .demo-chat__status { font-size: 11px; color: var(--accent-text); display: flex; align-items: center; gap: 5px; }
+  .demo-chat__status-text { transition: opacity 0.25s ease; }
 
   .demo-step { opacity: 1; }
-  .demo-bubble { max-width: 88%; padding: 13px 16px; border-radius: 16px; font-size: 14px; line-height: 1.55; }
+  .demo-bubble { max-width: 88%; padding: 11px 15px; border-radius: 16px; font-size: 13.5px; line-height: 1.5; }
   .demo-bubble strong { color: var(--fg); font-weight: 700; }
   .demo-bubble--user { align-self: flex-end; background: var(--accent); color: #fff; border-bottom-right-radius: 5px; }
   .demo-bubble--ai { align-self: flex-start; background: #161616; border: 1px solid var(--line-2); color: var(--muted); border-bottom-left-radius: 5px; }
 
-  .demo-reason { align-self: flex-start; max-width: 92%; background: rgba(42,111,219,0.06); border: 1px solid rgba(42,111,219,0.22); border-radius: 16px; border-bottom-left-radius: 5px; padding: 14px 16px; }
-  .demo-reason__head { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent-text); margin-bottom: 12px; }
-  .demo-reason__list { display: flex; flex-direction: column; gap: 9px; }
-  .demo-reason__line { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: var(--muted); line-height: 1.45; }
+  .demo-reason { align-self: flex-start; max-width: 92%; background: rgba(42,111,219,0.06); border: 1px solid rgba(42,111,219,0.22); border-radius: 16px; border-bottom-left-radius: 5px; padding: 12px 14px; }
+  /* Cabecera = toggle. Razonando (puntos) durante el "pensar"; ✓ Razonado + chevron al colapsar. */
+  .demo-reason__toggle { display: flex; align-items: center; gap: 8px; width: 100%; padding: 0; margin: 0; background: none; border: 0; font-family: inherit; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent-text); text-align: left; cursor: default; }
+  .demo-reason.is-interactive .demo-reason__toggle { cursor: pointer; }
+  .demo-reason__check { display: none; width: 15px; height: 15px; flex-shrink: 0; color: var(--accent-text); }
+  .demo-reason.is-interactive .demo-reason__dots { display: none; }
+  .demo-reason.is-interactive .demo-reason__check { display: inline-flex; }
+  .demo-reason__count { display: none; font-weight: 600; letter-spacing: 0.02em; text-transform: none; color: var(--muted-2); }
+  .demo-reason.is-interactive .demo-reason__count { display: inline; }
+  .demo-reason__chev { display: none; width: 16px; height: 16px; margin-left: auto; flex-shrink: 0; transition: transform 0.3s ease; }
+  .demo-reason.is-interactive .demo-reason__chev { display: inline-flex; }
+  .demo-reason.is-interactive:not(.is-collapsed) .demo-reason__chev { transform: rotate(180deg); }
+  .demo-reason__body { overflow: hidden; }
+  .demo-reason__list { display: flex; flex-direction: column; gap: 7px; margin-top: 9px; }
+  .demo-reason__line { display: flex; gap: 10px; align-items: flex-start; font-size: 12.5px; color: var(--muted); line-height: 1.4; }
   .demo-reason__line strong { color: var(--fg); font-weight: 600; }
   .demo-reason__line .tick { flex-shrink: 0; width: 15px; height: 15px; margin-top: 1px; color: var(--accent-text); }
 
@@ -553,10 +571,57 @@
   .demo-chip { font-size: 12px; font-weight: 600; color: var(--fg); background: #161616; border: 1px solid var(--line-2); border-radius: 999px; padding: 5px 11px; }
   .demo-chip .demo-chip__hl { color: var(--accent-text); }
 
+  /* Sesión generada · carrusel dentro del chat (aparece tras "pensar") */
+  .demo-gen { margin-top: 2px; min-width: 0; }
+  .demo-gen__head { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent-text); margin-bottom: 12px; }
+  .demo-gen__head svg { flex-shrink: 0; }
+
+  .demo-carousel { min-width: 0; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); }
+  .demo-carousel__track { display: flex; gap: 12px; width: max-content; animation: demoMarquee 40s linear infinite; }
+  .demo-carousel:hover .demo-carousel__track { animation-play-state: paused; }
+  @keyframes demoMarquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .demo-ex { flex-shrink: 0; width: 150px; height: 208px; display: flex; flex-direction: column; background: #161616; border: 1px solid var(--line-2); border-radius: 15px; overflow: hidden; transition: transform 0.25s ease, border-color 0.25s ease; }
+  .demo-ex:hover { transform: translateY(-3px); border-color: var(--accent-text); }
+  .demo-ex--warm { border-color: rgba(42,111,219,0.45); background: rgba(42,111,219,0.06); }
+  .demo-ex__media { position: relative; height: 114px; flex-shrink: 0; background: linear-gradient(135deg,#1c1c1c,#0e0e0e); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: var(--muted-2); }
+  .demo-ex__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .demo-ex__media svg { width: 28px; height: 28px; opacity: 0.4; }
+  .demo-ex__ph { font-size: 9px; text-transform: uppercase; letter-spacing: 0.14em; }
+  .demo-ex__body { padding: 10px 12px 12px; flex: 1; min-height: 0; }
+  .demo-ex__tag { display: inline-block; font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted-2); margin-bottom: 5px; }
+  .demo-ex--warm .demo-ex__tag { color: var(--accent-text); }
+  .demo-ex__name { font-size: 13px; font-weight: 600; color: var(--fg); line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .demo-ex__meta { font-size: 11px; color: var(--muted-2); margin-top: 4px; }
+
+  /* Botón · ir al entrenamiento de hoy */
+  .demo-go { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 16px; padding: 13px 20px; background: var(--accent); color: #fff; font-weight: 700; font-size: 14px; border-radius: 12px; text-decoration: none; transition: transform 0.15s, box-shadow 0.2s; }
+  .demo-go:hover { transform: translateY(-1px); box-shadow: 0 12px 28px -10px rgba(42,111,219,0.6); }
+
+  /* CTA · Pruébalo ya mismo (columna izquierda, bajo el badge) */
+  .demo-head__cta { margin-top: 28px; }
+  .demo-head__cta .chat-hint { margin: 0 0 12px; }
+  .demo-head__cta .hero-form { max-width: 420px; }
+
+  @media (prefers-reduced-motion: reduce) { .demo-carousel__track { animation: none; } }
+
   @media (max-width: 860px) {
-    .demo-grid { grid-template-columns: 1fr; gap: 32px; }
+    .demo-grid { grid-template-columns: minmax(0, 1fr); gap: 26px; }
     .demo-head { max-width: none; }
-    .demo-bubble, .demo-reason { max-width: 100%; }
+    .demo-bubble, .demo-reason { max-width: 92%; }
+    /* En móvil el chat crece de forma natural (altura auto); overflow hidden evita que el
+       carrusel desborde en horizontal y rompa el chat. */
+    .demo-chat--seq { height: auto; overflow: hidden; }
+    .demo-chat { padding: 16px; border-radius: 18px; }
+    /* CTA a todo el ancho y alineado a la izquierda; en móvil va tras el chat (lo coloca el JS). */
+    .demo-head__cta { margin-top: 4px; }
+    .demo-head__cta .chat-hint { margin: 0 0 10px; }
+    .demo-head__cta .hero-form { max-width: 100%; margin-left: 0; margin-right: 0; }
+  }
+
+  @media (max-width: 480px) {
+    .demo-carousel__track { gap: 10px; }
+    .demo-reason__toggle { letter-spacing: 0.08em; }
+    .demo-go { padding: 12px 18px; font-size: 13.5px; margin-top: 18px; }
   }
 
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } html { scroll-behavior: auto !important; } }
@@ -576,7 +641,7 @@
       <picture><img src="/assets/logo3.png" alt="2trAIn" width="336" height="84" style="height:24px;width:auto;"></picture>
     </a>
     <div id="nav-links" class="items-center gap-8 text-sm text-muted">
-      <a href="#como" class="hover:text-white transition-colors">Cómo funciona</a>
+      <a href="#como" class="hover:text-white transition-colors">Funcionalidades</a>
       <a href="#fundador" class="hover:text-white transition-colors">Nosotros</a>
       <a href="#faq" class="hover:text-white transition-colors">FAQ</a>
     </div>
@@ -594,7 +659,7 @@
 
 <!-- Mobile menu -->
 <div id="mobile-menu" aria-hidden="true">
-  <a href="#como" class="mobile-nav-link">Cómo funciona</a>
+  <a href="#como" class="mobile-nav-link">Funcionalidades</a>
   <a href="#fundador" class="mobile-nav-link">Nosotros</a>
   <a href="#faq" class="mobile-nav-link">FAQ</a>
   <a href="/en/" class="mobile-nav-link" style="font-size:0.875rem;color:var(--muted-2);">English version →</a>
@@ -650,57 +715,39 @@
   <div class="max-w-page pad-x">
     <div class="reels__grid">
 
-      <!-- ===== MÓVIL FIJO con los 4 reels =====
-           ▼▼ Arrastra tus 4 reels verticales (9:16) a /assets/ con estos nombres y se reproducen solos ▼▼ -->
+      <!-- ===== MÓVIL FIJO con los 3 reels (uno por funcionalidad) =====
+           ▼▼ Arrastra tus 3 reels verticales (9:16) a /assets/. Cada uno se sincroniza con su paso:
+              reel-why.mp4 → 01 Te explica el porqué · reel-problema.mp4 → 02 Mejora contigo · reel-solucion.mp4 → 03 Sustituciones ▼▼ -->
       <div class="reels__phone-col">
         <div class="phone reels__phone">
           <div class="phone-screen">
             <video class="reels__reel on" data-reel="0" muted loop playsinline preload="metadata"><source src="/assets/reel-why.mp4" type="video/mp4"></video>
             <video class="reels__reel"    data-reel="1" muted loop playsinline preload="metadata"><source src="/assets/reel-problema.mp4" type="video/mp4"></video>
             <video class="reels__reel"    data-reel="2" muted loop playsinline preload="metadata"><source src="/assets/reel-solucion.mp4" type="video/mp4"></video>
-            <video class="reels__reel"    data-reel="3" muted loop playsinline preload="metadata"><source src="/assets/reel-como.mp4" type="video/mp4"></video>
             <span class="reels__placeholder"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>Reels verticales 9:16<br>/assets/reel-*.mp4</span>
           </div>
         </div>
       </div>
 
-      <!-- ===== TEXTO que cambia con el scroll (un .reels__step por reel) ===== -->
+      <!-- ===== TEXTO que cambia con el scroll · una funcionalidad por paso (sincronizado con su reel) ===== -->
       <div class="reels__steps">
-        <!-- ▼ PASO 1 -->
-        <div class="reels__step on" data-step="0">
-          <span class="label">El porqué</span>
-          <h2 class="display text-3xl md:text-5xl mt-3">No te manda ejercicios. <span class="accent">Te los explica.</span></h2>
-          <p class="text-muted text-base leading-relaxed mt-5">Cada vez que sube el peso, baja el volumen o cambia un ejercicio, te dice por qué — con tus datos, no con frases hechas.</p>
+        <!-- ▼ FUNCIONALIDAD 01 -->
+        <div class="reels__step on" id="como" data-step="0">
+          <span class="label" style="color: var(--accent-text);">Funcionalidad 01</span>
+          <h2 class="display text-3xl md:text-5xl mt-3">Te explica <span class="accent">el porqué.</span></h2>
+          <p class="text-muted text-base leading-relaxed mt-5">Cada decisión justificada con tus datos. Explica volumen, intensidad, progresión. Así entrena un entrenador de verdad.</p>
         </div>
-        <!-- ▼ PASO 2 -->
+        <!-- ▼ FUNCIONALIDAD 02 -->
         <div class="reels__step" data-step="1">
-          <span class="label">El problema</span>
-          <h2 class="display text-3xl md:text-5xl mt-3">Llevas años copiando rutinas <span class="text-muted">de gente a la que no te pareces.</span></h2>
-          <ul class="vsec__list">
-            <li><span class="x">✕</span><p><strong>Plan genérico.</strong> La misma rutina para el novato y el avanzado.</p></li>
-            <li><span class="x">✕</span><p><strong>"IA" de marketing.</strong> El plan es igual para todos.</p></li>
-            <li><span class="x">✕</span><p><strong>Motivación vacía.</strong> Emojis en vez de decirte si hoy toca duro o descanso.</p></li>
-          </ul>
+          <span class="label" style="color: var(--accent-text);">Funcionalidad 02</span>
+          <h2 class="display text-3xl md:text-5xl mt-3">Mejora <span class="accent">contigo.</span></h2>
+          <p class="text-muted text-base leading-relaxed mt-5">Aprende tu factor respuesta individual en 4 semanas. No hay dos cuerpos iguales. La IA lo sabe.</p>
         </div>
-        <!-- ▼ PASO 3 -->
+        <!-- ▼ FUNCIONALIDAD 03 -->
         <div class="reels__step" data-step="2">
-          <span class="label" style="color: var(--accent-text);">La solución</span>
-          <h2 class="display text-3xl md:text-5xl mt-3">Tres cosas que <span class="text-muted">ninguna otra app hace.</span></h2>
-          <ul class="vsec__list">
-            <li><span class="n">01</span><p><strong>Te explica el porqué.</strong> Cada decisión, justificada con tus datos.</p></li>
-            <li><span class="n">02</span><p><strong>Mejora contigo.</strong> Ajusta carga y volumen tras cada sesión.</p></li>
-            <li><span class="n">03</span><p><strong>5.000+ ejercicios.</strong> Con una razón contrastada detrás.</p></li>
-          </ul>
-        </div>
-        <!-- ▼ PASO 4 -->
-        <div class="reels__step" id="como" data-step="3">
-          <span class="label">Cómo funciona</span>
-          <h2 class="display text-3xl md:text-5xl mt-3">Tres pasos. <span class="accent">Sencillo.</span></h2>
-          <ul class="vsec__list">
-            <li><span class="n">01</span><p><strong>Cuéntale qué quieres.</strong> Objetivo, días, material, lesiones. 2 min.</p></li>
-            <li><span class="n">02</span><p><strong>Entrena con tu plan.</strong> Plan completo con vídeos.</p></li>
-            <li><span class="n">03</span><p><strong>Se adapta solo.</strong> Reescribe el plan en segundos.</p></li>
-          </ul>
+          <span class="label" style="color: var(--accent-text);">Funcionalidad 03</span>
+          <h2 class="display text-3xl md:text-5xl mt-3">Sustituciones <span class="accent">inteligentes.</span></h2>
+          <p class="text-muted text-base leading-relaxed mt-5">¿Sin barras? ¿Sin equipo? ¿Lesión? El plan se adapta manteniendo el objetivo. Sin improvisaciones.</p>
         </div>
       </div>
     </div>
@@ -727,12 +774,27 @@
       <!-- Texto -->
       <div class="demo-head">
         <span class="label">Míralo pensar</span>
-        <h2 class="display text-3xl md:text-5xl mt-3">No te da órdenes. <span class="text-muted">Te da motivos.</span></h2>
-        <p class="demo-sub">Escríbele un objetivo y, antes de mandarte nada, te enseña el razonamiento: qué mira de tu historial, qué decide y por qué. Sin cajas negras.</p>
+        <h2 class="display text-3xl md:text-5xl mt-3">¿Te duele algo hoy? <span class="text-muted">Reescribe tu sesión al instante.</span></h2>
+        <p class="demo-sub">Cuéntale qué te pasa y, antes de cambiarte nada, te enseña el razonamiento: qué retira, qué mantiene y por qué — adaptando la rutina de hoy a tu cuerpo. Sin cajas negras.</p>
         <span class="demo-note">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 7.4H22l-6 4.4 2.3 7.2-6.3-4.6L5.7 21l2.3-7.2-6-4.4h7.6z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
           Conversación real con el modelo
         </span>
+
+        <!-- CTA · Pruébalo ya mismo (redirige a la web app) -->
+        <div class="demo-head__cta">
+          <div class="chat-hint">
+            <span class="chat-ava"><img src="/assets/Icono2TrainVector.svg" alt="2trAIn" width="24" height="24" /></span>
+            <span class="chat-hint__txt"><strong>Pruébalo ya mismo</strong> — cuéntale tu caso</span>
+            <span class="typing-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          </div>
+          <form id="demo-goal-form" class="hero-form">
+            <input id="demo-goal-input" type="text" name="goal" required maxlength="140" placeholder="Ej: me duele el hombro, ¿cambio hoy?" aria-label="Cuéntale tu caso" autocomplete="off" />
+            <button type="submit" class="hero-send" aria-label="Enviar y crear mi sesión">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </form>
+        </div>
       </div>
 
       <!-- Chat -->
@@ -741,36 +803,142 @@
           <span class="demo-chat__ava"><img src="/assets/Icono2TrainVector.svg" alt="" width="18" height="18" /></span>
           <div>
             <div class="demo-chat__name">2trAIn</div>
-            <div class="demo-chat__status"><span class="live-dot"></span>razonando con tus datos</div>
+            <div class="demo-chat__status"><span class="live-dot"></span><span class="demo-chat__status-text">Razonando con tus datos</span></div>
           </div>
         </div>
 
         <!-- 1 · usuario -->
-        <div class="demo-step demo-bubble demo-bubble--user">Quiero ganar fuerza en press de banca. Entreno 4 días por semana.</div>
+        <div class="demo-step demo-bubble demo-bubble--user">Hoy me toca <strong>empuje</strong>, pero me duele el hombro derecho al presionar por encima de la cabeza. ¿Cambio la rutina?</div>
 
-        <!-- 2 · razonamiento -->
-        <div class="demo-step demo-reason">
-          <div class="demo-reason__head">
-            <span class="typing-dots" aria-hidden="true"><i></i><i></i><i></i></span>
-            Razonando con tus datos
-          </div>
-          <div class="demo-reason__list">
-            <div class="demo-step demo-reason__line"><svg class="tick" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Últimas 6 semanas: <strong>5×5 · 80 kg · 0 fallos.</strong></span></div>
-            <div class="demo-step demo-reason__line"><svg class="tick" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Hay margen de progresión → toca subir carga.</span></div>
-            <div class="demo-step demo-reason__line"><svg class="tick" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Codo derecho: <strong>molestia anotada el martes.</strong></span></div>
-            <div class="demo-step demo-reason__line"><svg class="tick" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Fatiga acumulada: <strong>baja.</strong></span></div>
+        <!-- 2 · razonamiento (se colapsa tras pensar; toggle para volver a abrirlo) -->
+        <div class="demo-reason">
+          <button type="button" class="demo-reason__toggle" aria-expanded="true" aria-controls="demo-reason-body">
+            <span class="typing-dots demo-reason__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            <svg class="demo-reason__check" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="demo-reason__label">Razonando con tus datos</span>
+            <span class="demo-reason__count">· 5 pasos</span>
+            <svg class="demo-reason__chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="demo-reason__body" id="demo-reason-body">
+            <div class="demo-reason__list">
+              <div class="demo-reason__line"><svg class="tick" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Hoy en tu plan: <strong>empuje (pecho · hombro · tríceps).</strong></span></div>
+              <div class="demo-reason__line"><svg class="tick" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Dolor reportado: <strong>hombro derecho en press vertical.</strong></span></div>
+              <div class="demo-reason__line"><svg class="tick" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Press militar y fondos estresan el manguito → <strong>los retiro hoy.</strong></span></div>
+              <div class="demo-reason__line"><svg class="tick" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Mantengo el estímulo de empuje con <strong>ángulos seguros</strong> para el hombro.</span></div>
+              <div class="demo-reason__line"><svg class="tick" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Añado <strong>activación de manguito rotador</strong> antes de empezar para prevenir.</span></div>
+            </div>
           </div>
         </div>
 
         <!-- 3 · respuesta -->
-        <div class="demo-step demo-bubble demo-bubble--ai">
-          Subo la barra a <strong>82,5 kg</strong> esta semana y recorto una serie de tríceps para cuidar el codo. Te he montado la sesión de hoy 👇
-          <div class="demo-chips">
-            <span class="demo-chip">Press banca 4×5 · <span class="demo-chip__hl">82,5 kg</span></span>
-            <span class="demo-chip">Remo con barra 4×8</span>
-            <span class="demo-chip">Tríceps 2×12 <span class="demo-chip__hl">(–1 serie)</span></span>
-          </div>
+        <div class="demo-bubble demo-bubble--ai">
+          Hecho. Quito el press vertical y los fondos para no forzar el hombro, y empezamos con un <strong>calentamiento del manguito</strong>. Sesión de hoy 👇
         </div>
+
+        <!-- 4 · sesión generada · carrusel dentro del chat (aparece tras "pensar") -->
+        <!-- ▼▼ FOTOS: descomenta el <img> de cada tarjeta y apunta a tu imagen en /assets/ ▼▼ -->
+        <div class="demo-gen">
+          <div class="demo-gen__head">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 9h2v6H4zM18 9h2v6h-2zM6 11h12v2H6z" fill="currentColor"/></svg>
+            Sesión de hoy · empuje sin forzar el hombro
+          </div>
+          <div class="demo-carousel" aria-label="Sesión de empuje adaptada al hombro">
+            <div class="demo-carousel__track">
+
+              <!-- Calentamiento -->
+              <div class="demo-ex demo-ex--warm">
+                <div class="demo-ex__media">
+                  <!-- <img src="/assets/demo-ex-calentamiento.jpg" alt="Activación de manguito rotador"> -->
+                  <svg viewBox="0 0 24 24" fill="none"><path d="M12 3v18M3 12h18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                  <span class="demo-ex__ph">Tu foto</span>
+                </div>
+                <div class="demo-ex__body">
+                  <span class="demo-ex__tag">Calentamiento</span>
+                  <div class="demo-ex__name">Activación de manguito rotador</div>
+                  <div class="demo-ex__meta">2×15 · banda elástica</div>
+                </div>
+              </div>
+
+              <!-- Ejercicio 1 -->
+              <div class="demo-ex">
+                <div class="demo-ex__media">
+                  <!-- <img src="/assets/demo-ex-1.jpg" alt="Press de pecho en máquina"> -->
+                  <svg viewBox="0 0 24 24" fill="none"><path d="M4 9h2v6H4zM18 9h2v6h-2zM6 11h12v2H6z" fill="currentColor"/></svg>
+                  <span class="demo-ex__ph">Tu foto</span>
+                </div>
+                <div class="demo-ex__body">
+                  <span class="demo-ex__tag">Ejercicio 1</span>
+                  <div class="demo-ex__name">Press de pecho en máquina</div>
+                  <div class="demo-ex__meta">4×10 · agarre neutro</div>
+                </div>
+              </div>
+
+              <!-- Ejercicio 2 -->
+              <div class="demo-ex">
+                <div class="demo-ex__media">
+                  <!-- <img src="/assets/demo-ex-2.jpg" alt="Press inclinado con mancuernas"> -->
+                  <svg viewBox="0 0 24 24" fill="none"><path d="M4 9h2v6H4zM18 9h2v6h-2zM6 11h12v2H6z" fill="currentColor"/></svg>
+                  <span class="demo-ex__ph">Tu foto</span>
+                </div>
+                <div class="demo-ex__body">
+                  <span class="demo-ex__tag">Ejercicio 2</span>
+                  <div class="demo-ex__name">Press inclinado con mancuernas</div>
+                  <div class="demo-ex__meta">3×10 · agarre neutro</div>
+                </div>
+              </div>
+
+              <!-- Ejercicio 3 -->
+              <div class="demo-ex">
+                <div class="demo-ex__media">
+                  <!-- <img src="/assets/demo-ex-3.jpg" alt="Cruce de poleas"> -->
+                  <svg viewBox="0 0 24 24" fill="none"><path d="M4 9h2v6H4zM18 9h2v6h-2zM6 11h12v2H6z" fill="currentColor"/></svg>
+                  <span class="demo-ex__ph">Tu foto</span>
+                </div>
+                <div class="demo-ex__body">
+                  <span class="demo-ex__tag">Ejercicio 3</span>
+                  <div class="demo-ex__name">Cruce de poleas (aperturas)</div>
+                  <div class="demo-ex__meta">3×12 · controlado</div>
+                </div>
+              </div>
+
+              <!-- Ejercicio 4 -->
+              <div class="demo-ex">
+                <div class="demo-ex__media">
+                  <!-- <img src="/assets/demo-ex-4.jpg" alt="Press de pecho cerrado en máquina"> -->
+                  <svg viewBox="0 0 24 24" fill="none"><path d="M4 9h2v6H4zM18 9h2v6h-2zM6 11h12v2H6z" fill="currentColor"/></svg>
+                  <span class="demo-ex__ph">Tu foto</span>
+                </div>
+                <div class="demo-ex__body">
+                  <span class="demo-ex__tag">Ejercicio 4</span>
+                  <div class="demo-ex__name">Press cerrado en máquina</div>
+                  <div class="demo-ex__meta">3×12 · tríceps</div>
+                </div>
+              </div>
+
+              <!-- Ejercicio 5 -->
+              <div class="demo-ex">
+                <div class="demo-ex__media">
+                  <!-- <img src="/assets/demo-ex-5.jpg" alt="Extensión de tríceps en polea"> -->
+                  <svg viewBox="0 0 24 24" fill="none"><path d="M4 9h2v6H4zM18 9h2v6h-2zM6 11h12v2H6z" fill="currentColor"/></svg>
+                  <span class="demo-ex__ph">Tu foto</span>
+                </div>
+                <div class="demo-ex__body">
+                  <span class="demo-ex__tag">Ejercicio 5</span>
+                  <div class="demo-ex__name">Extensión de tríceps en polea</div>
+                  <div class="demo-ex__meta">4×12 · cuerda</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- 5 · botón ir al entrenamiento de hoy -->
+          <a class="demo-go" href="https://app.2trainapp.com">
+            Ir al entrenamiento de hoy
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0l-6-6m6 6l-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+
       </div>
 
     </div>
