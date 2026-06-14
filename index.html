@@ -151,14 +151,19 @@
   .reels__grid { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 64px; align-items: start; }
   .reels__phone-col { position: sticky; top: 0; height: 100svh; display: flex; align-items: center; justify-content: center; }
   .reels__phone { width: 300px; }
-  .reels__reel { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 2; opacity: 0; transition: opacity .5s ease; }
-  .reels__reel.on { opacity: 1; }
+  /* Reels en filmstrip vertical: una tira con los 3 vídeos apilados sin hueco; JS desplaza la tira por pasos. */
+  .reels__strip { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column;
+    transition: transform .5s cubic-bezier(0.76, 0, 0.24, 1); will-change: transform; backface-visibility: hidden; }
+  .reels__reel { flex: 0 0 100%; width: 100%; height: 100%; object-fit: cover; display: block; }
+  /* Con JS activo y vídeos cargando, el placeholder no debe verse detrás */
+  .reels.js-active .reels__placeholder { display: none; }
   .reels__placeholder { position: absolute; inset: 0; z-index: 1; display: flex; flex-direction: column; align-items: center;
     justify-content: center; gap: 8px; color: var(--muted-2); font-size: 12px; font-weight: 600; text-align: center; padding: 16px; line-height: 1.4;
     background: repeating-linear-gradient(45deg, #0d0d0d, #0d0d0d 12px, #111 12px, #111 24px); }
   .reels__steps { display: flex; flex-direction: column; }
   .reels__step { min-height: 100svh; display: flex; flex-direction: column; justify-content: center; max-width: 460px; }
-  .reels.js-active .reels__step { opacity: 0.22; transition: opacity .45s ease; }
+  .reels__step h2 { text-transform: uppercase; }
+  .reels.js-active .reels__step { opacity: 0.72; transition: opacity .45s ease; }
   .reels.js-active .reels__step.on { opacity: 1; }
   @media (max-width: 860px) {
     .reels__grid { grid-template-columns: 1fr; gap: 0; }
@@ -721,9 +726,11 @@
       <div class="reels__phone-col">
         <div class="phone reels__phone">
           <div class="phone-screen">
-            <video class="reels__reel on" data-reel="0" muted loop playsinline preload="metadata"><source src="/assets/reel-why.mp4" type="video/mp4"></video>
-            <video class="reels__reel"    data-reel="1" muted loop playsinline preload="metadata"><source src="/assets/reel-problema.mp4" type="video/mp4"></video>
-            <video class="reels__reel"    data-reel="2" muted loop playsinline preload="metadata"><source src="/assets/reel-solucion.mp4" type="video/mp4"></video>
+            <div class="reels__strip">
+              <video class="reels__reel on" data-reel="0" muted loop playsinline preload="metadata"><source src="/assets/reel-why.mp4" type="video/mp4"></video>
+              <video class="reels__reel"    data-reel="1" muted loop playsinline preload="metadata"><source src="/assets/reel-problema.mp4" type="video/mp4"></video>
+              <video class="reels__reel"    data-reel="2" muted loop playsinline preload="metadata"><source src="/assets/reel-solucion.mp4" type="video/mp4"></video>
+            </div>
             <span class="reels__placeholder"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>Reels verticales 9:16<br>/assets/reel-*.mp4</span>
           </div>
         </div>
@@ -755,7 +762,7 @@
     <!-- Repeated CTA -->
     <div class="mt-12 p-6 md:p-8 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-5" style="background: var(--accent-soft); border: 1px solid rgba(42, 111, 219,0.18);">
       <div>
-        <div class="display text-xl md:text-2xl">¿Lo quieres probar antes que nadie?</div>
+        <div class="display text-xl md:text-2xl">¿LO QUIERES PROBAR ANTES QUE NADIE?</div>
         <div class="text-muted text-sm mt-1">Beta gratuita · Primeros 100, acceso de por vida.</div>
       </div>
       <button class="open-modal btn-accent flex-shrink-0">
@@ -774,7 +781,7 @@
       <!-- Texto -->
       <div class="demo-head">
         <span class="label">Míralo pensar</span>
-        <h2 class="display text-3xl md:text-5xl mt-3">¿Te duele algo hoy? <span class="text-muted">Reescribe tu sesión al instante.</span></h2>
+        <h2 class="display text-3xl md:text-5xl mt-3">¿TE DUELE ALGO HOY? <span class="text-muted">REESCRIBE TU SESIÓN AL INSTANTE.</span></h2>
         <p class="demo-sub">Cuéntale qué te pasa y, antes de cambiarte nada, te enseña el razonamiento: qué retira, qué mantiene y por qué — adaptando la rutina de hoy a tu cuerpo. Sin cajas negras.</p>
         <span class="demo-note">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 7.4H22l-6 4.4 2.3 7.2-6.3-4.6L5.7 21l2.3-7.2-6-4.4h7.6z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
@@ -945,7 +952,7 @@
   </div>
 </section>
 
-<!-- COMPARISON TABLE -->
+<!-- COMPARISON TABLE — SECCIÓN COMENTADA / OCULTA
 <section class="border-t hairline">
   <div class="max-w-page pad-x">
     <div class="max-w-3xl">
@@ -992,22 +999,20 @@
     </div>
   </div>
 </section>
+-->
 
-<!-- ABOUT -->
+<!-- ABOUT — SECCIÓN COMENTADA / OCULTA
 <section id="fundador" class="border-t hairline" style="padding-top: 40px; padding-bottom: 64px; scroll-margin-top: 80px;">
   <div class="max-w-page pad-x">
 
-    <!-- Heading -->
     <div style="max-width: 640px; margin-bottom: 24px;">
       <span class="label">Sobre nosotros</span>
       <h2 class="display text-3xl md:text-4xl mt-3">Un equipo pequeño. <span class="text-muted">Una obsesión concreta.</span></h2>
       <p class="text-muted text-base mt-4 leading-relaxed">Somos un equipo de Madrid construyendo la herramienta de entrenamiento que siempre quisimos tener y nunca encontramos.</p>
     </div>
 
-    <!-- Team cards: 2 columnas -->
     <div class="grid grid-cols-2 gap-4" style="margin-bottom: 16px;">
 
-      <!-- Nacho -->
       <div class="border hairline rounded-2xl flex flex-col gap-4" style="padding: 24px;">
         <div class="flex items-center gap-4">
           <div style="width:56px;height:56px;font-size:18px;background:linear-gradient(135deg,#2A6FDB,#1a4fa8);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;flex-shrink:0;">N</div>
@@ -1028,7 +1033,6 @@
         </a>
       </div>
 
-      <!-- Enrique -->
       <div class="border hairline rounded-2xl flex flex-col gap-4" style="padding: 24px;">
         <div class="flex items-center gap-4">
           <div style="width:56px;height:56px;font-size:18px;background:linear-gradient(135deg,#2A6FDB,#1a4fa8);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;flex-shrink:0;">E</div>
@@ -1047,7 +1051,6 @@
 
     </div>
 
-    <!-- Value blocks: 3 columnas -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <div class="border hairline rounded-2xl flex flex-col gap-3" style="padding: 24px;">
         <div class="text-xs accent font-bold uppercase tracking-[0.12em]">Misión</div>
@@ -1068,6 +1071,7 @@
 
   </div>
 </section>
+-->
 
 <!-- FAQ -->
 <section id="faq" class="border-t hairline">
@@ -1075,7 +1079,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
       <div class="lg:col-span-4">
         <span class="label">Preguntas frecuentes</span>
-        <h2 class="display text-3xl md:text-4xl mt-3">Lo que <span class="text-muted">todo el mundo pregunta.</span></h2>
+        <h2 class="display text-3xl md:text-4xl mt-3">LO QUE <span class="text-muted">TODO EL MUNDO PREGUNTA.</span></h2>
         <p class="text-muted mt-5 text-sm">¿Otra cosa? Escríbeme cuando entres a la beta. Lo leo yo.</p>
       </div>
       <div class="lg:col-span-8">
@@ -1088,7 +1092,7 @@
         </div>
         <div class="border-t hairline">
           <div class="faq-item" data-cat="uso">
-            <button type="button" class="faq-q display text-base md:text-lg" aria-expanded="false" aria-controls="faq-a-1"><span>¿Necesito wearable o material especial?</span><svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg></button>
+            <button type="button" class="faq-q display text-base md:text-lg" aria-expanded="false" aria-controls="faq-a-1"><span>¿Necesito reloj o material especial?</span><svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg></button>
             <div id="faq-a-1" class="faq-a"><div class="faq-a-inner">No. Solo tu móvil. Si tienes mancuernas, barras o máquinas, perfecto — los usa. Si solo tienes tu peso corporal, también funciona. El plan se adapta exactamente a lo que tienes.</div></div>
           </div>
           <div class="faq-item" data-cat="uso">
@@ -1104,8 +1108,8 @@
             <div id="faq-a-4" class="faq-a"><div class="faq-a-inner">Sí. Tus logs son tuyos. Si en algún momento usamos datos para mejorar el modelo, serán agregados y anonimizados — y te avisaremos antes. Puedes decir que no.</div></div>
           </div>
           <div class="faq-item" data-cat="beta">
-            <button type="button" class="faq-q display text-base md:text-lg" aria-expanded="false" aria-controls="faq-a-5"><span>¿Qué pasa cuando termina la beta? ¿Pago?</span><svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg></button>
-            <div id="faq-a-5" class="faq-a"><div class="faq-a-inner">Los primeros 3 meses son gratis. Después tendrás precio fundador para siempre — el más bajo que existirá. Nadie de la beta pagará precio normal.</div></div>
+            <button type="button" class="faq-q display text-base md:text-lg" aria-expanded="false" aria-controls="faq-a-5"><span>¿Qué pasa cuando termina la beta?</span><svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg></button>
+            <div id="faq-a-5" class="faq-a"><div class="faq-a-inner">Los usuarios que hayan participado en la beta tendrán acceso gratuito y completo a la aplicacción de por vida.</div></div>
           </div>
           <div class="faq-item" data-cat="producto">
             <button type="button" class="faq-q display text-base md:text-lg" aria-expanded="false" aria-controls="faq-a-6"><span>¿Es solo otra envoltura de ChatGPT?</span><svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg></button>
@@ -1145,8 +1149,8 @@
             <span>Solo 100 plazas · gratis para siempre</span>
           </div>
           <h2 class="display text-4xl md:text-5xl lg:text-6xl">
-            Reserva ahora. <br>
-            <span class="opacity-60">Cancelas cuando quieras.</span>
+            RESERVA AHORA. <br>
+            <span class="opacity-60">CANCELA CUANDO QUIERAS.</span>
           </h2>
 
           <!-- Oferta limitada -->

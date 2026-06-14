@@ -215,6 +215,7 @@ const WEBAPP_URL = 'https://app.2trainapp.com';
     var stage = document.querySelector('.reels');
     if (!stage) return;
     var reels = gsap.utils.toArray('.reels__reel');
+    var strip = stage.querySelector('.reels__strip');
     var steps = gsap.utils.toArray('.reels__step');
     if (!steps.length) return;
 
@@ -228,19 +229,26 @@ const WEBAPP_URL = 'https://app.2trainapp.com';
 
     stage.classList.add('js-active');
     var current = -1;
+    // Filmstrip por pasos (sin hueco): la tira sube un alto completo por vídeo.
+    function setStrip(i) {
+      if (strip) strip.style.transform = 'translateY(' + (-i * 100) + '%)';
+    }
     function activate(i) {
       if (i === current) return;
       current = i;
+      setStrip(i);
       reels.forEach(function(v, idx) {
         if (idx === i) { v.classList.add('on'); var p = v.play(); if (p && p.catch) p.catch(function() {}); }
         else { v.classList.remove('on'); try { v.pause(); } catch (e) {} }
       });
       steps.forEach(function(s, idx) { s.classList.toggle('on', idx === i); });
     }
+    // Cuando el texto del paso llega al centro, salta DIRECTO a su vídeo (snap), con su texto centrado.
     steps.forEach(function(step, i) {
-      ScrollTrigger.create({ trigger: step, start: 'top center', end: 'bottom center',
+      ScrollTrigger.create({ trigger: step, start: 'center center', end: 'bottom center',
         onToggle: function(self) { if (self.isActive) activate(i); } });
     });
+
     activate(0);
   })();
 

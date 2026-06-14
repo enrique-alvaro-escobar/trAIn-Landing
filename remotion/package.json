@@ -1,0 +1,25 @@
+{
+  "name": "train-reels",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Reels 9:19.5 de las funcionalidades de 2trAIn (Remotion)",
+  "scripts": {
+    "studio": "remotion studio",
+    "render:why": "remotion render ReelWhy out/reel-why.mp4 --codec=h264",
+    "render:mejora": "remotion render ReelMejora out/reel-problema.mp4 --codec=h264",
+    "render:sust": "remotion render ReelSustituciones out/reel-solucion.mp4 --codec=h264",
+    "render:all": "npm run render:why && npm run render:mejora && npm run render:sust"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.0",
+    "@remotion/transitions": "^4.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "remotion": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.1",
+    "typescript": "^5.4.0"
+  }
+}
