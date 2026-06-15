@@ -13,6 +13,22 @@ const WEBAPP_URL = 'https://app.2trainapp.com';
   // recalcule y provoque saltos/contenido en blanco al hacer scroll.
   ScrollTrigger.config({ ignoreMobileResize: true });
 
+  // Hero video: NO autoplay (mejora Speed Index / LCP / payload). Arranca en la primera
+  // interacción real del usuario; queda el póster estático hasta entonces.
+  (function() {
+    var hv = document.querySelector('.hero-cine__video');
+    if (!hv || reduceMotion) return;
+    var started = false;
+    var evs = ['pointerdown', 'touchstart', 'keydown', 'wheel', 'scroll', 'mousemove'];
+    function startHero() {
+      if (started) return;
+      started = true;
+      var p = hv.play(); if (p && p.catch) p.catch(function() {});
+      evs.forEach(function(ev) { window.removeEventListener(ev, startHero); });
+    }
+    evs.forEach(function(ev) { window.addEventListener(ev, startHero, { passive: true }); });
+  })();
+
   // Modal
   const modal = document.getElementById('beta-modal');
   function openModal(prefilledEmail) {
@@ -267,7 +283,9 @@ const WEBAPP_URL = 'https://app.2trainapp.com';
         onToggle: function(self) { if (self.isActive) activate(i); } });
     });
 
-    activate(0);
+    // No reproducimos el reel 0 al cargar (está bajo el fold): arranca cuando su paso entra
+    // en el centro del viewport. Solo fijamos la posición inicial de la tira.
+    setStrip(0);
   })();
 
   // 3-phone carousel — los 3 móviles SIEMPRE se posicionan y se ven;
