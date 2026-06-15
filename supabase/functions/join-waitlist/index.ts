@@ -1,11 +1,25 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': 'https://2trainapp.com',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+const ALLOWED_ORIGINS = new Set([
+  'https://2trainapp.com',
+  'https://www.2trainapp.com',
+  'http://localhost:8000',
+  'http://127.0.0.1:8000',
+])
+
+function buildCors(origin: string | null) {
+  const allow = origin && ALLOWED_ORIGINS.has(origin) ? origin : 'https://2trainapp.com'
+  return {
+    'Access-Control-Allow-Origin': allow,
+    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Vary': 'Origin',
+  }
 }
 
 Deno.serve(async (req) => {
+  const corsHeaders = buildCors(req.headers.get('origin'))
+
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
   }
@@ -75,7 +89,7 @@ Deno.serve(async (req) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          from: ' 2trAIn Waitlist <waitlist@2trainapp.com>',
+          from: '2trAIn Waitlist <waitlist@2trainapp.com>',
           to: email,
           subject: `Eres el #${position} en la waitlist de 2trAIn`,
           html: buildEmail(position, referralLink),
