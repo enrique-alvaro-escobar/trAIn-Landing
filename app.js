@@ -529,7 +529,7 @@ const WEBAPP_URL = 'https://app.2trainapp.com';
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
         },
-        body: JSON.stringify({ email, referred_by: _refCode }),
+        body: JSON.stringify({ email, referred_by: _refCode, lang: isEn ? 'en' : 'es' }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Error desconocido');

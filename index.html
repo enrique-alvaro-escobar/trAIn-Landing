@@ -504,9 +504,56 @@
     .modal-card { padding: 0; }
     #modal-form-state { padding: 28px 20px 24px; }
 
+    /* ── Success modal: compactar para que entre sin scroll en móvil ── */
+    #modal-success .ms-head { padding: 14px 18px 4px; }
+    #modal-success .ms-head h3 { font-size: 20px; }
+    #modal-success .ms-head p { margin-top: 4px; font-size: 12.5px; line-height: 1.35; }
+
+    #modal-success .ms-hero { padding: 10px 16px 8px; }
+    #modal-success .ms-check { width: 40px; height: 40px; margin: 0 auto 8px; }
+    #modal-success .ms-check svg { width: 18px; height: 18px; }
+    #modal-success .ms-status { font-size: 27px; margin: 0 0 6px; }
+    #modal-success .ms-num { font-size: 60px; }
+    #modal-success .ms-num .ms-h { margin-right: 4px; }
+    #modal-success .ms-badges { margin-top: 8px; gap: 5px; }
+    #modal-success .ms-badge { padding: 5px 9px; font-size: 11.5px; gap: 5px; }
+
+    #modal-success .ms-waves-card { margin: 0 14px 8px; padding: 10px 12px 8px; }
+    #modal-success .ms-waves-h { margin-bottom: 6px; }
+    #modal-success .ms-scarcity-bar { height: 8px; margin-bottom: 4px; }
+    #modal-success .ms-wave-grid { margin-top: 8px; gap: 4px; }
+    #modal-success .ms-w { padding: 6px 7px; }
+    #modal-success .ms-w .ms-vv { margin-top: 4px; font-size: 11.5px; }
+    #modal-success .ms-w .ms-ss { font-size: 10px; }
+
+    #modal-success .ms-share { margin: 0 14px 8px; padding: 10px 14px 12px; }
+    #modal-success .ms-share .ms-k { margin: 0 0 4px; }
+    #modal-success .ms-share .ms-sh3 { margin: 0 0 8px; font-size: 14.5px; line-height: 1.2; }
+    #modal-success .ms-share .ms-sh3 .ms-b { width: 22px; height: 22px; font-size: 13px; }
+    #modal-success .ms-btn-wa { padding: 11px; font-size: 13.5px; }
+    #modal-success .ms-btn-row { margin-top: 6px; gap: 8px; }
+    #modal-success .ms-btn { padding: 10px; font-size: 12.5px; }
+
+    #modal-success .ms-ref { margin: 0 14px 6px; padding: 8px 12px; font-size: 11px; }
+    #modal-success .ms-foot { padding: 0 18px 12px; font-size: 11px; }
+
     /* Footer */
     .footer-grid { grid-template-columns: repeat(1, minmax(0, 1fr)) !important; }
     .footer-brand { grid-column: span 1 !important; }
+  }
+
+  /* ── Pantallas cortas: recortar aún más el modal de éxito ── */
+  @media (max-height: 730px) {
+    #modal-success .ms-head { padding: 12px 18px 4px; }
+    #modal-success .ms-hero { padding: 8px 16px 6px; }
+    #modal-success .ms-check { width: 38px; height: 38px; margin: 0 auto 6px; }
+    #modal-success .ms-status { font-size: 25px; margin: 0 0 4px; }
+    #modal-success .ms-num { font-size: 54px; }
+    #modal-success .ms-badges { margin-top: 6px; }
+    #modal-success .ms-waves-card { margin: 0 14px 6px; padding: 8px 12px 7px; }
+    #modal-success .ms-share { margin: 0 14px 6px; }
+    #modal-success .ms-btn-wa { padding: 10px; }
+    #modal-success .ms-foot { padding: 0 18px 10px; }
   }
 
   /* Navbar — degradado oscuro que se funde con el contenido al hacer scroll */
