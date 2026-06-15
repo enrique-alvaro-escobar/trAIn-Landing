@@ -13,20 +13,14 @@ const WEBAPP_URL = 'https://app.2trainapp.com';
   // recalcule y provoque saltos/contenido en blanco al hacer scroll.
   ScrollTrigger.config({ ignoreMobileResize: true });
 
-  // Hero video: NO autoplay (mejora Speed Index / LCP / payload). Arranca en la primera
-  // interacción real del usuario; queda el póster estático hasta entonces.
+  // Hero video: arranca al cargar (autoplay). El póster <img> es el LCP (pinta al instante)
+  // y el vídeo aparece con un fundido en cuanto puede reproducirse.
   (function() {
     var hv = document.querySelector('.hero-cine__video');
-    if (!hv || reduceMotion) return;
-    var started = false;
-    var evs = ['pointerdown', 'touchstart', 'keydown', 'wheel', 'scroll', 'mousemove'];
-    function startHero() {
-      if (started) return;
-      started = true;
-      var p = hv.play(); if (p && p.catch) p.catch(function() {});
-      evs.forEach(function(ev) { window.removeEventListener(ev, startHero); });
-    }
-    evs.forEach(function(ev) { window.addEventListener(ev, startHero, { passive: true }); });
+    if (!hv) return;
+    if (reduceMotion) { try { hv.pause(); } catch (e) {} return; } // se queda el póster estático
+    hv.addEventListener('playing', function() { hv.classList.add('is-playing'); });
+    var p = hv.play(); if (p && p.catch) p.catch(function() {});
   })();
 
   // Modal

@@ -25,8 +25,8 @@
 <meta property="og:locale" content="es_ES" />
 <meta property="og:locale:alternate" content="en_US" />
 <meta property="og:image:alt" content="2trAIn — la app de fitness con IA que te explica por qué" />
-<meta name="twitter:site" content="@nachoing__" />
-<meta name="twitter:creator" content="@nachoing__" />
+<meta name="twitter:site" content="@2trainapp" />
+<meta name="twitter:creator" content="@2trainapp" />
 <meta name="author" content="2trAIn" />
 <link rel="manifest" href="/site.webmanifest">
 <link rel="icon" href="/favicon.ico" sizes="16x16 32x32">
@@ -115,7 +115,9 @@
      Nota: tamaños/espaciados en CSS propio (NO clases Tailwind tipo text-7xl/mt-9),
      porque dist/tailwind.css está precompilado y no incluye clases nuevas. */
   .hero-cine { position: relative; min-height: 100svh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; overflow: hidden; }
-  .hero-cine__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; transform: scale(1.15); }
+  .hero-cine__poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; z-index: 0; transform: scale(1.15); }
+  .hero-cine__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; transform: scale(1.15); opacity: 0; transition: opacity .8s ease; }
+  .hero-cine__video.is-playing { opacity: 1; }
   .hero-cine__scrim { position: absolute; inset: 0; z-index: 1; pointer-events: none;
     background:
       radial-gradient(130% 105% at 50% 32%, rgba(10,10,10,0.20) 0%, rgba(10,10,10,0.55) 55%, rgba(10,10,10,0.92) 100%),
@@ -127,7 +129,7 @@
   .hero-cine__chevron { position: absolute; bottom: 26px; left: 50%; z-index: 2; color: rgba(255,255,255,0.55); animation: heroChev 2s ease-in-out infinite; }
   @keyframes heroChev { 0%, 100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 9px); } }
   @media (max-width: 640px) { .hero-cine__content { padding-top: 80px; } }
-  @media (prefers-reduced-motion: reduce) { .hero-cine__video { transform: none; } .hero-cine__chevron { animation: none; } }
+  @media (prefers-reduced-motion: reduce) { .hero-cine__poster, .hero-cine__video { transform: none; } .hero-cine__chevron { animation: none; } }
 
   /* ===== Secciones VÍDEO + TEXTO (alternando lados) =====
      Cada sección: un .vsec__media (vídeo) + un .vsec__text. Por defecto vídeo a la izquierda;
@@ -665,7 +667,7 @@
 {
   "@context": "https://schema.org",
   "@graph": [
-    { "@type": "Organization", "@id": "https://2trainapp.com/#organization", "name": "2trAIn", "url": "https://2trainapp.com/", "logo": "https://2trainapp.com/og-image.png", "sameAs": ["https://twitter.com/nachoing__"] },
+    { "@type": "Organization", "@id": "https://2trainapp.com/#organization", "name": "2trAIn", "url": "https://2trainapp.com/", "logo": "https://2trainapp.com/og-image.png", "sameAs": ["https://twitter.com/2trainapp"] },
     { "@type": "WebSite", "@id": "https://2trainapp.com/#website", "name": "2trAIn", "url": "https://2trainapp.com/", "inLanguage": "es", "publisher": { "@id": "https://2trainapp.com/#organization" } },
     { "@type": "SoftwareApplication", "name": "2trAIn", "applicationCategory": "HealthApplication", "operatingSystem": "iOS, Android", "description": "Tu coach con IA que te explica el porqué de cada decisión de entrenamiento. La única app de fitness que razona tu entrenamiento.", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" } },
     { "@type": "FAQPage", "mainEntity": [
@@ -724,7 +726,8 @@
 
 <!-- HERO (vídeo cinematográfico) -->
 <section id="hero" class="hero-cine">
-  <video class="hero-cine__video" muted loop playsinline preload="none" poster="/assets/hero-poster.jpg" aria-hidden="true">
+  <img class="hero-cine__poster" src="/assets/hero-poster.jpg" alt="" aria-hidden="true" fetchpriority="high" decoding="async">
+  <video class="hero-cine__video" autoplay muted loop playsinline preload="auto" aria-hidden="true">
     <source src="/assets/prueba_header.mp4" type="video/mp4">
   </video>
   <div class="hero-cine__scrim"></div>
@@ -1072,9 +1075,9 @@
           <span class="text-xs px-2.5 py-1 rounded-md" style="background:var(--line);color:var(--muted);">3× hackathon internacional</span>
           <span class="text-xs px-2.5 py-1 rounded-md" style="background:var(--line);color:var(--muted);">Profesor de IA</span>
         </div>
-        <a href="https://twitter.com/nachoing__" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-sm text-muted-2 hover:text-white transition-colors">
+        <a href="https://twitter.com/2trainapp" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-sm text-muted-2 hover:text-white transition-colors">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.259 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-          @nachoing__
+          @2trainapp
         </a>
       </div>
 
@@ -1126,7 +1129,7 @@
     <span class="label block mb-3" style="color: #e0e0e0;">¿Aún no convencido?</span>
     <p class="text-base max-w-md mx-auto" style="color: #f2f2f2; text-shadow: 0 2px 10px rgba(0,0,0,0.6);">Sin problema. Sígueme construyéndola en público y decides cuando estés listo.</p>
     <div class="flex gap-4 justify-center mt-6 flex-wrap">
-      <a href="https://twitter.com/nachoing__" target="_blank" rel="noopener" class="btn-ghost text-sm">
+      <a href="https://twitter.com/2trainapp" target="_blank" rel="noopener" class="btn-ghost text-sm">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.259 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
         Seguir en X
       </a>
@@ -1265,7 +1268,7 @@
         <div class="text-xs text-muted-2 uppercase tracking-[0.1em] font-semibold mb-4">Contacto</div>
         <ul class="space-y-2 text-sm">
           <li><a href="mailto:contact@2trainapp.com" class="text-muted hover:text-white">contact@2trainapp.com</a></li>
-          <li><a href="https://twitter.com/nachoing__" target="_blank" rel="noopener noreferrer" class="text-muted hover:text-white">Twitter</a></li>
+          <li><a href="https://twitter.com/2trainapp" target="_blank" rel="noopener noreferrer" class="text-muted hover:text-white">Twitter</a></li>
         </ul>
       </div>
     </div>
