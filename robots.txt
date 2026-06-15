@@ -1,3 +1,4 @@
+# robots.txt for 2trAIn — allow full crawling
 User-agent: *
 Allow: /
 

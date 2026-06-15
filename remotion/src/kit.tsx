@@ -176,7 +176,14 @@ const RailIcon: React.FC<{ count: string; children: React.ReactNode }> = ({ coun
   </div>
 );
 
-const ReelsChrome: React.FC = () => (
+const CHROME = {
+  es: { caption: "La IA que razona tu entrenamiento 🧠", comment: "Añade un comentario…", like: "24,5 mil", comments: "1.337", repost: "512", send: "Enviar" },
+  en: { caption: "The AI that reasons your training 🧠", comment: "Add a comment…", like: "24.5K", comments: "1,337", repost: "512", send: "Share" },
+};
+
+const ReelsChrome: React.FC<{ lang?: "es" | "en" }> = ({ lang = "es" }) => {
+  const t = CHROME[lang];
+  return (
   <AbsoluteFill style={{ pointerEvents: "none" }}>
     {/* degradados de legibilidad arriba y abajo */}
     <AbsoluteFill style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.55), transparent 16%, transparent 78%, rgba(0,0,0,0.65))" }} />
@@ -197,19 +204,19 @@ const ReelsChrome: React.FC = () => (
 
     {/* Rail derecho: like / comentar / compartir / guardar */}
     <div style={{ position: "absolute", right: 44, bottom: 470, display: "flex", flexDirection: "column", alignItems: "center", gap: 54 }}>
-      <RailIcon count="24,5 mil">
+      <RailIcon count={t.like}>
         <path d="M12 21s-7-4.5-9.5-9C1 9 2.5 5.5 6 5.5c2 0 3 1.2 4 2.5 1-1.3 2-2.5 4-2.5 3.5 0 5 3.5 3.5 6.5C19 16.5 12 21 12 21z" fill="#fff" />
       </RailIcon>
-      <RailIcon count="1.337">
+      <RailIcon count={t.comments}>
         <path d="M21 11.5a8.5 8.5 0 0 1-12.3 7.6L3 21l1.9-5.7A8.5 8.5 0 1 1 21 11.5z" stroke="#fff" strokeWidth="2" />
       </RailIcon>
-      <RailIcon count="512">
+      <RailIcon count={t.repost}>
         <path d="M17 2l4 4-4 4" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         <path d="M21 6H8a4 4 0 0 0-4 4v2" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         <path d="M7 22l-4-4 4-4" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         <path d="M3 18h13a4 4 0 0 0 4-4v-2" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
       </RailIcon>
-      <RailIcon count="Enviar">
+      <RailIcon count={t.send}>
         <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" stroke="#fff" strokeWidth="2" strokeLinejoin="round" />
       </RailIcon>
       <svg width="64" height="64" viewBox="0 0 24 24" fill="none" style={{ filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.6))" }}>
@@ -223,21 +230,22 @@ const ReelsChrome: React.FC = () => (
     <div style={{ position: "absolute", left: 72, right: 200, bottom: 230 }}>
       <div style={{ fontFamily: FONT, fontWeight: 700, fontSize: 36, color: "#fff", textShadow: "0 2px 6px rgba(0,0,0,0.6)" }}>2train</div>
       <div style={{ fontFamily: FONT, fontWeight: 400, fontSize: 34, color: "#ededed", marginTop: 8, textShadow: "0 2px 6px rgba(0,0,0,0.6)" }}>
-        La IA que razona tu entrenamiento 🧠
+        {t.caption}
       </div>
     </div>
 
     {/* Barra de comentario abajo */}
     <div style={{ position: "absolute", left: 64, right: 64, bottom: 64, height: 128, display: "flex", alignItems: "center", gap: 24, border: "2px solid rgba(255,255,255,0.4)", borderRadius: 999, padding: "0 44px" }}>
-      <span style={{ fontFamily: FONT, fontWeight: 500, fontSize: 38, color: "#cfcfcf" }}>Añade un comentario…</span>
+      <span style={{ fontFamily: FONT, fontWeight: 500, fontSize: 38, color: "#cfcfcf" }}>{t.comment}</span>
       <span style={{ marginLeft: "auto", fontSize: 42 }}>❤️</span>
       <span style={{ fontSize: 42 }}>🙌</span>
     </div>
   </AbsoluteFill>
-);
+  );
+};
 
 // Envoltorio: fondo + escenas centradas + chrome de Instagram fijo + fundido de bucle.
-export const LoopWrap: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const LoopWrap: React.FC<{ children: React.ReactNode; lang?: "es" | "en" }> = ({ children, lang = "es" }) => {
   const frame = useCurrentFrame();
   const { durationInFrames } = useVideoConfig();
   const loop = interpolate(frame, [0, 8, durationInFrames - 8, durationInFrames - 1], [0, 1, 1, 0], clamp);
@@ -245,7 +253,7 @@ export const LoopWrap: React.FC<{ children: React.ReactNode }> = ({ children }) 
     <AbsoluteFill style={{ backgroundColor: C.bg }}>
       <AbsoluteFill style={{ opacity: loop }}>
         {children}
-        <ReelsChrome />
+        <ReelsChrome lang={lang} />
       </AbsoluteFill>
     </AbsoluteFill>
   );

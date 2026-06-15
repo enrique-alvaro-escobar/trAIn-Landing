@@ -15,6 +15,18 @@
         { "key": "Access-Control-Allow-Origin", "value": "https://2trainapp.com" },
         { "key": "Server", "value": "." }
       ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=2592000, stale-while-revalidate=86400" }
+      ]
+    },
+    {
+      "source": "/dist/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=2592000, stale-while-revalidate=86400" }
+      ]
     }
   ]
 }

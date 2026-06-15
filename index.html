@@ -22,6 +22,13 @@
 <meta name="twitter:title" content="2trAIn · La IA que razona tu entrenamiento." />
 <meta name="twitter:description" content="La única app de fitness que te explica por qué te manda lo que te manda. Beta gratuita para los primeros 100." />
 <meta name="twitter:image" content="https://2trainapp.com/og-image.png" />
+<meta property="og:locale" content="es_ES" />
+<meta property="og:locale:alternate" content="en_US" />
+<meta property="og:image:alt" content="2trAIn — la app de fitness con IA que te explica por qué" />
+<meta name="twitter:site" content="@nachoing__" />
+<meta name="twitter:creator" content="@nachoing__" />
+<meta name="author" content="2trAIn" />
+<link rel="manifest" href="/site.webmanifest">
 <link rel="icon" href="/favicon.ico" sizes="16x16 32x32">
 <link rel="icon" href="/favicon.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -142,6 +149,8 @@
     border: 1px solid rgba(42,111,219,0.25); background: var(--accent-soft); border-radius: 999px; padding: 3px 9px; }
   .vsec__list .x { flex-shrink: 0; color: var(--danger); font-weight: 700; line-height: 1.4; }
   @media (max-width: 860px) {
+    /* Foto del CTA: en móvil enfoca a la derecha (la persona) para que no se recorte */
+    #cta-foto { object-position: 72% 28% !important; }
     .vsec__inner { grid-template-columns: 1fr; gap: 28px; }
     .vsec--reverse .vsec__media { order: 0; }   /* en móvil el vídeo siempre arriba */
     .vsec__text { max-width: none; }
@@ -165,17 +174,36 @@
   .reels__step h2 { text-transform: uppercase; }
   .reels.js-active .reels__step { opacity: 0.72; transition: opacity .45s ease; }
   .reels.js-active .reels__step.on { opacity: 1; }
+  /* TABLET (861–1024px): el filmstrip de escritorio sigue, pero con más aire */
+  @media (min-width: 861px) and (max-width: 1024px) {
+    .reels__grid { gap: 40px; grid-template-columns: 0.9fr 1.1fr; }
+    .reels__phone { width: 248px; }
+    .reels__step { max-width: 420px; }
+  }
   @media (max-width: 860px) {
-    .reels__grid { grid-template-columns: 1fr; gap: 0; }
-    .reels { padding-top: 0; }   /* menos hueco vacío al aterrizar desde la flecha */
-    /* Móvil fijo arriba con fondo OPACO → el texto nunca se transparenta detrás */
-    .reels__phone-col { position: sticky; top: 0; height: auto; padding: 64px 0 64px; z-index: 6;
-      background: linear-gradient(to bottom, var(--bg-2), var(--bg-2) calc(100% - 64px), transparent); }
-    .reels__phone { width: 152px; }
-    .reels__steps { margin-top: 2px; }
-    /* El texto se coloca DEBAJO del móvil (no centrado tras él) y se lee como lista */
-    .reels__step { min-height: 52svh; justify-content: flex-start; padding-top: 92px; max-width: none; }
-    .reels.js-active .reels__step { opacity: 1; }   /* sin atenuar en móvil */
+    /* MÓVIL: layout APILADO nativo (sin sticky, sin filmstrip). Cada reel (tarjeta) sobre su texto.
+       Los contenedores pasan a display:contents para intercalar vídeos y textos por grid-row. */
+    .reels { padding-top: 24px; }
+    .reels__grid { display: grid; grid-template-columns: 1fr; gap: 0; align-items: start; }
+    .reels__phone-col,
+    .reels__phone,
+    .reels__phone .phone-screen,
+    .reels__strip,
+    .reels__steps { display: contents; }
+    .reels__placeholder { display: none; }
+    .reels__reel { position: relative; transform: none !important; display: block;
+      width: 100%; max-width: 240px; height: auto; margin: 0 auto;
+      aspect-ratio: 9 / 19.5; object-fit: cover;
+      border-radius: 28px; border: 1px solid var(--line-2); background: #0d0d0d;
+      box-shadow: 0 24px 60px -28px rgba(0,0,0,0.85); }
+    .reels__step { min-height: 0; justify-content: flex-start; align-items: center; max-width: 520px;
+      margin: 0 auto; padding: 18px 4px 52px; text-align: center; opacity: 1 !important; }
+    .reels__reel[data-reel="0"] { grid-row: 1; }
+    .reels__step[data-step="0"] { grid-row: 2; }
+    .reels__reel[data-reel="1"] { grid-row: 3; }
+    .reels__step[data-step="1"] { grid-row: 4; }
+    .reels__reel[data-reel="2"] { grid-row: 5; }
+    .reels__step[data-step="2"] { grid-row: 6; }
   }
 
   /* Live dot */
@@ -408,6 +436,7 @@
 
   /* ── MOBILE (< 768px) ───────────────────────────────── */
   @media (max-width: 767px) {
+    #countdown-display { font-size: 22px; }
     /* Texto + formulario primero, móvil arriba del todo sin scroll */
     .hero-text-col     { order: 1; text-align: center; }
     .hero-phone-wrapper { order: 2; }
@@ -508,7 +537,7 @@
   /* Nav responsive — hamburger visible below 1024px, desktop links above */
   #nav-links { display: none; }
   #nav-cta   { display: none; }
-  #nav-toggle { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px; width: 40px; height: 40px; margin-right: -8px; background: none; border: none; cursor: pointer; padding: 0; flex-shrink: 0; }
+  #nav-toggle { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px; width: 44px; height: 44px; margin-right: -10px; background: none; border: none; cursor: pointer; padding: 0; flex-shrink: 0; }
   @media (min-width: 1024px) {
     #nav-links  { display: flex; }
     #nav-cta    { display: inline-flex; }
@@ -632,7 +661,22 @@
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } html { scroll-behavior: auto !important; } }
 </style>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"SoftwareApplication","name":"2trAIn","url":"https://2trainapp.com","image":"https://2trainapp.com/og-image.png","operatingSystem":"Android, iOS","applicationCategory":"HealthApplication","description":"La única app de fitness que te explica por qué te manda lo que te manda.","author":{"@type":"Person","name":"Nacho"},"offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"}}
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    { "@type": "Organization", "@id": "https://2trainapp.com/#organization", "name": "2trAIn", "url": "https://2trainapp.com/", "logo": "https://2trainapp.com/og-image.png", "sameAs": ["https://twitter.com/nachoing__"] },
+    { "@type": "WebSite", "@id": "https://2trainapp.com/#website", "name": "2trAIn", "url": "https://2trainapp.com/", "inLanguage": "es", "publisher": { "@id": "https://2trainapp.com/#organization" } },
+    { "@type": "SoftwareApplication", "name": "2trAIn", "applicationCategory": "HealthApplication", "operatingSystem": "iOS, Android", "description": "Tu coach con IA que te explica el porqué de cada decisión de entrenamiento. La única app de fitness que razona tu entrenamiento.", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" } },
+    { "@type": "FAQPage", "mainEntity": [
+      { "@type": "Question", "name": "¿Necesito reloj o material especial?", "acceptedAnswer": { "@type": "Answer", "text": "No. Solo tu móvil. Si tienes mancuernas, barras o máquinas, perfecto — los usa. Si solo tienes tu peso corporal, también funciona. El plan se adapta exactamente a lo que tienes." } },
+      { "@type": "Question", "name": "¿Sirve si entreno en casa / sin gimnasio?", "acceptedAnswer": { "@type": "Answer", "text": "Sí. Al configurar tu perfil le dices el material disponible y si entrenas en casa o en gym. El plan se construye exactamente con lo que tienes, sin ejercicios que no puedas hacer." } },
+      { "@type": "Question", "name": "¿Cuándo recibo acceso?", "acceptedAnswer": { "@type": "Answer", "text": "La beta abre por oleadas a partir de septiembre 2026. Cuando te toque, recibes un email con instrucciones. Los primeros en apuntarse entran antes. Invitando amigos subes puestos en la cola." } },
+      { "@type": "Question", "name": "¿Mis datos están seguros?", "acceptedAnswer": { "@type": "Answer", "text": "Sí. Tus logs son tuyos. Si en algún momento usamos datos para mejorar el modelo, serán agregados y anonimizados — y te avisaremos antes. Puedes decir que no." } },
+      { "@type": "Question", "name": "¿Qué pasa cuando termina la beta?", "acceptedAnswer": { "@type": "Answer", "text": "Los usuarios que hayan participado en la beta tendrán acceso gratuito y completo a la aplicación de por vida." } },
+      { "@type": "Question", "name": "¿Es solo otra envoltura de ChatGPT?", "acceptedAnswer": { "@type": "Answer", "text": "No. Es un modelo entrenado con periodización, biomecánica y logs reales. Hablar con él te lo confirma a los 30 segundos." } }
+    ] }
+  ]
+}
 </script>
 </head>
 <body>
@@ -643,7 +687,7 @@
 <nav id="nav" class="fixed top-0 left-0 right-0 z-50 transition-colors nav-compact" aria-label="Navegación principal">
   <div id="nav-inner" class="max-w-page pad-x h-16 flex items-center justify-between">
     <a href="#" class="flex items-center gap-2">
-      <picture><img src="/assets/logo3.png" alt="2trAIn" width="336" height="84" style="height:24px;width:auto;"></picture>
+      <picture><img src="/assets/logo3.png" alt="2trAIn" width="906" height="275" fetchpriority="high" decoding="async" style="height:24px;width:auto;"></picture>
     </a>
     <div id="nav-links" class="items-center gap-8 text-sm text-muted">
       <a href="#como" class="hover:text-white transition-colors">Funcionalidades</a>
@@ -679,7 +723,7 @@
 
 <!-- HERO (vídeo cinematográfico) -->
 <section id="hero" class="hero-cine">
-  <video class="hero-cine__video" autoplay muted loop playsinline preload="auto" poster="/assets/og-image.png" aria-hidden="true">
+  <video class="hero-cine__video" autoplay muted loop playsinline preload="metadata" poster="/assets/hero-poster.jpg" aria-hidden="true">
     <source src="/assets/prueba_header.mp4" type="video/mp4">
   </video>
   <div class="hero-cine__scrim"></div>
@@ -728,8 +772,8 @@
           <div class="phone-screen">
             <div class="reels__strip">
               <video class="reels__reel on" data-reel="0" muted loop playsinline preload="metadata"><source src="/assets/reel-why.mp4" type="video/mp4"></video>
-              <video class="reels__reel"    data-reel="1" muted loop playsinline preload="metadata"><source src="/assets/reel-problema.mp4" type="video/mp4"></video>
-              <video class="reels__reel"    data-reel="2" muted loop playsinline preload="metadata"><source src="/assets/reel-solucion.mp4" type="video/mp4"></video>
+              <video class="reels__reel"    data-reel="1" muted loop playsinline preload="none"><source src="/assets/reel-problema.mp4" type="video/mp4"></video>
+              <video class="reels__reel"    data-reel="2" muted loop playsinline preload="none"><source src="/assets/reel-solucion.mp4" type="video/mp4"></video>
             </div>
             <span class="reels__placeholder"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>Reels verticales 9:16<br>/assets/reel-*.mp4</span>
           </div>
@@ -855,7 +899,7 @@
               <!-- Calentamiento -->
               <div class="demo-ex demo-ex--warm">
                 <div class="demo-ex__media">
-                  <!-- <img src="/assets/demo-ex-calentamiento.jpg" alt="Activación de manguito rotador"> -->
+                  <img src="/assets/demo-ex-calentamiento.jpg" alt="Activación de manguito rotador" width="640" height="360" loading="lazy" decoding="async">
                   <svg viewBox="0 0 24 24" fill="none"><path d="M12 3v18M3 12h18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
                   <span class="demo-ex__ph">Tu foto</span>
                 </div>
@@ -869,7 +913,7 @@
               <!-- Ejercicio 1 -->
               <div class="demo-ex">
                 <div class="demo-ex__media">
-                  <!-- <img src="/assets/demo-ex-1.jpg" alt="Press de pecho en máquina"> -->
+                  <img src="/assets/demo-ex-1.jpg" alt="Press de pecho en máquina" width="640" height="360" loading="lazy" decoding="async">
                   <svg viewBox="0 0 24 24" fill="none"><path d="M4 9h2v6H4zM18 9h2v6h-2zM6 11h12v2H6z" fill="currentColor"/></svg>
                   <span class="demo-ex__ph">Tu foto</span>
                 </div>
@@ -883,7 +927,7 @@
               <!-- Ejercicio 2 -->
               <div class="demo-ex">
                 <div class="demo-ex__media">
-                  <!-- <img src="/assets/demo-ex-2.jpg" alt="Press inclinado con mancuernas"> -->
+                  <img src="/assets/demo-ex-2.jpg" alt="Press inclinado con mancuernas" width="640" height="360" loading="lazy" decoding="async">
                   <svg viewBox="0 0 24 24" fill="none"><path d="M4 9h2v6H4zM18 9h2v6h-2zM6 11h12v2H6z" fill="currentColor"/></svg>
                   <span class="demo-ex__ph">Tu foto</span>
                 </div>
@@ -897,7 +941,7 @@
               <!-- Ejercicio 3 -->
               <div class="demo-ex">
                 <div class="demo-ex__media">
-                  <!-- <img src="/assets/demo-ex-3.jpg" alt="Cruce de poleas"> -->
+                  <img src="/assets/demo-ex-3.jpg" alt="Cruce de poleas" width="640" height="360" loading="lazy" decoding="async">
                   <svg viewBox="0 0 24 24" fill="none"><path d="M4 9h2v6H4zM18 9h2v6h-2zM6 11h12v2H6z" fill="currentColor"/></svg>
                   <span class="demo-ex__ph">Tu foto</span>
                 </div>
@@ -911,7 +955,7 @@
               <!-- Ejercicio 4 -->
               <div class="demo-ex">
                 <div class="demo-ex__media">
-                  <!-- <img src="/assets/demo-ex-4.jpg" alt="Press de pecho cerrado en máquina"> -->
+                  <img src="/assets/demo-ex-4.jpg" alt="Press de pecho cerrado en máquina" width="640" height="360" loading="lazy" decoding="async">
                   <svg viewBox="0 0 24 24" fill="none"><path d="M4 9h2v6H4zM18 9h2v6h-2zM6 11h12v2H6z" fill="currentColor"/></svg>
                   <span class="demo-ex__ph">Tu foto</span>
                 </div>
@@ -925,7 +969,7 @@
               <!-- Ejercicio 5 -->
               <div class="demo-ex">
                 <div class="demo-ex__media">
-                  <!-- <img src="/assets/demo-ex-5.jpg" alt="Extensión de tríceps en polea"> -->
+                  <img src="/assets/demo-ex-5.jpg" alt="Extensión de tríceps en polea" width="640" height="360" loading="lazy" decoding="async">
                   <svg viewBox="0 0 24 24" fill="none"><path d="M4 9h2v6H4zM18 9h2v6h-2zM6 11h12v2H6z" fill="currentColor"/></svg>
                   <span class="demo-ex__ph">Tu foto</span>
                 </div>
@@ -1073,6 +1117,25 @@
 </section>
 -->
 
+<!-- SECONDARY CTA -->
+<section class="border-t hairline" style="position: relative; overflow: hidden; background: var(--bg);">
+  <img id="cta-foto" src="/assets/no-convencido.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 30%; z-index: 0;">
+  <div style="position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(10,10,10,0.75), rgba(10,10,10,0.7));"></div>
+  <div class="max-w-page pad-x text-center" style="position: relative; z-index: 2; padding-top: 96px; padding-bottom: 96px;">
+    <span class="label block mb-3" style="color: #e0e0e0;">¿Aún no convencido?</span>
+    <p class="text-base max-w-md mx-auto" style="color: #f2f2f2; text-shadow: 0 2px 10px rgba(0,0,0,0.6);">Sin problema. Sígueme construyéndola en público y decides cuando estés listo.</p>
+    <div class="flex gap-4 justify-center mt-6 flex-wrap">
+      <a href="https://twitter.com/nachoing__" target="_blank" rel="noopener" class="btn-ghost text-sm">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.259 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        Seguir en X
+      </a>
+      <button class="open-modal btn-accent text-sm" style="padding: 13px 22px;">
+        O reserva tu plaza →
+      </button>
+    </div>
+  </div>
+</section>
+
 <!-- FAQ -->
 <section id="faq" class="border-t hairline">
   <div class="max-w-page pad-x">
@@ -1117,23 +1180,6 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- SECONDARY CTA -->
-<section class="border-t hairline">
-  <div class="max-w-page pad-x text-center">
-    <span class="label block mb-3">¿Aún no convencido?</span>
-    <p class="text-base max-w-md mx-auto" style="color: var(--muted);">Sin problema. Sígueme construyéndola en público y decides cuando estés listo.</p>
-    <div class="flex gap-4 justify-center mt-6 flex-wrap">
-      <a href="https://twitter.com/nachoing__" target="_blank" rel="noopener" class="btn-ghost text-sm">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.259 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-        Seguir en X
-      </a>
-      <button class="open-modal btn-accent text-sm" style="padding: 13px 22px;">
-        O reserva tu plaza →
-      </button>
     </div>
   </div>
 </section>
@@ -1196,7 +1242,7 @@
   <div class="max-w-page">
     <div class="footer-grid grid grid-cols-2 md:grid-cols-12 gap-8 mb-10">
       <div class="footer-brand col-span-2 md:col-span-6">
-        <picture><img src="/assets/logo3.png" alt="2trAIn" width="336" height="84" style="height:56px;width:auto;" class="mb-4"></picture>
+        <picture><img src="/assets/logo3.png" alt="2trAIn" width="906" height="275" loading="lazy" decoding="async" style="height:56px;width:auto;" class="mb-4"></picture>
         <div class="text-muted max-w-sm text-sm leading-relaxed">La única app de fitness que te explica por qué.</div>
       </div>
       <div class="md:col-span-2">

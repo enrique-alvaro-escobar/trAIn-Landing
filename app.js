@@ -227,6 +227,24 @@ const WEBAPP_URL = 'https://app.2trainapp.com';
       if (s) s.addEventListener('error', hide);
     });
 
+    // MÓVIL/TABLET ≤860px: layout apilado nativo (CSS). Sin filmstrip ni ScrollTrigger.
+    // Cada reel (tarjeta) se reproduce solo cuando entra en pantalla, para ahorrar datos.
+    if (window.matchMedia('(max-width: 860px)').matches) {
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function(entries) {
+          entries.forEach(function(e) {
+            if (e.isIntersecting) { var p = e.target.play(); if (p && p.catch) p.catch(function() {}); }
+            else { try { e.target.pause(); } catch (err) {} }
+          });
+        }, { threshold: 0.4 });
+        reels.forEach(function(v) { io.observe(v); });
+      } else {
+        reels.forEach(function(v) { var p = v.play(); if (p && p.catch) p.catch(function() {}); });
+      }
+      steps.forEach(function(s) { s.classList.add('on'); });
+      return;
+    }
+
     stage.classList.add('js-active');
     var current = -1;
     // Filmstrip por pasos (sin hueco): la tira sube un alto completo por vídeo.
@@ -640,8 +658,17 @@ const WEBAPP_URL = 'https://app.2trainapp.com';
     }});
   }
 
+  // Idioma de la demo según <html lang> (el mismo app.js sirve ES y EN).
+  var demoEN = document.documentElement.lang === 'en';
+
   // 5 frases de "pensamiento" — se animan en la cabecera del razonamiento, una por línea.
-  var phrases = [
+  var phrases = demoEN ? [
+    'Reading your history…',
+    'Detecting shoulder discomfort…',
+    'Ruling out risky exercises…',
+    'Finding safe angles…',
+    'Adding a preventive warm-up…'
+  ] : [
     'Leyendo tu historial…',
     'Detectando molestia en el hombro…',
     'Descartando ejercicios de riesgo…',
@@ -674,11 +701,11 @@ const WEBAPP_URL = 'https://app.2trainapp.com';
   // 4 · COLAPSAR el razonamiento a un chip ("✓ Razonado · 5 pasos") para hacer sitio
   tl.call(function() {
     reasonBox.classList.add('is-interactive', 'is-collapsed');
-    if (label) { gsap.set(label, { opacity: 1 }); label.textContent = 'Razonado con tus datos'; }
+    if (label) { gsap.set(label, { opacity: 1 }); label.textContent = demoEN ? 'Reasoned with your data' : 'Razonado con tus datos'; }
     if (toggle) toggle.setAttribute('aria-expanded', 'false');
   }, null, '+=0.3');
   tl.to(reasonBody, { height: 0, opacity: 0, duration: 0.45, ease: 'power2.inOut' });
-  tl.call(setStatus, ['Generando tu sesión…']);
+  tl.call(setStatus, [demoEN ? 'Generating your session…' : 'Generando tu sesión…']);
 
   // 5 · respuesta de la IA
   tl.call(function() { aiBubble.classList.remove('demo-pending'); });
@@ -688,7 +715,7 @@ const WEBAPP_URL = 'https://app.2trainapp.com';
   tl.call(function() { genWrap.classList.remove('demo-pending'); });
   tl.fromTo(genHead, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' }, '+=0.1');
   tl.fromTo(carousel, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, '-=0.1');
-  tl.call(setStatus, ['Sesión generada ✓']);
+  tl.call(setStatus, [demoEN ? 'Session generated ✓' : 'Sesión generada ✓']);
   tl.fromTo(goBtn, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, '+=0.05');
 
   // Toggle: reabrir / colapsar el razonamiento a mano (habilita scroll si se desborda).
