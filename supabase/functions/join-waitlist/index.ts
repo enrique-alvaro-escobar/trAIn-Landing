@@ -78,7 +78,18 @@ Deno.serve(async (req) => {
     ])
     const projection = { '1': r1.data ?? position, '2': r2.data ?? position, '3': r3.data ?? position }
 
-    const siteUrl = Deno.env.get('SITE_URL') ?? 'https://2trainapp.com'
+    // Stats para el modal (resilientes: si locked_position aún no existe → 0/null).
+    const totalRes = await supabase.from('waitlist').select('*', { count: 'exact', head: true })
+    const total = totalRes.count ?? 0
+    const lockedRes = await supabase.from('waitlist').select('*', { count: 'exact', head: true }).not('locked_position', 'is', null)
+    const lockedCount = lockedRes.count ?? 0
+    const refRes = await supabase.from('waitlist').select('*', { count: 'exact', head: true }).eq('referred_by', referralCode)
+    const referrals = refRes.count ?? 0
+    const lockedRowRes = await supabase.from('waitlist').select('locked_position').eq('email', email).maybeSingle()
+    const lockedPosition = (lockedRowRes.data as { locked_position?: number } | null)?.locked_position ?? null
+
+    // Dominio público FIJO (evita usar SITE_URL mal configurado, p.ej. la URL de Vercel).
+    const siteUrl = 'https://2trainapp.com'
     const referralLink = `${siteUrl}?ref=${referralCode}`
 
     // Send email only on first signup
@@ -98,7 +109,7 @@ Deno.serve(async (req) => {
       })
     }
 
-    return new Response(JSON.stringify({ referral_code: referralCode, position, projection, already_registered: alreadyRegistered }), {
+    return new Response(JSON.stringify({ referral_code: referralCode, position, projection, already_registered: alreadyRegistered, total, locked: lockedCount, referrals, locked_position: lockedPosition }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     })
   } catch (err) {

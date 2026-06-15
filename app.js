@@ -417,30 +417,31 @@ const WEBAPP_URL = 'https://app.2trainapp.com';
     setTimeout(step, 400);
   }
 
+  let _msStats = null;
   function animateBar(position) {
     const fill = document.getElementById('ms-fill');
+    // Ocupación REAL de la wave (nº total de inscritos), NO la posición del usuario.
+    const total = (_msStats && _msStats.total) || position;
+    const locked = (_msStats && _msStats.locked) || 0;
     const wave = position <= 100 ? 1 : position <= 250 ? 2 : 3;
-    let pct, taken, free, waveLabel;
-    if (wave === 1) {
-      taken = position; free = 100 - position;
-      pct = position; waveLabel = isEn ? 'WAVE 1 SPOTS' : 'PLAZAS WAVE 1';
-    } else if (wave === 2) {
-      taken = position - 100; free = 250 - position + 1;
-      pct = Math.round((position - 100) / 150 * 100); waveLabel = isEn ? 'WAVE 2 SPOTS' : 'PLAZAS WAVE 2';
-    } else {
-      taken = position - 250; free = Math.max(400 - position + 1, 0);
-      pct = Math.round((position - 250) / 150 * 100); waveLabel = isEn ? 'WAVE 3 SPOTS' : 'PLAZAS WAVE 3';
-    }
+    const cap = wave === 1 ? 100 : 150;
+    const base = wave === 1 ? 0 : wave === 2 ? 100 : 250;
+    const waveLabel = isEn ? `WAVE ${wave} SPOTS` : `PLAZAS WAVE ${wave}`;
+    const taken = Math.min(Math.max(total - base, 0), cap);
+    const free = Math.max(cap - taken, 0);
+    const pct = Math.round(taken / cap * 100);
+    const lockedTxt = (wave === 1 && locked > 0) ? (isEn ? ` · ${locked} secured 🔒` : ` · ${locked} aseguradas 🔒`) : '';
     document.getElementById('ms-wl-text').textContent = waveLabel;
     document.getElementById('ms-pos-frac').textContent = isEn ? `${free} available` : `${free} libres`;
-    document.getElementById('ms-scarcity-taken').textContent = isEn ? `${taken} taken` : `${taken} ocupada${taken !== 1 ? 's' : ''}`;
+    document.getElementById('ms-scarcity-taken').textContent = (isEn ? `${taken} taken` : `${taken} ocupada${taken !== 1 ? 's' : ''}`) + lockedTxt;
     document.getElementById('ms-scarcity-free').textContent = isEn ? `${free} available →` : `${free} disponible${free !== 1 ? 's' : ''} →`;
     if (reduceMotion) { fill.style.transition = 'none'; fill.style.width = pct + '%'; return; }
     setTimeout(() => { fill.style.width = pct + '%'; }, 500);
   }
 
-  function showModalSuccess(referralCode, position, projection) {
+  function showModalSuccess(referralCode, position, projection, stats) {
     position = position || 1;
+    _msStats = stats || {};
     const link = referralCode ? `https://2trainapp.com?ref=${referralCode}` : 'https://2trainapp.com';
 
     // Determine wave
@@ -454,9 +455,7 @@ const WEBAPP_URL = 'https://app.2trainapp.com';
     document.getElementById('ms-badge-2').textContent = waveData.badge2;
     document.getElementById('ms-badge-3').textContent = waveData.badge3;
 
-    // Waves card
-    const _free = position <= 100 ? 100 - position : position <= 250 ? 251 - position : Math.max(401 - position, 0);
-    document.getElementById('ms-pos-frac').textContent = isEn ? `${_free} available` : `${_free} libres`;
+    // Waves card: la tarjeta de escasez la rellena animateBar() con la ocupación real.
     ['ms-w1', 'ms-w2', 'ms-w3'].forEach((id, i) => {
       const el = document.getElementById(id);
       const isActive = i + 1 === wave;
@@ -464,13 +463,17 @@ const WEBAPP_URL = 'https://app.2trainapp.com';
       if (isActive) el.querySelector('.ms-ss').textContent = isEn ? "You're here" : 'Tú estás aquí';
     });
 
-    // Share heading
-    const p3 = projection && projection['3'];
+    // Share heading: te faltan X referidos para asegurar tu plaza / plaza asegurada 🔒
+    const referrals = (stats && stats.referrals) || 0;
+    const lockedPos = stats && stats.locked_position;
     const shareH = document.getElementById('ms-share-h');
-    if (p3 && p3 < position) {
-      shareH.innerHTML = isEn ? `<span class="ms-b">⚡</span> With 3 friends you jump to #${p3}` : `<span class="ms-b">⚡</span> Con 3 amigos subes al puesto #${p3}`;
+    if (lockedPos) {
+      shareH.innerHTML = isEn ? `<span class="ms-b">🔒</span> Spot locked at #${lockedPos}` : `<span class="ms-b">🔒</span> Plaza asegurada en el #${lockedPos}`;
     } else {
-      shareH.innerHTML = isEn ? `<span class="ms-b">⚡</span> Share to move up the list` : `<span class="ms-b">⚡</span> Comparte para subir en la lista`;
+      const need = Math.max(3 - referrals, 0);
+      shareH.innerHTML = need > 0
+        ? (isEn ? `<span class="ms-b">⚡</span> ${need} more referral${need !== 1 ? 's' : ''} to lock your spot` : `<span class="ms-b">⚡</span> Te falta${need !== 1 ? 'n' : ''} ${need} referido${need !== 1 ? 's' : ''} para asegurar tu plaza`)
+        : (isEn ? `<span class="ms-b">⚡</span> Share to move up the list` : `<span class="ms-b">⚡</span> Comparte para subir en la lista`);
     }
 
     // Referral & share links
@@ -533,7 +536,7 @@ const WEBAPP_URL = 'https://app.2trainapp.com';
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Error desconocido');
-      showModalSuccess(data.referral_code, data.position, data.projection);
+      showModalSuccess(data.referral_code, data.position, data.projection, data);
     } catch (err) {
       console.error('Waitlist error:', err);
       showModalError(isEn ? 'Something went wrong. Try again or contact us.' : 'Algo salió mal. Inténtalo de nuevo o escríbenos.');
