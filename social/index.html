@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#0A0A0A" />
+<title>2trAIn · Social Card · Instagram Stories</title>
+<meta name="robots" content="noindex" />
+
+<style>
+  @font-face {
+    font-family: 'Archivo';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('/assets/fonts/archivo/archivo-latin-wght-normal.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'Vitoria';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('/assets/fonts/vitoria/vitoria-400-normal.woff2') format('woff2');
+  }
+
+  :root {
+    --bg: #0A0A0A; --bg-2: #0d0d0d; --bg-3: #121212;
+    --fg: #FAFAFA; --muted: #8a8a8a; --muted-2: #6f6f6f;
+    --line: #1f1f1f; --line-2: #2a2a2a;
+    --accent: #2A6FDB; --accent-2: #5a8fe3; --accent-soft: rgba(42, 111, 219, 0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background:
+      radial-gradient(1200px 800px at 50% -10%, rgba(42,111,219,0.10), transparent 60%),
+      #060606;
+    color: var(--fg);
+    font-family: 'Archivo', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  .display { font-family: 'Vitoria', 'Archivo', serif; font-weight: 400; letter-spacing: -0.01em; line-height: 0.92; }
+  .label { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: var(--muted); }
+
+  /* ===== Stage / preview ===== */
+  .stage {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 28px; padding: 40px 20px 64px;
+  }
+  .toolbar {
+    display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: center;
+    max-width: 540px; text-align: center;
+  }
+  .toolbar p { width: 100%; color: var(--muted); font-size: 14px; line-height: 1.5; }
+  .btn {
+    background: var(--accent); color: #fff; font-weight: 700; font-size: 14px;
+    border: 0; border-radius: 999px; padding: 13px 24px; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 9px; transition: transform .15s ease, box-shadow .2s ease;
+    box-shadow: 0 8px 24px -8px rgba(42,111,219,0.6);
+  }
+  .btn:hover { transform: translateY(-1px); box-shadow: 0 12px 30px -10px rgba(42,111,219,0.7); }
+  .btn.ghost { background: #161616; color: var(--fg); border: 1px solid var(--line-2); box-shadow: none; }
+  .btn.ghost:hover { border-color: var(--accent-2); color: var(--accent-2); }
+
+  /* The 9:16 canvas. Real export size = 1080 x 1920; scaled down for the screen. */
+  .card-scaler {
+    width: 360px;            /* 1080 / 3 */
+    height: 640px;           /* 1920 / 3 */
+    position: relative;
+  }
+  .card {
+    width: 1080px; height: 1920px;
+    transform: scale(0.3333333);
+    transform-origin: top left;
+    position: absolute; top: 0; left: 0;
+  }
+
+  /* ===== The card itself (designed at 1080x1920) ===== */
+  .card {
+    background:
+      radial-gradient(1100px 900px at 78% -8%, rgba(42,111,219,0.22), transparent 55%),
+      radial-gradient(900px 700px at -10% 108%, rgba(42,111,219,0.10), transparent 55%),
+      linear-gradient(180deg, #0c0c0c 0%, #080808 100%);
+    border-radius: 0;
+    overflow: hidden;
+    padding: 96px 84px 84px;
+    display: flex; flex-direction: column;
+    color: var(--fg);
+  }
+  .card::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    box-shadow: inset 0 0 0 2px rgba(255,255,255,0.04);
+  }
+
+  /* Header */
+  .c-head { display: flex; align-items: center; justify-content: space-between; }
+  .c-logo { height: 76px; width: auto; display: block; }
+  .c-badge {
+    display: inline-flex; align-items: center; gap: 16px;
+    background: var(--accent-soft); border: 2px solid rgba(42,111,219,0.35);
+    border-radius: 999px; padding: 16px 30px;
+  }
+  .c-dot { width: 18px; height: 18px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 22px 4px rgba(42,111,219,0.7); }
+  .c-badge span { font-size: 28px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-2); }
+
+  /* User block */
+  .c-user { margin-top: 84px; }
+  .c-user .label { font-size: 30px; letter-spacing: 0.22em; }
+  .c-name { font-size: 150px; margin-top: 22px; color: #fff; }
+  .c-date { margin-top: 30px; font-size: 34px; color: var(--muted); font-weight: 500; }
+
+  /* Stats row */
+  .c-stats { margin-top: 64px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+  .c-stat {
+    background: rgba(255,255,255,0.025); border: 2px solid var(--line-2);
+    border-radius: 36px; padding: 44px 30px;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .c-stat .v { font-size: 92px; font-weight: 800; line-height: 0.9; color: #fff; }
+  .c-stat .v .u { font-size: 40px; font-weight: 700; color: var(--accent-2); margin-left: 6px; }
+  .c-stat .k { font-size: 27px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); }
+
+  /* Exercises */
+  .c-ex-title { margin-top: 56px; font-size: 30px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em; color: var(--muted); }
+  .c-ex-list { margin-top: 34px; display: flex; flex-direction: column; gap: 4px; }
+  .c-ex {
+    display: flex; align-items: center; gap: 30px;
+    padding: 27px 4px; border-bottom: 2px solid var(--line);
+  }
+  .c-ex:last-child { border-bottom: 0; }
+  .c-ex .idx {
+    flex-shrink: 0; width: 64px; height: 64px; border-radius: 18px;
+    background: var(--accent-soft); border: 2px solid rgba(42,111,219,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 34px; font-weight: 800; color: var(--accent-2);
+  }
+  .c-ex .nm { flex: 1; font-size: 44px; font-weight: 700; color: #fff; }
+  .c-ex .sets { font-size: 38px; font-weight: 600; color: var(--muted); white-space: nowrap; }
+  .c-ex .sets b { color: var(--fg); font-weight: 800; }
+
+  /* Progress */
+  .c-progress { margin-top: auto; padding-top: 56px; }
+  .c-progress .row { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 28px; }
+  .c-progress .row .t { font-size: 34px; font-weight: 700; color: #fff; }
+  .c-progress .row .pct { font-size: 38px; font-weight: 800; color: var(--accent-2); }
+  .c-track { height: 30px; background: #161616; border-radius: 999px; overflow: hidden; border: 2px solid var(--line-2); }
+  .c-fill { height: 100%; width: 80%; border-radius: 999px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); box-shadow: 0 0 30px rgba(42,111,219,0.5); }
+  .c-sub { margin-top: 22px; font-size: 28px; color: var(--muted); font-weight: 500; }
+
+  /* Footer */
+  .c-foot { margin-top: 56px; display: flex; align-items: center; justify-content: space-between; }
+  .c-foot .url { font-size: 30px; font-weight: 700; color: var(--fg); }
+  .c-foot .tag { font-size: 28px; color: var(--muted); font-weight: 500; }
+
+  @media (max-width: 420px) {
+    .card-scaler { width: 320px; height: 569px; }
+    .card { transform: scale(0.296296); }
+  }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="toolbar">
+      <p>Social card 9:16 para Instagram Stories. Pulsa descargar para exportarla en 1080&times;1920&nbsp;px.</p>
+      <button class="btn" id="download">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14"/></svg>
+        Descargar PNG
+      </button>
+    </div>
+
+    <div class="card-scaler">
+      <div class="card" id="card">
+        <!-- Header -->
+        <div class="c-head">
+          <img class="c-logo" src="/assets/logo3.png" alt="2trAIn" crossorigin="anonymous" />
+          <div class="c-badge">
+            <span class="c-dot"></span>
+            <span>Entreno completado</span>
+          </div>
+        </div>
+
+        <!-- User -->
+        <div class="c-user">
+          <div class="label">Sesión de hoy</div>
+          <h1 class="c-name display">Carlos</h1>
+          <div class="c-date">Jueves · Empuje · Pecho &amp; Hombro</div>
+        </div>
+
+        <!-- Stats -->
+        <div class="c-stats">
+          <div class="c-stat">
+            <div class="v">6</div>
+            <div class="k">Ejercicios</div>
+          </div>
+          <div class="c-stat">
+            <div class="v">22</div>
+            <div class="k">Series</div>
+          </div>
+          <div class="c-stat">
+            <div class="v">58<span class="u">min</span></div>
+            <div class="k">Duración</div>
+          </div>
+        </div>
+
+        <!-- Exercises -->
+        <div class="c-ex-title">Resumen del entreno</div>
+        <div class="c-ex-list">
+          <div class="c-ex">
+            <div class="idx">1</div>
+            <div class="nm">Press banca</div>
+            <div class="sets"><b>4</b> &times; 8</div>
+          </div>
+          <div class="c-ex">
+            <div class="idx">2</div>
+            <div class="nm">Press inclinado mancuerna</div>
+            <div class="sets"><b>4</b> &times; 10</div>
+          </div>
+          <div class="c-ex">
+            <div class="idx">3</div>
+            <div class="nm">Press militar</div>
+            <div class="sets"><b>4</b> &times; 8</div>
+          </div>
+          <div class="c-ex">
+            <div class="idx">4</div>
+            <div class="nm">Elevaciones laterales</div>
+            <div class="sets"><b>4</b> &times; 15</div>
+          </div>
+          <div class="c-ex">
+            <div class="idx">5</div>
+            <div class="nm">Fondos en paralelas</div>
+            <div class="sets"><b>3</b> &times; 12</div>
+          </div>
+        </div>
+
+        <!-- Progress -->
+        <div class="c-progress">
+          <div class="row">
+            <div class="t">Objetivo semanal</div>
+            <div class="pct">80%</div>
+          </div>
+          <div class="c-track"><div class="c-fill" style="width:80%"></div></div>
+          <div class="c-sub">4 de 5 entrenos completados esta semana</div>
+        </div>
+
+        <!-- Footer -->
+        <div class="c-foot">
+          <div class="url">2trainapp.com</div>
+          <div class="tag">La IA que razona tu entrenamiento</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/social/html-to-image.js"></script>
+  <script>
+    const btn = document.getElementById('download');
+    const card = document.getElementById('card');
+    btn.addEventListener('click', async () => {
+      const original = btn.innerHTML;
+      btn.disabled = true;
+      btn.textContent = 'Generando…';
+      try {
+        const dataUrl = await htmlToImage.toPng(card, {
+          width: 1080,
+          height: 1920,
+          pixelRatio: 1,
+          cacheBust: true,
+          style: { transform: 'none', top: '0', left: '0' },
+        });
+        const a = document.createElement('a');
+        a.download = '2train-story.png';
+        a.href = dataUrl;
+        a.click();
+      } catch (e) {
+        console.log('[v0] export error:', e && e.message);
+        alert('No se pudo exportar la imagen. Inténtalo de nuevo.');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = original;
+      }
+    });
+  </script>
+</body>
+</html>
