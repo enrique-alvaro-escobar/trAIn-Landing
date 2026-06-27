@@ -127,16 +127,12 @@
   .o-stat .v { font-size: 150px; font-weight: 800; line-height: 0.9; color: #fff; text-shadow: var(--tshadow); }
   .o-stat .v .u { font-size: 64px; font-weight: 700; color: var(--accent-2); margin-left: 10px; }
 
-  /* Thin progress bar */
-  .o-progress { width: 560px; margin-top: 104px; }
-  .o-progress .row { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 20px; }
-  .o-progress .row .t { font-size: 32px; font-weight: 700; color: #fff; text-shadow: var(--tshadow); }
-  .o-progress .row .pct { font-size: 36px; font-weight: 800; color: var(--accent-2); text-shadow: var(--tshadow); }
-  .o-track { height: 16px; background: rgba(255,255,255,0.28); border-radius: 999px; overflow: hidden; }
-  .o-fill { height: 100%; width: 80%; border-radius: 999px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); box-shadow: 0 0 26px rgba(42,111,219,0.6); }
-
-  /* Logo pinned at the very bottom, like STRAVA wordmark */
-  .o-logo { margin-top: auto; height: 64px; width: auto; display: block; filter: drop-shadow(0 2px 14px rgba(0,0,0,0.7)); }
+  /* Wordmark pinned at the very bottom, like STRAVA */
+  .o-logo {
+    margin-top: auto; font-size: 54px; font-weight: 800; letter-spacing: 0.02em;
+    color: #fff; text-shadow: var(--tshadow);
+  }
+  .o-logo span { color: var(--accent-2); }
 
   @media (max-width: 420px) {
     .card-scaler { width: 320px; height: 569px; }
@@ -165,28 +161,20 @@
 
         <div class="o-stats">
           <div class="o-stat">
-            <div class="k">Ejercicios</div>
-            <div class="v">6</div>
+            <div class="k">Duración</div>
+            <div class="v">58<span class="u">min</span></div>
           </div>
           <div class="o-stat">
             <div class="k">Series</div>
             <div class="v">22</div>
           </div>
           <div class="o-stat">
-            <div class="k">Duración</div>
-            <div class="v">58<span class="u">min</span></div>
+            <div class="k">Volumen</div>
+            <div class="v">7400<span class="u">kg</span></div>
           </div>
         </div>
 
-        <div class="o-progress">
-          <div class="row">
-            <div class="t">Objetivo semanal</div>
-            <div class="pct">80%</div>
-          </div>
-          <div class="o-track"><div class="o-fill" style="width:80%"></div></div>
-        </div>
-
-        <img class="o-logo" src="/assets/logo3.png" alt="2trAIn" crossorigin="anonymous" />
+        <div class="o-logo">2tr<span>AI</span>n</div>
       </div>
     </div>
   </div>
