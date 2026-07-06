@@ -231,7 +231,7 @@
 
   /* Chat-style hero composer */
   .chat-hint { display: inline-flex; align-items: center; gap: 9px; margin: 0 auto 14px; font-size: 13px; color: var(--muted); max-width: 100%; }
-  .chat-ava { width: 24px; height: 24px; border-radius: 50%; overflow: hidden; background: #000; flex-shrink: 0; display: inline-flex; }
+  .chat-ava { width: 28px; height: 28px; border-radius: 50%; overflow: hidden; background: #fff; flex-shrink: 0; display: inline-flex; }
   .chat-ava img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .chat-hint__txt strong { color: var(--fg); font-weight: 700; }
   .typing-dots { display: inline-flex; gap: 3px; align-items: center; flex-shrink: 0; }
@@ -571,17 +571,21 @@
   #nav.nav-compact::after { opacity: 0; }
   /* Mismo justify-content (space-between) en compacto y expandido → el logo NO salta al abrirse. */
   #nav.nav-compact #nav-inner {
-    max-width: 124px; margin-top: 12px; height: 52px; overflow: hidden;
+    max-width: 68px; margin-top: 12px; height: 52px; overflow: hidden;
     background: rgba(13,13,13,0.5); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
     border: 1px solid rgba(255,255,255,0.10); border-radius: 999px;
-    padding-left: 22px; padding-right: 22px; box-shadow: 0 10px 30px -14px rgba(0,0,0,0.7);
+    padding-left: 14px; padding-right: 14px; box-shadow: 0 10px 30px -14px rgba(0,0,0,0.7);
   }
   #nav.nav-compact #nav-inner > a { flex: 0 0 auto; }      /* el logo no se encoge ni se mueve */
+  /* Logo: hexágono cuando el navbar está colapsado, wordmark cuando está expandido */
+  .nav-hex { display: none; }
+  #nav.nav-compact .nav-hex  { display: block; }
+  #nav.nav-compact .nav-word { display: none; }
   #nav.nav-compact #nav-links,
   #nav.nav-compact .nav-lang,
   #nav.nav-compact #nav-cta { opacity: 0; pointer-events: none; }  /* en flujo pero invisibles → aparecen con fade, sin pop */
   @media (max-width: 1023px) {                              /* móvil: pill algo más ancho (logo + hamburguesa) */
-    #nav.nav-compact #nav-inner { max-width: 200px; }
+    #nav.nav-compact #nav-inner { max-width: 148px; }
   }
   #nav.no-nav-anim, #nav.no-nav-anim #nav-inner, #nav.no-nav-anim #nav-links,
   #nav.no-nav-anim .nav-lang, #nav.no-nav-anim #nav-cta { transition: none !important; }
@@ -624,7 +628,8 @@
   .demo-chat--seq::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 999px; }
   .demo-pending { display: none !important; }
   .demo-chat__bar { display: flex; align-items: center; gap: 9px; padding-bottom: 14px; margin-bottom: 4px; border-bottom: 1px solid var(--line); }
-  .demo-chat__ava { width: 28px; height: 28px; border-radius: 50%; background: var(--accent-soft); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .demo-chat__ava { width: 34px; height: 34px; border-radius: 50%; overflow: hidden; background: #fff; flex-shrink: 0; display: inline-flex; }
+  .demo-chat__ava img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .demo-chat__name { font-size: 13px; font-weight: 700; color: var(--fg); }
   .demo-chat__status { font-size: 11px; color: var(--accent-text); display: flex; align-items: center; gap: 5px; }
   .demo-chat__status-text { transition: opacity 0.25s ease; }
@@ -739,7 +744,8 @@
 <nav id="nav" class="fixed top-0 left-0 right-0 z-50 transition-colors nav-compact" aria-label="Main navigation">
   <div id="nav-inner" class="max-w-page pad-x h-16 flex items-center justify-between">
     <a href="#" class="flex items-center gap-2">
-      <picture><img src="/assets/logo3.png" alt="2trAIn" width="906" height="275" fetchpriority="high" decoding="async" style="height:24px;width:auto;"></picture>
+      <img class="nav-hex" src="/assets/hexagono.svg" alt="2trAIn" width="40" height="40" style="height:40px;width:40px;">
+      <picture class="nav-word"><img src="/assets/logo3.png" alt="2trAIn" width="906" height="275" fetchpriority="high" decoding="async" style="height:24px;width:auto;"></picture>
     </a>
     <div id="nav-links" class="items-center gap-8 text-sm text-muted">
       <a href="#como" class="hover:text-white transition-colors">Features</a>
@@ -794,7 +800,7 @@
 
     <div id="hero-cta" class="hero-cine__cta">
       <div class="chat-hint">
-        <span class="chat-ava"><img src="/assets/Icono2TrainVector.svg" alt="2trAIn" width="24" height="24" /></span>
+        <span class="chat-ava"><img src="/assets/hexagono.svg" alt="2trAIn" width="24" height="24" /></span>
         <span class="chat-hint__txt"><strong>Type your goal here</strong> and I'll build you a plan instantly</span>
         <span class="typing-dots" aria-hidden="true"><i></i><i></i><i></i></span>
       </div>
@@ -888,7 +894,7 @@
         <!-- CTA · Pruébalo ya mismo (redirige a la web app) -->
         <div class="demo-head__cta">
           <div class="chat-hint">
-            <span class="chat-ava"><img src="/assets/Icono2TrainVector.svg" alt="2trAIn" width="24" height="24" /></span>
+            <span class="chat-ava"><img src="/assets/hexagono.svg" alt="2trAIn" width="24" height="24" /></span>
             <span class="chat-hint__txt"><strong>Try it right now</strong> — tell it your case</span>
             <span class="typing-dots" aria-hidden="true"><i></i><i></i><i></i></span>
           </div>
@@ -904,7 +910,7 @@
       <!-- Chat -->
       <div class="demo-chat" aria-label="Example conversation with the AI">
         <div class="demo-chat__bar">
-          <span class="demo-chat__ava"><img src="/assets/Icono2TrainVector.svg" alt="" width="18" height="18" /></span>
+          <span class="demo-chat__ava"><img src="/assets/hexagono.svg" alt="" width="34" height="34" /></span>
           <div>
             <div class="demo-chat__name">2trAIn</div>
             <div class="demo-chat__status"><span class="live-dot"></span><span class="demo-chat__status-text">Reasoning with your data</span></div>
