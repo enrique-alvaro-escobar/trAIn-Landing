@@ -1,10 +1,6 @@
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ydXpqdHFld2pha2Z3c2hmYWd6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg5MjAyMzcsImV4cCI6MjA5NDQ5NjIzN30.GC0IRyXF1QppjbvQJNoYhe_FbWIAa6mjOZQkplrEbfM';
 const isEn = document.documentElement.lang === 'en';
 
-// 👉 URL de la web app (chat de IA) que está montando tu amigo. CAMBIAR cuando esté lista.
-// El objetivo que escribe el usuario se envía como primer mensaje del chat en el query param `q`.
-const WEBAPP_URL = 'https://app.2trainapp.com';
-
 (function() {
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const isMobile = window.matchMedia('(max-width: 767px)').matches;
@@ -42,90 +38,6 @@ const WEBAPP_URL = 'https://app.2trainapp.com';
   modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
   document.querySelectorAll('.open-modal').forEach(btn => btn.addEventListener('click', e => { e.preventDefault(); openModal(); }));
-
-  // Hero goal input → redirige a la web app (chat de IA) con el objetivo como primer mensaje.
-  const goalForm = document.getElementById('goal-form');
-  if (goalForm) {
-    goalForm.addEventListener('submit', e => {
-      e.preventDefault();
-      const goal = goalForm.querySelector('input[name="goal"]').value.trim();
-      if (!goal) return;
-      window.location.href = WEBAPP_URL + '?q=' + encodeURIComponent(goal);
-    });
-
-    const goalInput = document.getElementById('goal-input');
-
-    // Placeholder animado (máquina de escribir + cursor parpadeante) que rota objetivos de ejemplo.
-    if (goalInput && !reduceMotion) {
-      const examples = isEn
-        ? (isMobile ? [
-            'Build muscle',
-            'Lose fat, not strength',
-            'Run my first 10K',
-            'Get strong at home',
-            'Train after an injury'
-          ] : [
-            'I want to build muscle without losing definition',
-            'I want to lose fat without starving',
-            'I want to run my first marathon',
-            'I want to get strong training at home',
-            'I want to get back to training after an injury'
-          ])
-        : (isMobile ? [
-            'Ganar músculo',
-            'Perder grasa, no fuerza',
-            'Correr mi primer 10K',
-            'Ponerme fuerte en casa',
-            'Entrenar tras una lesión'
-          ] : [
-            'Quiero ganar músculo sin perder definición',
-            'Quiero perder grasa sin pasar hambre',
-            'Quiero correr mi primera maratón',
-            'Quiero ponerme fuerte entrenando en casa',
-            'Quiero volver a entrenar tras una lesión'
-          ]);
-      const restHint = isEn ? "What's your goal?" : '¿Cuál es tu objetivo?';
-      const caret = '▏';
-      let ei = 0, ci = 0, deleting = false, focused = false, blinkOn = true, base = '', typeTimer;
-      function paint() {
-        if (focused) { goalInput.setAttribute('placeholder', restHint); return; }
-        goalInput.setAttribute('placeholder', base + (blinkOn ? caret : ' '));
-      }
-      setInterval(() => { blinkOn = !blinkOn; paint(); }, 530);
-      function tick() {
-        if (focused) return;
-        const word = examples[ei];
-        if (!deleting) {
-          ci++; base = word.slice(0, ci); blinkOn = true; paint();
-          if (ci === word.length) { deleting = true; typeTimer = setTimeout(tick, 1700); return; }
-          typeTimer = setTimeout(tick, 55);
-        } else {
-          ci--; base = word.slice(0, ci); blinkOn = true; paint();
-          if (ci === 0) { deleting = false; ei = (ei + 1) % examples.length; typeTimer = setTimeout(tick, 450); return; }
-          typeTimer = setTimeout(tick, 28);
-        }
-      }
-      goalInput.addEventListener('focus', () => { focused = true; clearTimeout(typeTimer); paint(); });
-      goalInput.addEventListener('blur', () => {
-        focused = false;
-        if (goalInput.value) return;
-        ci = 0; deleting = false; base = ''; clearTimeout(typeTimer); typeTimer = setTimeout(tick, 300);
-      });
-      paint();
-      typeTimer = setTimeout(tick, 600);
-    }
-  }
-
-  // Demo "Míralo pensar" input → redirige a la web app con el caso del usuario como primer mensaje.
-  const demoGoalForm = document.getElementById('demo-goal-form');
-  if (demoGoalForm) {
-    demoGoalForm.addEventListener('submit', e => {
-      e.preventDefault();
-      const goal = demoGoalForm.querySelector('input[name="goal"]').value.trim();
-      if (!goal) return;
-      window.location.href = WEBAPP_URL + '?q=' + encodeURIComponent(goal);
-    });
-  }
 
   // Hero form & beta-form-2 → open modal with prefill (so user gets the same success state)
   ['hero-form', 'beta-form-2'].forEach(id => {
