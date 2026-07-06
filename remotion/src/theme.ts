@@ -10,8 +10,8 @@ export const BRAND = {
   accent2: "#5a8fe3",
   accentText: "#5a8fe3",
   accentSoft: "rgba(42, 111, 219, 0.12)",
-  fontDisplay: "Vitoria",
-  fontBody: "Archivo",
+  fontDisplay: "TT Firs Neue",
+  fontBody: "TT Firs Neue",
 };
 
 // Resolución = aspecto del marco de móvil de la landing (.phone-screen → 9 / 19.5)

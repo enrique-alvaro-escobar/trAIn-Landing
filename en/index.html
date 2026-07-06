@@ -36,8 +36,7 @@
 <link rel="sitemap" type="application/xml" href="/sitemap.xml">
 <link rel="preload" href="/assets/hero-poster.jpg" as="image" fetchpriority="high">
 <link rel="preload" href="/assets/logo-texto.png" as="image" type="image/png">
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/archivo/archivo-latin-wght-normal.woff2" crossorigin>
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/vitoria/vitoria-400-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/tt-firs-neue/tt-firs-neue-latin-normal.woff2" crossorigin>
 
 <link rel="stylesheet" href="/dist/tailwind.css">
 <script src="/assets/js/gsap.min.js" defer></script>
@@ -46,25 +45,18 @@
 
 <style>
   @font-face {
-    font-family: 'Archivo';
+    font-family: 'TT Firs Neue';
     font-style: normal;
     font-weight: 100 900;
     font-display: swap;
-    src: url('/assets/fonts/archivo/archivo-latin-wght-normal.woff2') format('woff2');
+    src: url('/assets/fonts/tt-firs-neue/tt-firs-neue-latin-normal.woff2') format('woff2');
   }
   @font-face {
-    font-family: 'Archivo';
+    font-family: 'TT Firs Neue';
     font-style: italic;
     font-weight: 100 900;
     font-display: swap;
-    src: url('/assets/fonts/archivo/archivo-latin-wght-italic.woff2') format('woff2');
-  }
-  @font-face {
-    font-family: 'Vitoria';
-    font-style: normal;
-    font-weight: 400;
-    font-display: swap;
-    src: url('/assets/fonts/vitoria/vitoria-400-normal.woff2') format('woff2');
+    src: url('/assets/fonts/tt-firs-neue/tt-firs-neue-latin-italic.woff2') format('woff2');
   }
   :root {
     --bg: #0A0A0A; --bg-2: #0d0d0d; --bg-3: #111;
@@ -75,14 +67,14 @@
   }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
-  html, body { background: var(--bg); color: var(--fg); font-family: 'Archivo', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  html, body { background: var(--bg); color: var(--fg); font-family: 'TT Firs Neue', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
   body { overflow-x: hidden; }
   ::selection { background: var(--accent); color: #fff; }
 
-  .display { font-family: 'Vitoria', 'Archivo', sans-serif; font-weight: 400; letter-spacing: -0.005em; line-height: 0.96; }
-  .display-tight { font-weight: 400; letter-spacing: -0.02em; line-height: 0.86; }
-  /* Vitoria es display puro: en textos largos/pequeños (FAQ) volvemos a Archivo pesada para legibilidad */
-  .faq-q.display { font-family: 'Archivo', sans-serif; font-weight: 800; letter-spacing: -0.01em; line-height: 1.25; }
+  .display { font-family: 'TT Firs Neue', sans-serif; font-weight: 800; letter-spacing: -0.02em; line-height: 0.96; }
+  .display-tight { font-weight: 800; letter-spacing: -0.02em; line-height: 0.86; }
+  /* En FAQ (texto largo/pequeño) relajamos el tracking del display para legibilidad */
+  .faq-q.display { font-family: 'TT Firs Neue', sans-serif; font-weight: 800; letter-spacing: -0.01em; line-height: 1.25; }
   .hairline { border-color: var(--line); }
   .accent { color: var(--accent-text); } .bg-accent { background: var(--accent); }
   .text-muted { color: var(--muted); } .text-muted-2 { color: var(--muted-2); }
@@ -123,7 +115,7 @@
       radial-gradient(130% 105% at 50% 32%, rgba(10,10,10,0.20) 0%, rgba(10,10,10,0.55) 55%, rgba(10,10,10,0.92) 100%),
       linear-gradient(to bottom, rgba(10,10,10,0.6) 0%, rgba(10,10,10,0.1) 24%, rgba(10,10,10,0.18) 58%, var(--bg) 100%); }
   .hero-cine__content { position: relative; z-index: 2; width: 100%; max-width: 900px; padding: 96px 24px 0; }
-  .hero-cine__title { color: #fff; text-transform: uppercase; text-shadow: 0 2px 50px rgba(0,0,0,0.55); font-size: clamp(40px, 11vw, 104px); line-height: 0.92; }
+  .hero-cine__title { color: #fff; text-transform: uppercase; text-shadow: 0 2px 50px rgba(0,0,0,0.55); font-size: clamp(27px, 9vw, 90px); letter-spacing: -0.035em; line-height: 0.92; }
   .hero-cine__sub { color: rgba(255,255,255,0.82); max-width: 600px; margin: 26px auto 0; font-size: clamp(15px, 2.2vw, 20px); line-height: 1.55; }
   .hero-cine__cta { margin-top: 36px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
   .hero-cine__chevron { position: absolute; bottom: 26px; left: 50%; z-index: 2; color: rgba(255,255,255,0.55); animation: heroChev 2s ease-in-out infinite; }
@@ -303,7 +295,7 @@
 
   /* Head */
   #modal-success .ms-head { padding: 24px 22px 8px; }
-  #modal-success .ms-head h3 { margin: 0; font-family: 'Vitoria', 'Archivo', sans-serif; font-weight: 400; font-size: 26px; letter-spacing: -.01em; line-height: 1.05; text-transform: uppercase; }
+  #modal-success .ms-head h3 { margin: 0; font-family: 'TT Firs Neue', sans-serif; font-weight: 800; font-size: 26px; letter-spacing: -.01em; line-height: 1.05; text-transform: uppercase; }
   #modal-success .ms-head p { margin: 6px 0 0; color: var(--ms-mute); font-size: 13.5px; line-height: 1.4; }
 
   /* Hero */
@@ -324,10 +316,10 @@
   @keyframes checkdash { to{stroke-dashoffset:0} }
   @keyframes checkdraw { from{opacity:0} to{opacity:1} }
 
-  #modal-success .ms-status { font-family: 'Vitoria', 'Archivo', sans-serif; font-weight: 400; font-size: 38px; letter-spacing: -.01em; line-height: 1; margin: 0 0 12px; }
+  #modal-success .ms-status { font-family: 'TT Firs Neue', sans-serif; font-weight: 800; font-size: 38px; letter-spacing: -.01em; line-height: 1; margin: 0 0 12px; }
   #modal-success .ms-num {
-    font-family: 'Vitoria', 'Archivo', sans-serif;
-    font-size: 84px; font-weight: 400; line-height: 1; letter-spacing: -.02em;
+    font-family: 'TT Firs Neue', sans-serif;
+    font-size: 84px; font-weight: 800; line-height: 1; letter-spacing: -.02em;
     color: var(--ms-blue); font-variant-numeric: tabular-nums; display: inline-block;
     text-shadow: 0 0 60px rgba(42,111,219,.4);
   }
@@ -744,8 +736,8 @@
 <nav id="nav" class="fixed top-0 left-0 right-0 z-50 transition-colors nav-compact" aria-label="Main navigation">
   <div id="nav-inner" class="max-w-page pad-x h-16 flex items-center justify-between">
     <a href="#" class="flex items-center gap-2">
-      <img class="nav-hex" src="/assets/hexagono.svg" alt="2trAIn" width="40" height="40" style="height:40px;width:40px;">
-      <picture class="nav-word"><img src="/assets/logo-texto.png" alt="2trAIn" width="908" height="132" fetchpriority="high" decoding="async" style="height:20px;width:auto;"></picture>
+      <img class="nav-hex" src="/assets/hexagono.svg" alt="2trAIn" width="28" height="28" style="height:28px;width:28px;">
+      <picture class="nav-word"><img src="/assets/logo-texto.png" alt="2trAIn" width="908" height="132" fetchpriority="high" decoding="async" style="height:16px;width:auto;"></picture>
     </a>
     <div id="nav-links" class="items-center gap-8 text-sm text-muted">
       <a href="#como" class="hover:text-white transition-colors">Features</a>
@@ -1294,7 +1286,7 @@
   <div class="max-w-page">
     <div class="footer-grid grid grid-cols-2 md:grid-cols-12 gap-8 mb-10">
       <div class="footer-brand col-span-2 md:col-span-6">
-        <picture><img src="/assets/logo-texto.png" alt="2trAIn" width="908" height="132" loading="lazy" decoding="async" style="height:40px;width:auto;" class="mb-4"></picture>
+        <picture><img src="/assets/logo-texto.png" alt="2trAIn" width="908" height="132" loading="lazy" decoding="async" style="height:28px;width:auto;" class="mb-4"></picture>
         <div class="text-muted max-w-sm text-sm leading-relaxed">The only fitness app that explains why.</div>
       </div>
       <div class="md:col-span-2">
