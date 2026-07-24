@@ -7,10 +7,19 @@ import { SustReel, SUST_DURATION, SUST_FPS } from "./SustReel";
 import { WhyReelEN, WHY_EN_DURATION, WHY_EN_FPS } from "./WhyReelEN";
 import { MejoraReelEN, MEJORA_EN_DURATION, MEJORA_EN_FPS } from "./MejoraReelEN";
 import { SustReelEN, SUST_EN_DURATION, SUST_EN_FPS } from "./SustReelEN";
+import { OgImage, OG_WIDTH, OG_HEIGHT } from "./OgImage";
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      <Composition
+        id="OgImage"
+        component={OgImage}
+        durationInFrames={1}
+        fps={30}
+        width={OG_WIDTH}
+        height={OG_HEIGHT}
+      />
       <Composition
         id="ReelWhy"
         component={WhyReel}
