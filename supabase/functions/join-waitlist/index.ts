@@ -200,7 +200,7 @@ function buildEmail(position: number, referralLink: string, isEn: boolean): stri
 
   <!-- HEADER -->
   <tr><td style="padding:8px 4px 20px;">
-    <span style="font-size:18px;font-weight:800;letter-spacing:-0.3px;color:#ffffff;">2tr<span style="color:#5a8fe3;">AI</span>n</span>
+    <img src="https://2trainapp.com/assets/logo-texto.png" width="140" height="20" alt="2trAIn" style="display:block;height:20px;width:auto;border:0;outline:none;">
   </td></tr>
 
   <!-- HERO -->
