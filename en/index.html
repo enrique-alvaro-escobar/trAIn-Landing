@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <meta name="theme-color" content="#0A0A0A" />
-<title>2trAIn · The fitness app that explains why</title>
-<meta name="description" content="Your AI coach, designed around your body, your goals and your progress. The only fitness app that explains why it tells you to do what it tells you to do. Free beta for the first 100." />
+<title>2trAIn · The AI that reasons your training</title>
+<meta name="description" content="Your AI coach: strength, cardio and race prep (Hyrox, triathlon…). Set your goal and get a personalised plan. Every decision explained. Free beta for the first 100." />
 <link rel="canonical" href="https://2trainapp.com/en/" />
 <link rel="alternate" hreflang="es" href="https://2trainapp.com/">
 <link rel="alternate" hreflang="en" href="https://2trainapp.com/en/">
@@ -14,17 +14,17 @@
 <meta property="og:url" content="https://2trainapp.com/en/" />
 <meta property="og:site_name" content="2trAIn" />
 <meta property="og:title" content="2trAIn · The AI that reasons your training." />
-<meta property="og:description" content="The only fitness app that explains why it tells you to do what it tells you to do. Free beta for the first 100." />
+<meta property="og:description" content="Strength, cardio or a race with a date. Personalised plan, every decision explained. Free beta for the first 100." />
 <meta property="og:image" content="https://2trainapp.com/og-image.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="2trAIn · The AI that reasons your training." />
-<meta name="twitter:description" content="The only fitness app that explains why it tells you to do what it tells you to do. Free beta for the first 100." />
+<meta name="twitter:description" content="Strength, cardio or a race with a date. Personalised plan, every decision explained. Free beta for the first 100." />
 <meta name="twitter:image" content="https://2trainapp.com/og-image.png" />
 <meta property="og:locale" content="en_US" />
 <meta property="og:locale:alternate" content="es_ES" />
-<meta property="og:image:alt" content="2trAIn — the AI fitness app that explains why" />
+<meta property="og:image:alt" content="2trAIn — AI coach for strength, cardio and races" />
 <meta name="twitter:site" content="@2trainapp" />
 <meta name="twitter:creator" content="@2trainapp" />
 <meta name="author" content="2trAIn" />
@@ -41,7 +41,7 @@
 <link rel="stylesheet" href="/dist/tailwind.css">
 <script src="/assets/js/gsap.min.js" defer></script>
 <script src="/assets/js/ScrollTrigger.min.js" defer></script>
-<script src="/app.js" defer></script>
+<script src="/app.js?v=demo4" defer></script>
 
 <style>
   @font-face {
@@ -260,7 +260,7 @@
   .faq-q .ico { width: 14px; height: 14px; flex-shrink: 0; transition: transform 0.3s ease; color: var(--muted); }
   .faq-item.open .faq-q .ico { transform: rotate(45deg); color: var(--accent-text); }
   .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
-  .faq-item.open .faq-a { max-height: 320px; }
+  .faq-item.open .faq-a { max-height: 480px; }
   .faq-a-inner { padding-bottom: 24px; color: var(--muted); line-height: 1.65; max-width: 760px; }
   /* FAQ filtros */
   .faq-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 6px; }
@@ -605,9 +605,51 @@
   .nav-lang { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; padding: 5px 10px; border-radius: 999px; border: 1px solid var(--line-2); color: var(--muted); text-decoration: none; transition: border-color 0.2s, color 0.2s; text-transform: uppercase; }
   .nav-lang:hover { border-color: var(--accent-text); color: var(--accent-text); }
 
+  /* ===== OBJETIVOS: elige tu meta → plan para ti ===== */
+  #objetivos { scroll-margin-top: 80px; background: var(--bg); }
+  .goals-head { max-width: 640px; }
+  .goals-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 40px; }
+  @media (min-width: 900px) { .goals-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; } }
+  .goal-opt {
+    display: flex; flex-direction: column; align-items: flex-start; gap: 10px; text-align: left;
+    padding: 22px 20px; border-radius: 16px; border: 1px solid var(--line-2); background: transparent;
+    color: var(--fg); cursor: pointer; font-family: inherit; transition: border-color 0.2s ease, background 0.2s ease, transform 0.15s ease;
+    min-height: 100%;
+  }
+  .goal-opt:hover { border-color: rgba(42,111,219,0.45); background: rgba(42,111,219,0.04); }
+  .goal-opt[aria-pressed="true"] {
+    border-color: rgba(42,111,219,0.65); background: rgba(42,111,219,0.1);
+    box-shadow: inset 0 0 0 1px rgba(42,111,219,0.25);
+  }
+  .goal-opt__kicker { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-text); }
+  .goal-opt__title { font-family: 'TT Firs Neue', sans-serif; font-weight: 800; font-size: 1.35rem; letter-spacing: -0.02em; line-height: 1.15; text-transform: uppercase; }
+  .goal-opt__desc { font-size: 13.5px; line-height: 1.5; color: var(--muted); }
+  .goals-preview {
+    margin-top: 28px; padding: 20px 22px; border-radius: 16px; border: 1px solid rgba(42,111,219,0.22);
+    background: linear-gradient(135deg, rgba(42,111,219,0.1), rgba(42,111,219,0.02));
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  @media (min-width: 768px) { .goals-preview { flex-direction: row; align-items: center; justify-content: space-between; gap: 24px; } }
+  .goals-preview__label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-text); }
+  .goals-preview__text { font-size: 15px; line-height: 1.5; color: var(--fg); max-width: 720px; }
+  .goals-preview__text strong { font-weight: 700; }
+  .goals-preview__hint { font-size: 12.5px; color: var(--muted); white-space: nowrap; }
+
   /* ===== DEMO "Míralo pensar": conversación que razona con tus datos ===== */
   .demo-grid { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 56px; align-items: start; }
   .demo-head { max-width: 460px; }
+  .demo-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+  .demo-tab {
+    font-size: 12.5px; font-weight: 700; letter-spacing: 0.02em; padding: 8px 14px; border-radius: 999px;
+    border: 1px solid var(--line-2); background: transparent; color: var(--muted); cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease; white-space: nowrap;
+  }
+  .demo-tab:hover { color: var(--fg); border-color: var(--muted-2); }
+  .demo-tab[aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  /* Más específico que .demo-chat para que el tab oculte de verdad el otro escenario */
+  .demo-chat.demo-scenario { display: none !important; }
+  .demo-chat.demo-scenario.on { display: flex !important; flex-direction: column; gap: 12px; }
+  .demo-scenarios { min-width: 0; }
   .demo-head .demo-sub { color: var(--muted); font-size: 15px; line-height: 1.6; margin-top: 18px; }
   .demo-head .demo-note { display: inline-flex; align-items: center; gap: 8px; margin-top: 22px; font-size: 12px; color: var(--muted-2); }
   .demo-head .demo-note svg { color: var(--accent-text); flex-shrink: 0; }
@@ -715,10 +757,13 @@
   "@graph": [
     { "@type": "Organization", "@id": "https://2trainapp.com/#organization", "name": "2trAIn", "url": "https://2trainapp.com/", "logo": "https://2trainapp.com/og-image.png", "sameAs": ["https://twitter.com/2trainapp"] },
     { "@type": "WebSite", "@id": "https://2trainapp.com/en/#website", "name": "2trAIn", "url": "https://2trainapp.com/en/", "inLanguage": "en", "publisher": { "@id": "https://2trainapp.com/#organization" } },
-    { "@type": "SoftwareApplication", "name": "2trAIn", "applicationCategory": "HealthApplication", "operatingSystem": "iOS, Android", "description": "Your AI fitness coach that explains the why behind every training decision. The only fitness app that reasons your training.", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" } },
+    { "@type": "SoftwareApplication", "name": "2trAIn", "applicationCategory": "HealthApplication", "operatingSystem": "iOS, Android", "description": "Your AI coach for strength, cardio and race prep. Set your goal, get a personalised plan, and understand the why behind every decision.", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" } },
     { "@type": "FAQPage", "mainEntity": [
       { "@type": "Question", "name": "Do I need a watch or special gear?", "acceptedAnswer": { "@type": "Answer", "text": "No. Just your phone. If you have dumbbells, barbells or machines, great — it uses them. If you only have your bodyweight, it works too. The plan adapts to exactly what you have." } },
       { "@type": "Question", "name": "Does it work if I train at home / without a gym?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. When you set up your profile you tell it what equipment you have and whether you train at home or at the gym. The plan is built with exactly what you have, no exercises you can't do." } },
+      { "@type": "Question", "name": "Does it work for Hyrox, triathlon or running races?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. You pick the event and date, and it builds a plan toward that day: specific strength, cardio and the stations or disciplines you need, periodised to the event." } },
+      { "@type": "Question", "name": "Can I mix strength and cardio?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. The plan combines both according to your goal. Not separate apps: same AI, same history, same explanations." } },
+      { "@type": "Question", "name": "Is it only for the gym?", "acceptedAnswer": { "@type": "Answer", "text": "No. It covers strength, cardio and race prep. The gym is one setting; the product is the coach that reasons your full training." } },
       { "@type": "Question", "name": "When do I get access?", "acceptedAnswer": { "@type": "Answer", "text": "The beta opens in waves starting September 2026. When it's your turn, you'll get an email with instructions. The first to sign up get in earlier. Invite friends to move up the queue." } },
       { "@type": "Question", "name": "Is my data safe?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Your logs are yours. If at some point we use data to improve the model, it will be aggregated and anonymized — and we'll let you know first. You can say no." } },
       { "@type": "Question", "name": "What happens when the beta ends?", "acceptedAnswer": { "@type": "Answer", "text": "Users who took part in the beta will have free, full access to the app for life." } },
@@ -740,8 +785,8 @@
       <picture class="nav-word"><img src="/assets/logo-texto.png" alt="2trAIn" width="908" height="132" fetchpriority="high" decoding="async" style="height:16px;width:auto;"></picture>
     </a>
     <div id="nav-links" class="items-center gap-8 text-sm text-muted">
+      <a href="#objetivos" class="hover:text-white transition-colors">Goals</a>
       <a href="#como" class="hover:text-white transition-colors">Features</a>
-      <a href="#fundador" class="hover:text-white transition-colors">About</a>
       <a href="#faq" class="hover:text-white transition-colors">FAQ</a>
     </div>
     <div class="flex items-center gap-3">
@@ -758,8 +803,8 @@
 
 <!-- Mobile menu -->
 <div id="mobile-menu" aria-hidden="true">
+  <a href="#objetivos" class="mobile-nav-link">Goals</a>
   <a href="#como" class="mobile-nav-link">Features</a>
-  <a href="#fundador" class="mobile-nav-link">About</a>
   <a href="#faq" class="mobile-nav-link">FAQ</a>
   <a href="/" class="mobile-nav-link" style="font-size:0.875rem;color:var(--muted-2);">Versión en español →</a>
   <div class="mobile-menu-cta">
@@ -787,7 +832,7 @@
     </h1>
 
     <p id="hero-sub" class="hero-cine__sub">
-      Designed around <span class="text-white">your body, your goals and your progress.</span> Every decision, backed by your data. No generic plans.
+      Designed around <span class="text-white">your goal</span> — hypertrophy, cardio or a race (Hyrox, triathlon…). Personalised plan. Every decision, backed by your data.
     </p>
 
     <div id="hero-cta" class="hero-cine__cta">
@@ -805,9 +850,51 @@
     </div>
   </div>
 
-  <a href="#why" class="hero-cine__chevron" aria-label="Scroll down">
+  <a href="#objetivos" class="hero-cine__chevron" aria-label="Scroll down">
     <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </a>
+</section>
+
+<!-- GOALS · pick your target → plan for you -->
+<section id="objetivos" class="border-t hairline">
+  <div class="max-w-page pad-x">
+    <div class="goals-head">
+      <span class="label">Your goal</span>
+      <h2 class="display text-3xl md:text-5xl mt-3">Pick the target. <span class="text-muted">It builds the plan with you.</span></h2>
+      <p class="text-muted text-base leading-relaxed mt-5">Strength, cardio or a race with a date. Same AI, same reasoning — a plan for your context, not a template.</p>
+    </div>
+
+    <div class="goals-grid" role="group" aria-label="Choose a goal">
+      <button type="button" class="goal-opt" data-goal="fuerza" aria-pressed="true">
+        <span class="goal-opt__kicker">01</span>
+        <span class="goal-opt__title">Strength</span>
+        <span class="goal-opt__desc">Hypertrophy or strength. Weekly progression with the gear you have.</span>
+      </button>
+      <button type="button" class="goal-opt" data-goal="cardio" aria-pressed="false">
+        <span class="goal-opt__kicker">02</span>
+        <span class="goal-opt__title">Cardio</span>
+        <span class="goal-opt__desc">Conditioning, Zone 2 and aerobic capacity without losing structure.</span>
+      </button>
+      <button type="button" class="goal-opt" data-goal="prueba" aria-pressed="false">
+        <span class="goal-opt__kicker">03</span>
+        <span class="goal-opt__title">Race</span>
+        <span class="goal-opt__desc">Hyrox, triathlon, 10K… periodisation toward your date.</span>
+      </button>
+      <button type="button" class="goal-opt" data-goal="mantener" aria-pressed="false">
+        <span class="goal-opt__kicker">04</span>
+        <span class="goal-opt__title">Maintain</span>
+        <span class="goal-opt__desc">Ease back in or stay in shape without burning out.</span>
+      </button>
+    </div>
+
+    <div class="goals-preview" id="goals-preview" aria-live="polite">
+      <div>
+        <div class="goals-preview__label">Indicative plan</div>
+        <p class="goals-preview__text" id="goals-preview-text">Push, pull and leg blocks with weekly load progression. Every change in volume or intensity, <strong>explained with your data</strong>.</p>
+      </div>
+      <span class="goals-preview__hint">No generic templates</span>
+    </div>
+  </div>
 </section>
 
 <!-- ░░░ FEATURES · móvil fijo + reels que cambian al hacer scroll (scrollytelling) ░░░ -->
@@ -837,19 +924,19 @@
         <div class="reels__step on" id="como" data-step="0">
           <span class="label" style="color: var(--accent-text);">Feature 01</span>
           <h2 class="display text-3xl md:text-5xl mt-3">It explains <span class="accent">the why.</span></h2>
-          <p class="text-muted text-base leading-relaxed mt-5">Every decision backed by your data. It explains volume, intensity, progression. That's how a real coach trains you.</p>
+          <p class="text-muted text-base leading-relaxed mt-5">Every decision backed by your data. It explains volume, intensity, progression — including cardio and race blocks. That's how a real coach trains you.</p>
         </div>
         <!-- ▼ FUNCIONALIDAD 02 -->
         <div class="reels__step" data-step="1">
           <span class="label" style="color: var(--accent-text);">Feature 02</span>
           <h2 class="display text-3xl md:text-5xl mt-3">It improves <span class="accent">with you.</span></h2>
-          <p class="text-muted text-base leading-relaxed mt-5">It learns your individual response factor in 4 weeks. No two bodies are alike. The AI knows it.</p>
+          <p class="text-muted text-base leading-relaxed mt-5">It learns your response to strength and cardio sessions. No two bodies are alike. The AI knows it.</p>
         </div>
         <!-- ▼ FUNCIONALIDAD 03 -->
         <div class="reels__step" data-step="2">
           <span class="label" style="color: var(--accent-text);">Feature 03</span>
           <h2 class="display text-3xl md:text-5xl mt-3">Smart <span class="accent">substitutions.</span></h2>
-          <p class="text-muted text-base leading-relaxed mt-5">No barbells? No equipment? Injured? The plan adapts while keeping your goal. No improvising.</p>
+          <p class="text-muted text-base leading-relaxed mt-5">No barbells? No treadmill or rower? Injured? The plan adapts and keeps the stimulus for your goal. No improvising.</p>
         </div>
       </div>
     </div>
@@ -873,17 +960,20 @@
   <div class="max-w-page pad-x">
     <div class="demo-grid">
 
-      <!-- Texto -->
       <div class="demo-head">
         <span class="label">Watch it think</span>
-        <h2 class="display text-3xl md:text-5xl mt-3">SOMETHING HURTS TODAY? <span class="text-muted">REWRITE YOUR SESSION INSTANTLY.</span></h2>
-        <p class="demo-sub">Tell it what's going on and, before changing anything, it shows you its reasoning: what it removes, what it keeps and why — adapting today's routine to your body. No black boxes.</p>
+        <h2 class="display text-3xl md:text-5xl mt-3">TELL IT WHAT YOU NEED. <span class="text-muted">WATCH IT REASON.</span></h2>
+        <p class="demo-sub">Pain today or a race with a date. Before changing anything, it shows the reasoning: what it removes, what it keeps and why. No black boxes.</p>
         <span class="demo-note">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 7.4H22l-6 4.4 2.3 7.2-6.3-4.6L5.7 21l2.3-7.2-6-4.4h7.6z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
-          A real conversation with the model
+          Real conversation with the model
         </span>
 
-        <!-- CTA · Reserve your spot (waitlist) -->
+        <div class="demo-tabs" role="tablist" aria-label="Demo scenarios">
+          <button type="button" class="demo-tab" role="tab" id="demo-tab-pain" data-scenario="pain" aria-selected="true" aria-controls="demo-scenario-pain">Today's session</button>
+          <button type="button" class="demo-tab" role="tab" id="demo-tab-race" data-scenario="race" aria-selected="false" aria-controls="demo-scenario-race">Race with a date</button>
+        </div>
+
         <div class="demo-head__cta">
           <button class="open-modal btn-accent">
             Reserve my spot
@@ -892,8 +982,8 @@
         </div>
       </div>
 
-      <!-- Chat -->
-      <div class="demo-chat" aria-label="Example conversation with the AI">
+      <div class="demo-scenarios">
+      <div class="demo-scenario on demo-chat" id="demo-scenario-pain" role="tabpanel" aria-labelledby="demo-tab-pain" data-scenario="pain" aria-label="Demo: adapt session for pain">
         <div class="demo-chat__bar">
           <span class="demo-chat__ava"><img src="/assets/hexagono.svg" alt="" width="34" height="34" /></span>
           <div>
@@ -907,14 +997,14 @@
 
         <!-- 2 · razonamiento (se colapsa tras pensar; toggle para volver a abrirlo) -->
         <div class="demo-reason">
-          <button type="button" class="demo-reason__toggle" aria-expanded="true" aria-controls="demo-reason-body">
+          <button type="button" class="demo-reason__toggle" aria-expanded="true" aria-controls="demo-reason-body-pain">
             <span class="typing-dots demo-reason__dots" aria-hidden="true"><i></i><i></i><i></i></span>
             <svg class="demo-reason__check" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
             <span class="demo-reason__label">Reasoning with your data</span>
             <span class="demo-reason__count">· 5 steps</span>
             <svg class="demo-reason__chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
-          <div class="demo-reason__body" id="demo-reason-body">
+          <div class="demo-reason__body" id="demo-reason-body-pain">
             <div class="demo-reason__list">
               <div class="demo-reason__line"><svg class="tick" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Today in your plan: <strong>push (chest · shoulder · triceps).</strong></span></div>
               <div class="demo-reason__line"><svg class="tick" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Reported pain: <strong>right shoulder on the overhead press.</strong></span></div>
@@ -1027,20 +1117,117 @@
             </div>
           </div>
 
-          <!-- 5 · botón ir al entrenamiento de hoy -->
           <a class="demo-go open-modal" href="#" role="button">
             Reserve your free spot
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0l-6-6m6 6l-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
         </div>
+      </div>
 
+      <div class="demo-scenario demo-chat" id="demo-scenario-race" role="tabpanel" aria-labelledby="demo-tab-race" data-scenario="race" aria-label="Demo: plan toward Hyrox">
+        <div class="demo-chat__bar">
+          <span class="demo-chat__ava"><img src="/assets/hexagono.svg" alt="" width="34" height="34" /></span>
+          <div>
+            <div class="demo-chat__name">2trAIn</div>
+            <div class="demo-chat__status"><span class="live-dot"></span><span class="demo-chat__status-text">Reasoning with your data</span></div>
+          </div>
+        </div>
+
+        <div class="demo-step demo-bubble demo-bubble--user">I have a <strong>Hyrox on March 15</strong>. I train 3 days/week and come from strength. Can you build me a plan?</div>
+
+        <div class="demo-reason">
+          <button type="button" class="demo-reason__toggle" aria-expanded="true" aria-controls="demo-reason-body-race">
+            <span class="typing-dots demo-reason__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            <svg class="demo-reason__check" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="demo-reason__label">Reasoning with your data</span>
+            <span class="demo-reason__count">· 5 steps</span>
+            <svg class="demo-reason__chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="demo-reason__body" id="demo-reason-body-race">
+            <div class="demo-reason__list">
+              <div class="demo-reason__line"><svg class="tick" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Goal: <strong>Hyrox · March 15 · 3 days/week.</strong></span></div>
+              <div class="demo-reason__line"><svg class="tick" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Solid strength base · <strong>limited cardio</strong> in your history.</span></div>
+              <div class="demo-reason__line"><svg class="tick" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Combine <strong>useful strength + Zone 2 + stations</strong> (sled, wall balls…).</span></div>
+              <div class="demo-reason__line"><svg class="tick" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Periodise to the date: more volume now, <strong>taper near the event</strong>.</span></div>
+              <div class="demo-reason__line"><svg class="tick" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Keep <strong>1 strength day</strong> so you don't lose what you've built.</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="demo-bubble demo-bubble--ai">
+          Done. Plan toward your Hyrox: <strong>useful strength, Zone 2 and stations</strong>. Sample week 👇
+        </div>
+
+        <div class="demo-gen">
+          <div class="demo-gen__head">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 9h2v6H4zM18 9h2v6h-2zM6 11h12v2H6z" fill="currentColor"/></svg>
+            Sample week · path to Hyrox
+          </div>
+          <div class="demo-carousel" aria-label="Hybrid session toward Hyrox">
+            <div class="demo-carousel__track">
+              <div class="demo-ex demo-ex--warm">
+                <div class="demo-ex__media"><img src="/assets/demo-ex-calentamiento.jpg" alt="SkiErg Hyrox" width="640" height="360" loading="lazy" decoding="async"></div>
+                <div class="demo-ex__body">
+                  <span class="demo-ex__tag">Hyrox</span>
+                  <div class="demo-ex__name">SkiErg</div>
+                  <div class="demo-ex__meta">1000 m · controlled pace</div>
+                </div>
+              </div>
+              <div class="demo-ex">
+                <div class="demo-ex__media"><img src="/assets/demo-ex-1.jpg" alt="Sled Push Hyrox" width="640" height="360" loading="lazy" decoding="async"></div>
+                <div class="demo-ex__body">
+                  <span class="demo-ex__tag">Hyrox</span>
+                  <div class="demo-ex__name">Sled Push</div>
+                  <div class="demo-ex__meta">6×20 m · moderate load</div>
+                </div>
+              </div>
+              <div class="demo-ex">
+                <div class="demo-ex__media"><img src="/assets/demo-ex-2.jpg" alt="Wall Balls Hyrox" width="640" height="360" loading="lazy" decoding="async"></div>
+                <div class="demo-ex__body">
+                  <span class="demo-ex__tag">Hyrox</span>
+                  <div class="demo-ex__name">Wall Balls</div>
+                  <div class="demo-ex__meta">4×15 · 6/9 kg</div>
+                </div>
+              </div>
+              <div class="demo-ex">
+                <div class="demo-ex__media"><img src="/assets/demo-ex-3.jpg" alt="Farmers Carry Hyrox" width="640" height="360" loading="lazy" decoding="async"></div>
+                <div class="demo-ex__body">
+                  <span class="demo-ex__tag">Hyrox</span>
+                  <div class="demo-ex__name">Farmers Carry</div>
+                  <div class="demo-ex__meta">5×40 m · strong grip</div>
+                </div>
+              </div>
+              <div class="demo-ex">
+                <div class="demo-ex__media"><img src="/assets/demo-ex-4.jpg" alt="Sandbag Lunges Hyrox" width="640" height="360" loading="lazy" decoding="async"></div>
+                <div class="demo-ex__body">
+                  <span class="demo-ex__tag">Hyrox</span>
+                  <div class="demo-ex__name">Sandbag Lunges</div>
+                  <div class="demo-ex__meta">4×20 m · bag</div>
+                </div>
+              </div>
+              <div class="demo-ex">
+                <div class="demo-ex__media"><img src="/assets/demo-ex-5.jpg" alt="Burpee Broad Jump Hyrox" width="640" height="360" loading="lazy" decoding="async"></div>
+                <div class="demo-ex__body">
+                  <span class="demo-ex__tag">Hyrox</span>
+                  <div class="demo-ex__name">Burpee Broad Jump</div>
+                  <div class="demo-ex__meta">4×8 · station</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <a class="demo-go open-modal" href="#" role="button">
+            Reserve your free spot
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0l-6-6m6 6l-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
       </div>
 
     </div>
   </div>
 </section>
 
-<!-- COMPARISON TABLE — SECCIÓN COMENTADA / OCULTA
+<!-- COMPARISON TABLE — HIDDEN (matches production)
 <section class="border-t hairline">
   <div class="max-w-page pad-x">
     <div class="max-w-3xl">
@@ -1068,12 +1255,17 @@
             <td class="cmp-cell" aria-label="No" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: var(--danger); font-size: 14px;">✗</td>
           </tr>
           <tr>
-            <th scope="row" class="cmp-cell" style="padding: 14px 20px; font-size: 14px; border-bottom: 1px solid var(--line); color: var(--fg); font-weight: 400; text-align: left;">Adapts to your real fatigue</th>
+            <th scope="row" class="cmp-cell" style="padding: 14px 20px; font-size: 14px; border-bottom: 1px solid var(--line); color: var(--fg); font-weight: 400; text-align: left;">Strength + cardio in one plan</th>
             <td class="cmp-cell" aria-label="Yes" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: #22c55e; font-size: 16px; background: rgba(42, 111, 219,0.03);">✓</td>
             <td class="cmp-cell" aria-label="No" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: var(--danger); font-size: 14px;">✗</td>
           </tr>
           <tr>
-            <th scope="row" class="cmp-cell" style="padding: 14px 20px; font-size: 14px; border-bottom: 1px solid var(--line); color: var(--fg); font-weight: 400; text-align: left;">Reasons about your history</th>
+            <th scope="row" class="cmp-cell" style="padding: 14px 20px; font-size: 14px; border-bottom: 1px solid var(--line); color: var(--fg); font-weight: 400; text-align: left;">Plan toward a dated race</th>
+            <td class="cmp-cell" aria-label="Yes" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: #22c55e; font-size: 16px; background: rgba(42, 111, 219,0.03);">✓</td>
+            <td class="cmp-cell" aria-label="No" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: var(--danger); font-size: 14px;">✗</td>
+          </tr>
+          <tr>
+            <th scope="row" class="cmp-cell" style="padding: 14px 20px; font-size: 14px; border-bottom: 1px solid var(--line); color: var(--fg); font-weight: 400; text-align: left;">Adapts to your real fatigue</th>
             <td class="cmp-cell" aria-label="Yes" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: #22c55e; font-size: 16px; background: rgba(42, 111, 219,0.03);">✓</td>
             <td class="cmp-cell" aria-label="No" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: var(--danger); font-size: 14px;">✗</td>
           </tr>
@@ -1205,6 +1397,18 @@
           <div class="faq-item" data-cat="uso">
             <button type="button" class="faq-q display text-base md:text-lg" aria-expanded="false" aria-controls="faq-a-2"><span>Does it work if I train at home / without a gym?</span><svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg></button>
             <div id="faq-a-2" class="faq-a"><div class="faq-a-inner">Yes. When you set up your profile you tell it what equipment you have and whether you train at home or at the gym. The plan is built with exactly what you have, no exercises you can't do.</div></div>
+          </div>
+          <div class="faq-item" data-cat="uso">
+            <button type="button" class="faq-q display text-base md:text-lg" aria-expanded="false" aria-controls="faq-a-7"><span>Does it work for Hyrox, triathlon or running races?</span><svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg></button>
+            <div id="faq-a-7" class="faq-a"><div class="faq-a-inner">Yes. You pick the event and date, and it builds a plan toward that day: specific strength, cardio and the stations or disciplines you need, periodised to the event.</div></div>
+          </div>
+          <div class="faq-item" data-cat="uso">
+            <button type="button" class="faq-q display text-base md:text-lg" aria-expanded="false" aria-controls="faq-a-8"><span>Can I mix strength and cardio?</span><svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg></button>
+            <div id="faq-a-8" class="faq-a"><div class="faq-a-inner">Yes. The plan combines both according to your goal. Not separate apps: same AI, same history, same explanations.</div></div>
+          </div>
+          <div class="faq-item" data-cat="producto">
+            <button type="button" class="faq-q display text-base md:text-lg" aria-expanded="false" aria-controls="faq-a-9"><span>Is it only for the gym?</span><svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg></button>
+            <div id="faq-a-9" class="faq-a"><div class="faq-a-inner">No. It covers strength, cardio and race prep. The gym is one setting; the product is the coach that reasons your full training.</div></div>
           </div>
           <div class="faq-item" data-cat="beta">
             <button type="button" class="faq-q display text-base md:text-lg" aria-expanded="false" aria-controls="faq-a-3"><span>When do I get access?</span><svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg></button>

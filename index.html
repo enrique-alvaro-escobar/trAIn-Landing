@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <meta name="theme-color" content="#0A0A0A" />
-<title>2trAIn · La app de fitness que te explica por qué</title>
-<meta name="description" content="Tu coach con IA, diseñado en torno a tu cuerpo, tus objetivos y tu progreso. La única app de fitness que te explica por qué te manda lo que te manda. Beta gratuita para los primeros 100." />
+<title>2trAIn · La IA que razona tu entrenamiento</title>
+<meta name="description" content="Tu coach con IA: fuerza, cardio y preparación de pruebas (Hyrox, triatlón…). Elige tu objetivo y recibe un plan personalizado. Cada decisión, justificada. Beta gratuita para los primeros 100." />
 <link rel="canonical" href="https://2trainapp.com/" />
 <link rel="alternate" hreflang="es" href="https://2trainapp.com/">
 <link rel="alternate" hreflang="en" href="https://2trainapp.com/en/">
@@ -14,17 +14,17 @@
 <meta property="og:url" content="https://2trainapp.com/" />
 <meta property="og:site_name" content="2trAIn" />
 <meta property="og:title" content="2trAIn · La IA que razona tu entrenamiento." />
-<meta property="og:description" content="La única app de fitness que te explica por qué te manda lo que te manda. Beta gratuita para los primeros 100." />
+<meta property="og:description" content="Fuerza, cardio o una prueba con fecha. Plan personalizado y cada decisión justificada. Beta gratuita para los primeros 100." />
 <meta property="og:image" content="https://2trainapp.com/og-image.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="2trAIn · La IA que razona tu entrenamiento." />
-<meta name="twitter:description" content="La única app de fitness que te explica por qué te manda lo que te manda. Beta gratuita para los primeros 100." />
+<meta name="twitter:description" content="Fuerza, cardio o una prueba con fecha. Plan personalizado y cada decisión justificada. Beta gratuita para los primeros 100." />
 <meta name="twitter:image" content="https://2trainapp.com/og-image.png" />
 <meta property="og:locale" content="es_ES" />
 <meta property="og:locale:alternate" content="en_US" />
-<meta property="og:image:alt" content="2trAIn — la app de fitness con IA que te explica por qué" />
+<meta property="og:image:alt" content="2trAIn — coach con IA para fuerza, cardio y pruebas" />
 <meta name="twitter:site" content="@2trainapp" />
 <meta name="twitter:creator" content="@2trainapp" />
 <meta name="author" content="2trAIn" />
@@ -41,7 +41,7 @@
 <link rel="stylesheet" href="/dist/tailwind.css">
 <script src="/assets/js/gsap.min.js" defer></script>
 <script src="/assets/js/ScrollTrigger.min.js" defer></script>
-<script src="/app.js" defer></script>
+<script src="/app.js?v=demo4" defer></script>
 
 <style>
   @font-face {
@@ -260,7 +260,7 @@
   .faq-q .ico { width: 14px; height: 14px; flex-shrink: 0; transition: transform 0.3s ease; color: var(--muted); }
   .faq-item.open .faq-q .ico { transform: rotate(45deg); color: var(--accent-text); }
   .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
-  .faq-item.open .faq-a { max-height: 320px; }
+  .faq-item.open .faq-a { max-height: 480px; }
   .faq-a-inner { padding-bottom: 24px; color: var(--muted); line-height: 1.65; max-width: 760px; }
   /* FAQ filtros */
   .faq-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 6px; }
@@ -605,9 +605,51 @@
   .nav-lang { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; padding: 5px 10px; border-radius: 999px; border: 1px solid var(--line-2); color: var(--muted); text-decoration: none; transition: border-color 0.2s, color 0.2s; text-transform: uppercase; }
   .nav-lang:hover { border-color: var(--accent-text); color: var(--accent-text); }
 
+  /* ===== OBJETIVOS: elige tu meta → plan para ti ===== */
+  #objetivos { scroll-margin-top: 80px; background: var(--bg); }
+  .goals-head { max-width: 640px; }
+  .goals-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 40px; }
+  @media (min-width: 900px) { .goals-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; } }
+  .goal-opt {
+    display: flex; flex-direction: column; align-items: flex-start; gap: 10px; text-align: left;
+    padding: 22px 20px; border-radius: 16px; border: 1px solid var(--line-2); background: transparent;
+    color: var(--fg); cursor: pointer; font-family: inherit; transition: border-color 0.2s ease, background 0.2s ease, transform 0.15s ease;
+    min-height: 100%;
+  }
+  .goal-opt:hover { border-color: rgba(42,111,219,0.45); background: rgba(42,111,219,0.04); }
+  .goal-opt[aria-pressed="true"] {
+    border-color: rgba(42,111,219,0.65); background: rgba(42,111,219,0.1);
+    box-shadow: inset 0 0 0 1px rgba(42,111,219,0.25);
+  }
+  .goal-opt__kicker { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-text); }
+  .goal-opt__title { font-family: 'TT Firs Neue', sans-serif; font-weight: 800; font-size: 1.35rem; letter-spacing: -0.02em; line-height: 1.15; text-transform: uppercase; }
+  .goal-opt__desc { font-size: 13.5px; line-height: 1.5; color: var(--muted); }
+  .goals-preview {
+    margin-top: 28px; padding: 20px 22px; border-radius: 16px; border: 1px solid rgba(42,111,219,0.22);
+    background: linear-gradient(135deg, rgba(42,111,219,0.1), rgba(42,111,219,0.02));
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  @media (min-width: 768px) { .goals-preview { flex-direction: row; align-items: center; justify-content: space-between; gap: 24px; } }
+  .goals-preview__label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-text); }
+  .goals-preview__text { font-size: 15px; line-height: 1.5; color: var(--fg); max-width: 720px; }
+  .goals-preview__text strong { font-weight: 700; }
+  .goals-preview__hint { font-size: 12.5px; color: var(--muted); white-space: nowrap; }
+
   /* ===== DEMO "Míralo pensar": conversación que razona con tus datos ===== */
   .demo-grid { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 56px; align-items: start; }
   .demo-head { max-width: 460px; }
+  .demo-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+  .demo-tab {
+    font-size: 12.5px; font-weight: 700; letter-spacing: 0.02em; padding: 8px 14px; border-radius: 999px;
+    border: 1px solid var(--line-2); background: transparent; color: var(--muted); cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease; white-space: nowrap;
+  }
+  .demo-tab:hover { color: var(--fg); border-color: var(--muted-2); }
+  .demo-tab[aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  /* Más específico que .demo-chat para que el tab oculte de verdad el otro escenario */
+  .demo-chat.demo-scenario { display: none !important; }
+  .demo-chat.demo-scenario.on { display: flex !important; flex-direction: column; gap: 12px; }
+  .demo-scenarios { min-width: 0; }
   .demo-head .demo-sub { color: var(--muted); font-size: 15px; line-height: 1.6; margin-top: 18px; }
   .demo-head .demo-note { display: inline-flex; align-items: center; gap: 8px; margin-top: 22px; font-size: 12px; color: var(--muted-2); }
   .demo-head .demo-note svg { color: var(--accent-text); flex-shrink: 0; }
@@ -715,10 +757,13 @@
   "@graph": [
     { "@type": "Organization", "@id": "https://2trainapp.com/#organization", "name": "2trAIn", "url": "https://2trainapp.com/", "logo": "https://2trainapp.com/og-image.png", "sameAs": ["https://twitter.com/2trainapp"] },
     { "@type": "WebSite", "@id": "https://2trainapp.com/#website", "name": "2trAIn", "url": "https://2trainapp.com/", "inLanguage": "es", "publisher": { "@id": "https://2trainapp.com/#organization" } },
-    { "@type": "SoftwareApplication", "name": "2trAIn", "applicationCategory": "HealthApplication", "operatingSystem": "iOS, Android", "description": "Tu coach con IA que te explica el porqué de cada decisión de entrenamiento. La única app de fitness que razona tu entrenamiento.", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" } },
+    { "@type": "SoftwareApplication", "name": "2trAIn", "applicationCategory": "HealthApplication", "operatingSystem": "iOS, Android", "description": "Tu coach con IA para fuerza, cardio y preparación de pruebas. Elige tu objetivo, recibe un plan personalizado y entiende el porqué de cada decisión.", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" } },
     { "@type": "FAQPage", "mainEntity": [
       { "@type": "Question", "name": "¿Necesito reloj o material especial?", "acceptedAnswer": { "@type": "Answer", "text": "No. Solo tu móvil. Si tienes mancuernas, barras o máquinas, perfecto — los usa. Si solo tienes tu peso corporal, también funciona. El plan se adapta exactamente a lo que tienes." } },
       { "@type": "Question", "name": "¿Sirve si entreno en casa / sin gimnasio?", "acceptedAnswer": { "@type": "Answer", "text": "Sí. Al configurar tu perfil le dices el material disponible y si entrenas en casa o en gym. El plan se construye exactamente con lo que tienes, sin ejercicios que no puedas hacer." } },
+      { "@type": "Question", "name": "¿Sirve para Hyrox, triatlón o carrera?", "acceptedAnswer": { "@type": "Answer", "text": "Sí. Eliges la prueba y la fecha, y construye un plan hacia ese día: fuerza específica, cardio y estaciones o disciplinas que necesites, periodizado hasta el evento." } },
+      { "@type": "Question", "name": "¿Puedo mezclar fuerza y cardio?", "acceptedAnswer": { "@type": "Answer", "text": "Sí. El plan combina ambas según tu objetivo. No son apps separadas: misma IA, mismo historial, mismas justificaciones." } },
+      { "@type": "Question", "name": "¿Es solo gimnasio?", "acceptedAnswer": { "@type": "Answer", "text": "No. Cubre fuerza, cardio y preparación de pruebas. El gym es un escenario; el producto es el coach que razona tu entrenamiento completo." } },
       { "@type": "Question", "name": "¿Cuándo recibo acceso?", "acceptedAnswer": { "@type": "Answer", "text": "La beta abre por oleadas a partir de septiembre 2026. Cuando te toque, recibes un email con instrucciones. Los primeros en apuntarse entran antes. Invitando amigos subes puestos en la cola." } },
       { "@type": "Question", "name": "¿Mis datos están seguros?", "acceptedAnswer": { "@type": "Answer", "text": "Sí. Tus logs son tuyos. Si en algún momento usamos datos para mejorar el modelo, serán agregados y anonimizados — y te avisaremos antes. Puedes decir que no." } },
       { "@type": "Question", "name": "¿Qué pasa cuando termina la beta?", "acceptedAnswer": { "@type": "Answer", "text": "Los usuarios que hayan participado en la beta tendrán acceso gratuito y completo a la aplicación de por vida." } },
@@ -740,8 +785,8 @@
       <picture class="nav-word"><img src="/assets/logo-texto.png" alt="2trAIn" width="908" height="132" fetchpriority="high" decoding="async" style="height:16px;width:auto;"></picture>
     </a>
     <div id="nav-links" class="items-center gap-8 text-sm text-muted">
+      <a href="#objetivos" class="hover:text-white transition-colors">Objetivos</a>
       <a href="#como" class="hover:text-white transition-colors">Funcionalidades</a>
-      <a href="#fundador" class="hover:text-white transition-colors">Nosotros</a>
       <a href="#faq" class="hover:text-white transition-colors">FAQ</a>
     </div>
     <div class="flex items-center gap-3">
@@ -758,8 +803,8 @@
 
 <!-- Mobile menu -->
 <div id="mobile-menu" aria-hidden="true">
+  <a href="#objetivos" class="mobile-nav-link">Objetivos</a>
   <a href="#como" class="mobile-nav-link">Funcionalidades</a>
-  <a href="#fundador" class="mobile-nav-link">Nosotros</a>
   <a href="#faq" class="mobile-nav-link">FAQ</a>
   <a href="/en/" class="mobile-nav-link" style="font-size:0.875rem;color:var(--muted-2);">English version →</a>
   <div class="mobile-menu-cta">
@@ -787,7 +832,7 @@
     </h1>
 
     <p id="hero-sub" class="hero-cine__sub">
-      Diseñada en torno a <span class="text-white">tu cuerpo, tus objetivos y tu progreso.</span> Cada decisión, justificada con tus datos. Sin planes genéricos.
+      Diseñada en torno a <span class="text-white">tu objetivo</span> — hipertrofia, cardio o una prueba (Hyrox, triatlón…). Plan personalizado. Cada decisión, justificada con tus datos.
     </p>
 
     <div id="hero-cta" class="hero-cine__cta">
@@ -805,9 +850,51 @@
     </div>
   </div>
 
-  <a href="#why" class="hero-cine__chevron" aria-label="Desplázate hacia abajo">
+  <a href="#objetivos" class="hero-cine__chevron" aria-label="Desplázate hacia abajo">
     <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </a>
+</section>
+
+<!-- OBJETIVOS · elige tu meta → plan para ti -->
+<section id="objetivos" class="border-t hairline">
+  <div class="max-w-page pad-x">
+    <div class="goals-head">
+      <span class="label">Tu objetivo</span>
+      <h2 class="display text-3xl md:text-5xl mt-3">Elige la meta. <span class="text-muted">El plan lo construye contigo.</span></h2>
+      <p class="text-muted text-base leading-relaxed mt-5">Fuerza, cardio o una prueba con fecha. Misma IA, mismo razonamiento — un plan hecho a tu contexto, no una plantilla.</p>
+    </div>
+
+    <div class="goals-grid" role="group" aria-label="Elige un objetivo">
+      <button type="button" class="goal-opt" data-goal="fuerza" aria-pressed="true">
+        <span class="goal-opt__kicker">01</span>
+        <span class="goal-opt__title">Fuerza</span>
+        <span class="goal-opt__desc">Hipertrofia o fuerza. Progresión semanal con el material que tengas.</span>
+      </button>
+      <button type="button" class="goal-opt" data-goal="cardio" aria-pressed="false">
+        <span class="goal-opt__kicker">02</span>
+        <span class="goal-opt__title">Cardio</span>
+        <span class="goal-opt__desc">Condición, Zone 2 y capacidad aeróbica sin perder estructura.</span>
+      </button>
+      <button type="button" class="goal-opt" data-goal="prueba" aria-pressed="false">
+        <span class="goal-opt__kicker">03</span>
+        <span class="goal-opt__title">Prueba</span>
+        <span class="goal-opt__desc">Hyrox, triatlón, 10K… periodización hacia tu fecha.</span>
+      </button>
+      <button type="button" class="goal-opt" data-goal="mantener" aria-pressed="false">
+        <span class="goal-opt__kicker">04</span>
+        <span class="goal-opt__title">Mantener</span>
+        <span class="goal-opt__desc">Volver a entrenar o sostener forma sin quemarte.</span>
+      </button>
+    </div>
+
+    <div class="goals-preview" id="goals-preview" aria-live="polite">
+      <div>
+        <div class="goals-preview__label">Plan orientativo</div>
+        <p class="goals-preview__text" id="goals-preview-text">Bloques de empuje, tirón y pierna con progresión de carga. Cada cambio de volumen o intensidad, <strong>explicado con tus datos</strong>.</p>
+      </div>
+      <span class="goals-preview__hint">Sin plantillas genéricas</span>
+    </div>
+  </div>
 </section>
 
 <!-- ░░░ FEATURES · móvil fijo + reels que cambian al hacer scroll (scrollytelling) ░░░ -->
@@ -837,19 +924,19 @@
         <div class="reels__step on" id="como" data-step="0">
           <span class="label" style="color: var(--accent-text);">Funcionalidad 01</span>
           <h2 class="display text-3xl md:text-5xl mt-3">Te explica <span class="accent">el porqué.</span></h2>
-          <p class="text-muted text-base leading-relaxed mt-5">Cada decisión justificada con tus datos. Explica volumen, intensidad, progresión. Así entrena un entrenador de verdad.</p>
+          <p class="text-muted text-base leading-relaxed mt-5">Cada decisión justificada con tus datos. Explica volumen, intensidad, progresión — también en cardio y bloques de prueba. Así entrena un coach de verdad.</p>
         </div>
         <!-- ▼ FUNCIONALIDAD 02 -->
         <div class="reels__step" data-step="1">
           <span class="label" style="color: var(--accent-text);">Funcionalidad 02</span>
           <h2 class="display text-3xl md:text-5xl mt-3">Mejora <span class="accent">contigo.</span></h2>
-          <p class="text-muted text-base leading-relaxed mt-5">Aprende tu factor respuesta individual en 4 semanas. No hay dos cuerpos iguales. La IA lo sabe.</p>
+          <p class="text-muted text-base leading-relaxed mt-5">Aprende tu factor respuesta en fuerza y en sesiones de cardio. No hay dos cuerpos iguales. La IA lo sabe.</p>
         </div>
         <!-- ▼ FUNCIONALIDAD 03 -->
         <div class="reels__step" data-step="2">
           <span class="label" style="color: var(--accent-text);">Funcionalidad 03</span>
           <h2 class="display text-3xl md:text-5xl mt-3">Sustituciones <span class="accent">inteligentes.</span></h2>
-          <p class="text-muted text-base leading-relaxed mt-5">¿Sin barras? ¿Sin equipo? ¿Lesión? El plan se adapta manteniendo el objetivo. Sin improvisaciones.</p>
+          <p class="text-muted text-base leading-relaxed mt-5">¿Sin barras? ¿Sin cinta ni remo? ¿Lesión? El plan se adapta y mantiene el estímulo de tu objetivo. Sin improvisaciones.</p>
         </div>
       </div>
     </div>
@@ -876,12 +963,17 @@
       <!-- Texto -->
       <div class="demo-head">
         <span class="label">Míralo pensar</span>
-        <h2 class="display text-3xl md:text-5xl mt-3">¿TE DUELE ALGO HOY? <span class="text-muted">REESCRIBE TU SESIÓN AL INSTANTE.</span></h2>
-        <p class="demo-sub">Cuéntale qué te pasa y, antes de cambiarte nada, te enseña el razonamiento: qué retira, qué mantiene y por qué — adaptando la rutina de hoy a tu cuerpo. Sin cajas negras.</p>
+        <h2 class="display text-3xl md:text-5xl mt-3">CUÉNTALE QUÉ NECESITAS. <span class="text-muted">VE CÓMO RAZONA.</span></h2>
+        <p class="demo-sub">Dolor de hoy o una prueba con fecha. Antes de cambiarte nada, te enseña el razonamiento: qué retira, qué mantiene y por qué. Sin cajas negras.</p>
         <span class="demo-note">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 7.4H22l-6 4.4 2.3 7.2-6.3-4.6L5.7 21l2.3-7.2-6-4.4h7.6z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
           Conversación real con el modelo
         </span>
+
+        <div class="demo-tabs" role="tablist" aria-label="Escenarios de demo">
+          <button type="button" class="demo-tab" role="tab" id="demo-tab-pain" data-scenario="pain" aria-selected="true" aria-controls="demo-scenario-pain">Sesión de hoy</button>
+          <button type="button" class="demo-tab" role="tab" id="demo-tab-race" data-scenario="race" aria-selected="false" aria-controls="demo-scenario-race">Prueba con fecha</button>
+        </div>
 
         <!-- CTA · Reserva tu plaza (waitlist) -->
         <div class="demo-head__cta">
@@ -892,155 +984,213 @@
         </div>
       </div>
 
-      <!-- Chat -->
-      <div class="demo-chat" aria-label="Ejemplo de conversación con la IA">
-        <div class="demo-chat__bar">
-          <span class="demo-chat__ava"><img src="/assets/hexagono.svg" alt="" width="34" height="34" /></span>
-          <div>
-            <div class="demo-chat__name">2trAIn</div>
-            <div class="demo-chat__status"><span class="live-dot"></span><span class="demo-chat__status-text">Razonando con tus datos</span></div>
-          </div>
-        </div>
-
-        <!-- 1 · usuario -->
-        <div class="demo-step demo-bubble demo-bubble--user">Hoy me toca <strong>empuje</strong>, pero me duele el hombro derecho al presionar por encima de la cabeza. ¿Cambio la rutina?</div>
-
-        <!-- 2 · razonamiento (se colapsa tras pensar; toggle para volver a abrirlo) -->
-        <div class="demo-reason">
-          <button type="button" class="demo-reason__toggle" aria-expanded="true" aria-controls="demo-reason-body">
-            <span class="typing-dots demo-reason__dots" aria-hidden="true"><i></i><i></i><i></i></span>
-            <svg class="demo-reason__check" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span class="demo-reason__label">Razonando con tus datos</span>
-            <span class="demo-reason__count">· 5 pasos</span>
-            <svg class="demo-reason__chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-          <div class="demo-reason__body" id="demo-reason-body">
-            <div class="demo-reason__list">
-              <div class="demo-reason__line"><svg class="tick" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Hoy en tu plan: <strong>empuje (pecho · hombro · tríceps).</strong></span></div>
-              <div class="demo-reason__line"><svg class="tick" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Dolor reportado: <strong>hombro derecho en press vertical.</strong></span></div>
-              <div class="demo-reason__line"><svg class="tick" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Press militar y fondos estresan el manguito → <strong>los retiro hoy.</strong></span></div>
-              <div class="demo-reason__line"><svg class="tick" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Mantengo el estímulo de empuje con <strong>ángulos seguros</strong> para el hombro.</span></div>
-              <div class="demo-reason__line"><svg class="tick" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Añado <strong>activación de manguito rotador</strong> antes de empezar para prevenir.</span></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 3 · respuesta -->
-        <div class="demo-bubble demo-bubble--ai">
-          Hecho. Quito el press vertical y los fondos para no forzar el hombro, y empezamos con un <strong>calentamiento del manguito</strong>. Sesión de hoy 👇
-        </div>
-
-        <!-- 4 · sesión generada · carrusel dentro del chat (aparece tras "pensar") -->
-        <!-- ▼▼ FOTOS: descomenta el <img> de cada tarjeta y apunta a tu imagen en /assets/ ▼▼ -->
-        <div class="demo-gen">
-          <div class="demo-gen__head">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 9h2v6H4zM18 9h2v6h-2zM6 11h12v2H6z" fill="currentColor"/></svg>
-            Sesión de hoy · empuje sin forzar el hombro
-          </div>
-          <div class="demo-carousel" aria-label="Sesión de empuje adaptada al hombro">
-            <div class="demo-carousel__track">
-
-              <!-- Calentamiento -->
-              <div class="demo-ex demo-ex--warm">
-                <div class="demo-ex__media">
-                  <img src="/assets/demo-ex-calentamiento.jpg" alt="Activación de manguito rotador" width="640" height="360" loading="lazy" decoding="async">
-                  <svg viewBox="0 0 24 24" fill="none"><path d="M12 3v18M3 12h18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-                  <span class="demo-ex__ph">Tu foto</span>
-                </div>
-                <div class="demo-ex__body">
-                  <span class="demo-ex__tag">Calentamiento</span>
-                  <div class="demo-ex__name">Activación de manguito rotador</div>
-                  <div class="demo-ex__meta">2×15 · banda elástica</div>
-                </div>
-              </div>
-
-              <!-- Ejercicio 1 -->
-              <div class="demo-ex">
-                <div class="demo-ex__media">
-                  <img src="/assets/demo-ex-1.jpg" alt="Press de pecho en máquina" width="640" height="360" loading="lazy" decoding="async">
-                  <svg viewBox="0 0 24 24" fill="none"><path d="M4 9h2v6H4zM18 9h2v6h-2zM6 11h12v2H6z" fill="currentColor"/></svg>
-                  <span class="demo-ex__ph">Tu foto</span>
-                </div>
-                <div class="demo-ex__body">
-                  <span class="demo-ex__tag">Ejercicio 1</span>
-                  <div class="demo-ex__name">Press de pecho en máquina</div>
-                  <div class="demo-ex__meta">4×10 · agarre neutro</div>
-                </div>
-              </div>
-
-              <!-- Ejercicio 2 -->
-              <div class="demo-ex">
-                <div class="demo-ex__media">
-                  <img src="/assets/demo-ex-2.jpg" alt="Press inclinado con mancuernas" width="640" height="360" loading="lazy" decoding="async">
-                  <svg viewBox="0 0 24 24" fill="none"><path d="M4 9h2v6H4zM18 9h2v6h-2zM6 11h12v2H6z" fill="currentColor"/></svg>
-                  <span class="demo-ex__ph">Tu foto</span>
-                </div>
-                <div class="demo-ex__body">
-                  <span class="demo-ex__tag">Ejercicio 2</span>
-                  <div class="demo-ex__name">Press inclinado con mancuernas</div>
-                  <div class="demo-ex__meta">3×10 · agarre neutro</div>
-                </div>
-              </div>
-
-              <!-- Ejercicio 3 -->
-              <div class="demo-ex">
-                <div class="demo-ex__media">
-                  <img src="/assets/demo-ex-3.jpg" alt="Cruce de poleas" width="640" height="360" loading="lazy" decoding="async">
-                  <svg viewBox="0 0 24 24" fill="none"><path d="M4 9h2v6H4zM18 9h2v6h-2zM6 11h12v2H6z" fill="currentColor"/></svg>
-                  <span class="demo-ex__ph">Tu foto</span>
-                </div>
-                <div class="demo-ex__body">
-                  <span class="demo-ex__tag">Ejercicio 3</span>
-                  <div class="demo-ex__name">Cruce de poleas (aperturas)</div>
-                  <div class="demo-ex__meta">3×12 · controlado</div>
-                </div>
-              </div>
-
-              <!-- Ejercicio 4 -->
-              <div class="demo-ex">
-                <div class="demo-ex__media">
-                  <img src="/assets/demo-ex-4.jpg" alt="Press de pecho cerrado en máquina" width="640" height="360" loading="lazy" decoding="async">
-                  <svg viewBox="0 0 24 24" fill="none"><path d="M4 9h2v6H4zM18 9h2v6h-2zM6 11h12v2H6z" fill="currentColor"/></svg>
-                  <span class="demo-ex__ph">Tu foto</span>
-                </div>
-                <div class="demo-ex__body">
-                  <span class="demo-ex__tag">Ejercicio 4</span>
-                  <div class="demo-ex__name">Press cerrado en máquina</div>
-                  <div class="demo-ex__meta">3×12 · tríceps</div>
-                </div>
-              </div>
-
-              <!-- Ejercicio 5 -->
-              <div class="demo-ex">
-                <div class="demo-ex__media">
-                  <img src="/assets/demo-ex-5.jpg" alt="Extensión de tríceps en polea" width="640" height="360" loading="lazy" decoding="async">
-                  <svg viewBox="0 0 24 24" fill="none"><path d="M4 9h2v6H4zM18 9h2v6h-2zM6 11h12v2H6z" fill="currentColor"/></svg>
-                  <span class="demo-ex__ph">Tu foto</span>
-                </div>
-                <div class="demo-ex__body">
-                  <span class="demo-ex__tag">Ejercicio 5</span>
-                  <div class="demo-ex__name">Extensión de tríceps en polea</div>
-                  <div class="demo-ex__meta">4×12 · cuerda</div>
-                </div>
-              </div>
-
+      <div class="demo-scenarios">
+        <!-- Escenario 1 · dolor / sesión de hoy -->
+        <div class="demo-scenario on demo-chat" id="demo-scenario-pain" role="tabpanel" aria-labelledby="demo-tab-pain" data-scenario="pain" aria-label="Demo: adaptar sesión por dolor">
+          <div class="demo-chat__bar">
+            <span class="demo-chat__ava"><img src="/assets/hexagono.svg" alt="" width="34" height="34" /></span>
+            <div>
+              <div class="demo-chat__name">2trAIn</div>
+              <div class="demo-chat__status"><span class="live-dot"></span><span class="demo-chat__status-text">Razonando con tus datos</span></div>
             </div>
           </div>
 
-          <!-- 5 · botón ir al entrenamiento de hoy -->
-          <a class="demo-go open-modal" href="#" role="button">
-            Reserva tu plaza gratis
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0l-6-6m6 6l-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
+          <div class="demo-step demo-bubble demo-bubble--user">Hoy me toca <strong>empuje</strong>, pero me duele el hombro derecho al presionar por encima de la cabeza. ¿Cambio la rutina?</div>
+
+          <div class="demo-reason">
+            <button type="button" class="demo-reason__toggle" aria-expanded="true" aria-controls="demo-reason-body-pain">
+              <span class="typing-dots demo-reason__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <svg class="demo-reason__check" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span class="demo-reason__label">Razonando con tus datos</span>
+              <span class="demo-reason__count">· 5 pasos</span>
+              <svg class="demo-reason__chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="demo-reason__body" id="demo-reason-body-pain">
+              <div class="demo-reason__list">
+                <div class="demo-reason__line"><svg class="tick" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Hoy en tu plan: <strong>empuje (pecho · hombro · tríceps).</strong></span></div>
+                <div class="demo-reason__line"><svg class="tick" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Dolor reportado: <strong>hombro derecho en press vertical.</strong></span></div>
+                <div class="demo-reason__line"><svg class="tick" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Press militar y fondos estresan el manguito → <strong>los retiro hoy.</strong></span></div>
+                <div class="demo-reason__line"><svg class="tick" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Mantengo el estímulo de empuje con <strong>ángulos seguros</strong> para el hombro.</span></div>
+                <div class="demo-reason__line"><svg class="tick" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Añado <strong>activación de manguito rotador</strong> antes de empezar para prevenir.</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="demo-bubble demo-bubble--ai">
+            Hecho. Quito el press vertical y los fondos para no forzar el hombro, y empezamos con un <strong>calentamiento del manguito</strong>. Sesión de hoy 👇
+          </div>
+
+          <div class="demo-gen">
+            <div class="demo-gen__head">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 9h2v6H4zM18 9h2v6h-2zM6 11h12v2H6z" fill="currentColor"/></svg>
+              Sesión de hoy · empuje sin forzar el hombro
+            </div>
+            <div class="demo-carousel" aria-label="Sesión de empuje adaptada al hombro">
+              <div class="demo-carousel__track">
+                <div class="demo-ex demo-ex--warm">
+                  <div class="demo-ex__media">
+                    <img src="/assets/demo-ex-calentamiento.jpg" alt="Activación de manguito rotador" width="640" height="360" loading="lazy" decoding="async">
+                  </div>
+                  <div class="demo-ex__body">
+                    <span class="demo-ex__tag">Calentamiento</span>
+                    <div class="demo-ex__name">Activación de manguito rotador</div>
+                    <div class="demo-ex__meta">2×15 · banda elástica</div>
+                  </div>
+                </div>
+                <div class="demo-ex">
+                  <div class="demo-ex__media"><img src="/assets/demo-ex-1.jpg" alt="Press de pecho en máquina" width="640" height="360" loading="lazy" decoding="async"></div>
+                  <div class="demo-ex__body">
+                    <span class="demo-ex__tag">Ejercicio 1</span>
+                    <div class="demo-ex__name">Press de pecho en máquina</div>
+                    <div class="demo-ex__meta">4×10 · agarre neutro</div>
+                  </div>
+                </div>
+                <div class="demo-ex">
+                  <div class="demo-ex__media"><img src="/assets/demo-ex-2.jpg" alt="Press inclinado con mancuernas" width="640" height="360" loading="lazy" decoding="async"></div>
+                  <div class="demo-ex__body">
+                    <span class="demo-ex__tag">Ejercicio 2</span>
+                    <div class="demo-ex__name">Press inclinado con mancuernas</div>
+                    <div class="demo-ex__meta">3×10 · agarre neutro</div>
+                  </div>
+                </div>
+                <div class="demo-ex">
+                  <div class="demo-ex__media"><img src="/assets/demo-ex-3.jpg" alt="Cruce de poleas" width="640" height="360" loading="lazy" decoding="async"></div>
+                  <div class="demo-ex__body">
+                    <span class="demo-ex__tag">Ejercicio 3</span>
+                    <div class="demo-ex__name">Cruce de poleas (aperturas)</div>
+                    <div class="demo-ex__meta">3×12 · controlado</div>
+                  </div>
+                </div>
+                <div class="demo-ex">
+                  <div class="demo-ex__media"><img src="/assets/demo-ex-4.jpg" alt="Press cerrado en máquina" width="640" height="360" loading="lazy" decoding="async"></div>
+                  <div class="demo-ex__body">
+                    <span class="demo-ex__tag">Ejercicio 4</span>
+                    <div class="demo-ex__name">Press cerrado en máquina</div>
+                    <div class="demo-ex__meta">3×12 · tríceps</div>
+                  </div>
+                </div>
+                <div class="demo-ex">
+                  <div class="demo-ex__media"><img src="/assets/demo-ex-5.jpg" alt="Extensión de tríceps en polea" width="640" height="360" loading="lazy" decoding="async"></div>
+                  <div class="demo-ex__body">
+                    <span class="demo-ex__tag">Ejercicio 5</span>
+                    <div class="demo-ex__name">Extensión de tríceps en polea</div>
+                    <div class="demo-ex__meta">4×12 · cuerda</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <a class="demo-go open-modal" href="#" role="button">
+              Reserva tu plaza gratis
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0l-6-6m6 6l-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
         </div>
 
+        <!-- Escenario 2 · prueba con fecha (Hyrox) -->
+        <div class="demo-scenario demo-chat" id="demo-scenario-race" role="tabpanel" aria-labelledby="demo-tab-race" data-scenario="race" aria-label="Demo: plan hacia Hyrox">
+          <div class="demo-chat__bar">
+            <span class="demo-chat__ava"><img src="/assets/hexagono.svg" alt="" width="34" height="34" /></span>
+            <div>
+              <div class="demo-chat__name">2trAIn</div>
+              <div class="demo-chat__status"><span class="live-dot"></span><span class="demo-chat__status-text">Razonando con tus datos</span></div>
+            </div>
+          </div>
+
+          <div class="demo-step demo-bubble demo-bubble--user">Tengo un <strong>Hyrox el 15 de marzo</strong>. Entreno 3 días/semana y vengo de fuerza. ¿Me haces un plan?</div>
+
+          <div class="demo-reason">
+            <button type="button" class="demo-reason__toggle" aria-expanded="true" aria-controls="demo-reason-body-race">
+              <span class="typing-dots demo-reason__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <svg class="demo-reason__check" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span class="demo-reason__label">Razonando con tus datos</span>
+              <span class="demo-reason__count">· 5 pasos</span>
+              <svg class="demo-reason__chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="demo-reason__body" id="demo-reason-body-race">
+              <div class="demo-reason__list">
+                <div class="demo-reason__line"><svg class="tick" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Objetivo: <strong>Hyrox · 15 marzo · 3 días/semana.</strong></span></div>
+                <div class="demo-reason__line"><svg class="tick" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Base sólida en fuerza · <strong>cardio limitado</strong> en el historial.</span></div>
+                <div class="demo-reason__line"><svg class="tick" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Combino <strong>fuerza útil + Zone 2 + estaciones</strong> (sled, wall balls…).</span></div>
+                <div class="demo-reason__line"><svg class="tick" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Periodizo hacia la fecha: más volumen ahora, <strong>taper cerca del evento</strong>.</span></div>
+                <div class="demo-reason__line"><svg class="tick" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Mantengo <strong>1 día de fuerza</strong> para no perder lo ganado.</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="demo-bubble demo-bubble--ai">
+            Hecho. Plan hacia tu Hyrox: <strong>fuerza útil, Zone 2 y estaciones</strong>. Semana tipo 👇
+          </div>
+
+          <div class="demo-gen">
+            <div class="demo-gen__head">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 9h2v6H4zM18 9h2v6h-2zM6 11h12v2H6z" fill="currentColor"/></svg>
+              Semana tipo · camino a Hyrox
+            </div>
+            <div class="demo-carousel" aria-label="Sesión mixta hacia Hyrox">
+              <div class="demo-carousel__track">
+                <div class="demo-ex demo-ex--warm">
+                  <div class="demo-ex__media"><img src="/assets/demo-ex-calentamiento.jpg" alt="SkiErg Hyrox" width="640" height="360" loading="lazy" decoding="async"></div>
+                  <div class="demo-ex__body">
+                    <span class="demo-ex__tag">Hyrox</span>
+                    <div class="demo-ex__name">SkiErg</div>
+                    <div class="demo-ex__meta">1000 m · ritmo controlado</div>
+                  </div>
+                </div>
+                <div class="demo-ex">
+                  <div class="demo-ex__media"><img src="/assets/demo-ex-1.jpg" alt="Sled Push Hyrox" width="640" height="360" loading="lazy" decoding="async"></div>
+                  <div class="demo-ex__body">
+                    <span class="demo-ex__tag">Hyrox</span>
+                    <div class="demo-ex__name">Sled Push</div>
+                    <div class="demo-ex__meta">6×20 m · carga media</div>
+                  </div>
+                </div>
+                <div class="demo-ex">
+                  <div class="demo-ex__media"><img src="/assets/demo-ex-2.jpg" alt="Wall Balls Hyrox" width="640" height="360" loading="lazy" decoding="async"></div>
+                  <div class="demo-ex__body">
+                    <span class="demo-ex__tag">Hyrox</span>
+                    <div class="demo-ex__name">Wall Balls</div>
+                    <div class="demo-ex__meta">4×15 · 6/9 kg</div>
+                  </div>
+                </div>
+                <div class="demo-ex">
+                  <div class="demo-ex__media"><img src="/assets/demo-ex-3.jpg" alt="Farmers Carry Hyrox" width="640" height="360" loading="lazy" decoding="async"></div>
+                  <div class="demo-ex__body">
+                    <span class="demo-ex__tag">Hyrox</span>
+                    <div class="demo-ex__name">Farmers Carry</div>
+                    <div class="demo-ex__meta">5×40 m · agarre fuerte</div>
+                  </div>
+                </div>
+                <div class="demo-ex">
+                  <div class="demo-ex__media"><img src="/assets/demo-ex-4.jpg" alt="Sandbag Lunges Hyrox" width="640" height="360" loading="lazy" decoding="async"></div>
+                  <div class="demo-ex__body">
+                    <span class="demo-ex__tag">Hyrox</span>
+                    <div class="demo-ex__name">Sandbag Lunges</div>
+                    <div class="demo-ex__meta">4×20 m · saco</div>
+                  </div>
+                </div>
+                <div class="demo-ex">
+                  <div class="demo-ex__media"><img src="/assets/demo-ex-5.jpg" alt="Burpee Broad Jump Hyrox" width="640" height="360" loading="lazy" decoding="async"></div>
+                  <div class="demo-ex__body">
+                    <span class="demo-ex__tag">Hyrox</span>
+                    <div class="demo-ex__name">Burpee Broad Jump</div>
+                    <div class="demo-ex__meta">4×8 · estación</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <a class="demo-go open-modal" href="#" role="button">
+              Reserva tu plaza gratis
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0l-6-6m6 6l-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+        </div>
       </div>
 
     </div>
   </div>
 </section>
 
-<!-- COMPARISON TABLE — SECCIÓN COMENTADA / OCULTA
+<!-- COMPARISON TABLE — OCULTA (como en producción)
 <section class="border-t hairline">
   <div class="max-w-page pad-x">
     <div class="max-w-3xl">
@@ -1068,12 +1218,17 @@
             <td class="cmp-cell" aria-label="No" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: var(--danger); font-size: 14px;">✗</td>
           </tr>
           <tr>
-            <th scope="row" class="cmp-cell" style="padding: 14px 20px; font-size: 14px; border-bottom: 1px solid var(--line); color: var(--fg); font-weight: 400; text-align: left;">Adapta según tu fatiga real</th>
+            <th scope="row" class="cmp-cell" style="padding: 14px 20px; font-size: 14px; border-bottom: 1px solid var(--line); color: var(--fg); font-weight: 400; text-align: left;">Fuerza + cardio en el mismo plan</th>
             <td class="cmp-cell" aria-label="Sí" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: #22c55e; font-size: 16px; background: rgba(42, 111, 219,0.03);">✓</td>
             <td class="cmp-cell" aria-label="No" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: var(--danger); font-size: 14px;">✗</td>
           </tr>
           <tr>
-            <th scope="row" class="cmp-cell" style="padding: 14px 20px; font-size: 14px; border-bottom: 1px solid var(--line); color: var(--fg); font-weight: 400; text-align: left;">Razona sobre tu historial</th>
+            <th scope="row" class="cmp-cell" style="padding: 14px 20px; font-size: 14px; border-bottom: 1px solid var(--line); color: var(--fg); font-weight: 400; text-align: left;">Plan hacia una prueba con fecha</th>
+            <td class="cmp-cell" aria-label="Sí" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: #22c55e; font-size: 16px; background: rgba(42, 111, 219,0.03);">✓</td>
+            <td class="cmp-cell" aria-label="No" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: var(--danger); font-size: 14px;">✗</td>
+          </tr>
+          <tr>
+            <th scope="row" class="cmp-cell" style="padding: 14px 20px; font-size: 14px; border-bottom: 1px solid var(--line); color: var(--fg); font-weight: 400; text-align: left;">Adapta según tu fatiga real</th>
             <td class="cmp-cell" aria-label="Sí" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: #22c55e; font-size: 16px; background: rgba(42, 111, 219,0.03);">✓</td>
             <td class="cmp-cell" aria-label="No" style="text-align: center; padding: 14px 20px; border-bottom: 1px solid var(--line); color: var(--danger); font-size: 14px;">✗</td>
           </tr>
@@ -1205,6 +1360,18 @@
           <div class="faq-item" data-cat="uso">
             <button type="button" class="faq-q display text-base md:text-lg" aria-expanded="false" aria-controls="faq-a-2"><span>¿Sirve si entreno en casa / sin gimnasio?</span><svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg></button>
             <div id="faq-a-2" class="faq-a"><div class="faq-a-inner">Sí. Al configurar tu perfil le dices el material disponible y si entrenas en casa o en gym. El plan se construye exactamente con lo que tienes, sin ejercicios que no puedas hacer.</div></div>
+          </div>
+          <div class="faq-item" data-cat="uso">
+            <button type="button" class="faq-q display text-base md:text-lg" aria-expanded="false" aria-controls="faq-a-7"><span>¿Sirve para Hyrox, triatlón o carrera?</span><svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg></button>
+            <div id="faq-a-7" class="faq-a"><div class="faq-a-inner">Sí. Eliges la prueba y la fecha, y construye un plan hacia ese día: fuerza específica, cardio y estaciones o disciplinas que necesites, periodizado hasta el evento.</div></div>
+          </div>
+          <div class="faq-item" data-cat="uso">
+            <button type="button" class="faq-q display text-base md:text-lg" aria-expanded="false" aria-controls="faq-a-8"><span>¿Puedo mezclar fuerza y cardio?</span><svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg></button>
+            <div id="faq-a-8" class="faq-a"><div class="faq-a-inner">Sí. El plan combina ambas según tu objetivo. No son apps separadas: misma IA, mismo historial, mismas justificaciones.</div></div>
+          </div>
+          <div class="faq-item" data-cat="producto">
+            <button type="button" class="faq-q display text-base md:text-lg" aria-expanded="false" aria-controls="faq-a-9"><span>¿Es solo gimnasio?</span><svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg></button>
+            <div id="faq-a-9" class="faq-a"><div class="faq-a-inner">No. Cubre fuerza, cardio y preparación de pruebas. El gym es un escenario; el producto es el coach que razona tu entrenamiento completo.</div></div>
           </div>
           <div class="faq-item" data-cat="beta">
             <button type="button" class="faq-q display text-base md:text-lg" aria-expanded="false" aria-controls="faq-a-3"><span>¿Cuándo recibo acceso?</span><svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-8-8h16" stroke="currentColor" stroke-width="2"/></svg></button>
