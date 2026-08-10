@@ -29,6 +29,16 @@ export function buildEmail(
   const referralsNeeded = 3
   const referralsClamped = Math.max(0, Math.min(referrals, referralsNeeded))
   const barPct = Math.round((referralsClamped / referralsNeeded) * 100)
+  const barWidth = barPct === 0 ? 0 : Math.max(barPct, 8)
+  const progressFill = barWidth === 0
+    ? `<tr><td style="height:8px;line-height:8px;font-size:0;mso-line-height-rule:exactly;">&nbsp;</td></tr>`
+    : `<tr>
+        <td style="padding:0;">
+          <table role="presentation" width="${barWidth}%" cellpadding="0" cellspacing="0" bgcolor="${BRAND}" style="width:${barWidth}%;background-color:${BRAND};border-radius:999px;">
+            <tr><td style="height:8px;line-height:8px;font-size:0;mso-line-height-rule:exactly;">&nbsp;</td></tr>
+          </table>
+        </td>
+      </tr>`
 
   const t = isEn
     ? {
@@ -158,84 +168,83 @@ export function buildEmail(
     <a class="accent" href="${referralLink}" style="display:inline-block;color:${BRAND};font-size:13px;font-weight:600;text-decoration:underline;text-underline-offset:3px;">${t.ctaTop}</a>
   </td></tr>
 
-  <!-- BODY -->
-  <tr><td class="body" bgcolor="${LIGHT_CARD}" style="background-color:${LIGHT_CARD};padding:8px 28px 8px;">
+  <!-- Progress -->
+  <tr><td class="body" bgcolor="${LIGHT_CARD}" style="background-color:${LIGHT_CARD};padding:24px 28px 20px;">
+    <p class="text-pri" style="margin:0 0 12px;font-size:13px;font-weight:700;color:${LIGHT_TEXT};line-height:1.4;">${t.refProg}</p>
+    <!-- Barra: tabla anidada (evita la rayita vertical rara de % en celdas hermanas) -->
+    <table role="presentation" class="bar-track" width="100%" cellpadding="0" cellspacing="0" bgcolor="#e8ebf0" style="width:100%;background-color:#e8ebf0;border-radius:999px;">
+      ${progressFill}
+    </table>
+  </td></tr>
 
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-      <tr><td style="padding:24px 0 8px;">
-        <p class="text-pri" style="margin:0 0 10px;font-size:13px;font-weight:700;color:${LIGHT_TEXT};">${t.refProg}</p>
-        <table role="presentation" class="bar-track" width="100%" cellpadding="0" cellspacing="0" style="background:#e8ebf0;border-radius:999px;overflow:hidden;">
-          <tr>
-            <td width="${barPct}%" style="background:${BRAND};height:8px;font-size:0;line-height:0;">&nbsp;</td>
-            <td width="${100 - barPct}%" style="height:8px;font-size:0;line-height:0;">&nbsp;</td>
-          </tr>
-        </table>
+  <!-- Separador full-bleed -->
+  <tr><td class="divider" bgcolor="${LIGHT_CARD}" style="background-color:${LIGHT_CARD};padding:0;border-top:1px solid ${LIGHT_BORDER};font-size:0;line-height:0;height:1px;">&nbsp;</td></tr>
+
+  <!-- How / waves -->
+  <tr><td class="body" bgcolor="${LIGHT_CARD}" style="background-color:${LIGHT_CARD};padding:20px 28px 8px;">
+    <p class="text-mut" style="margin:0;font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:${LIGHT_MUTED};line-height:1.4;">${t.how}</p>
+  </td></tr>
+
+  <tr><td class="divider" bgcolor="${LIGHT_CARD}" style="background-color:${LIGHT_CARD};padding:0;border-top:1px solid ${LIGHT_BORDER};font-size:0;line-height:0;height:1px;">&nbsp;</td></tr>
+  <tr><td class="body" bgcolor="${LIGHT_CARD}" style="background-color:${LIGHT_CARD};padding:16px 28px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
+      <td style="padding-right:12px;vertical-align:middle;">
+        <p class="text-pri" style="margin:0 0 2px;font-size:15px;font-weight:700;color:${LIGHT_TEXT};line-height:1.35;">${t.w1}</p>
+        <p class="text-mut" style="margin:0;font-size:12.5px;color:${LIGHT_MUTED};line-height:1.4;">${t.w1s}</p>
+      </td>
+      <td align="right" valign="middle" style="vertical-align:middle;white-space:nowrap;">
+        <span class="pill-hi" style="display:inline-block;background:#e8f0fb;color:${BRAND};font-size:11px;font-weight:700;padding:5px 11px;border-radius:999px;border:1px solid #b7cef0;line-height:1.2;">${t.w1b}</span>
+      </td>
+    </tr></table>
+  </td></tr>
+
+  <tr><td class="divider" bgcolor="${LIGHT_CARD}" style="background-color:${LIGHT_CARD};padding:0;border-top:1px solid ${LIGHT_BORDER};font-size:0;line-height:0;height:1px;">&nbsp;</td></tr>
+  <tr><td class="body" bgcolor="${LIGHT_CARD}" style="background-color:${LIGHT_CARD};padding:16px 28px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
+      <td style="padding-right:12px;vertical-align:middle;">
+        <p class="text-pri" style="margin:0 0 2px;font-size:15px;font-weight:700;color:${LIGHT_TEXT};line-height:1.35;">${t.w2}</p>
+        <p class="text-mut" style="margin:0;font-size:12.5px;color:${LIGHT_MUTED};line-height:1.4;">${t.w2s}</p>
+      </td>
+      <td align="right" valign="middle" style="vertical-align:middle;white-space:nowrap;">
+        <span class="pill-lo" style="display:inline-block;background:#f4f5f7;color:${LIGHT_MUTED};font-size:11px;font-weight:700;padding:5px 11px;border-radius:999px;border:1px solid ${LIGHT_BORDER};line-height:1.2;">${t.w2b}</span>
+      </td>
+    </tr></table>
+  </td></tr>
+
+  <tr><td class="divider" bgcolor="${LIGHT_CARD}" style="background-color:${LIGHT_CARD};padding:0;border-top:1px solid ${LIGHT_BORDER};font-size:0;line-height:0;height:1px;">&nbsp;</td></tr>
+  <tr><td class="body" bgcolor="${LIGHT_CARD}" style="background-color:${LIGHT_CARD};padding:16px 28px 20px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
+      <td style="padding-right:12px;vertical-align:middle;">
+        <p class="text-pri" style="margin:0 0 2px;font-size:15px;font-weight:700;color:${LIGHT_TEXT};line-height:1.35;">${t.w3}</p>
+        <p class="text-mut" style="margin:0;font-size:12.5px;color:${LIGHT_MUTED};line-height:1.4;">${t.w3s}</p>
+      </td>
+      <td align="right" valign="middle" style="vertical-align:middle;white-space:nowrap;">
+        <span class="pill-lo" style="display:inline-block;background:#f4f5f7;color:#8a9099;font-size:11px;font-weight:700;padding:5px 11px;border-radius:999px;border:1px solid ${LIGHT_BORDER};line-height:1.2;">${t.w3b}</span>
+      </td>
+    </tr></table>
+  </td></tr>
+
+  <tr><td class="divider" bgcolor="${LIGHT_CARD}" style="background-color:${LIGHT_CARD};padding:0;border-top:1px solid ${LIGHT_BORDER};font-size:0;line-height:0;height:1px;">&nbsp;</td></tr>
+
+  <!-- Referral -->
+  <tr><td class="body" bgcolor="${LIGHT_CARD}" style="background-color:${LIGHT_CARD};padding:24px 28px 8px;">
+    <p class="accent" style="margin:0 0 6px;font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:${BRAND};line-height:1.4;">${t.refK}</p>
+    <p class="text-mut" style="margin:0 0 14px;font-size:13.5px;color:${LIGHT_MUTED};line-height:1.5;">${t.refS}</p>
+    <table role="presentation" class="linkbox" width="100%" cellpadding="0" cellspacing="0" bgcolor="#f7f8fb" style="width:100%;background-color:#f7f8fb;border:1px solid ${LIGHT_BORDER};border-radius:8px;margin-bottom:12px;">
+      <tr><td style="padding:13px 14px;">
+        <p class="text-pri" style="margin:0;font-size:12px;color:#4a5058;word-break:break-all;font-family:'Courier New',Courier,monospace;line-height:1.4;">${referralLink}</p>
       </td></tr>
     </table>
+    <a class="btn-pri" href="${whatsappUrl}" style="display:block;background:${BRAND};color:#ffffff;font-size:14px;font-weight:700;padding:14px 0;border-radius:8px;text-decoration:none;text-align:center;margin-bottom:8px;line-height:1.2;">${t.shareBtn}</a>
+    <a class="btn-sec" href="${twitterUrl}" style="display:block;background:#ffffff;border:1px solid ${LIGHT_BORDER};color:${LIGHT_TEXT};font-size:13px;font-weight:700;padding:12px 0;border-radius:8px;text-decoration:none;text-align:center;line-height:1.2;">X / Twitter</a>
+  </td></tr>
 
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-      <tr><td style="padding:18px 0 8px;">
-        <p class="text-mut" style="margin:0;font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:${LIGHT_MUTED};">${t.how}</p>
-      </td></tr>
+  <tr><td class="divider" bgcolor="${LIGHT_CARD}" style="background-color:${LIGHT_CARD};padding:0;border-top:1px solid ${LIGHT_BORDER};font-size:0;line-height:0;height:1px;">&nbsp;</td></tr>
 
-      <tr><td class="divider" style="border-top:1px solid ${LIGHT_BORDER};padding:16px 0;">
-        <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-          <td>
-            <p class="text-pri" style="margin:0 0 2px;font-size:15px;font-weight:700;color:${LIGHT_TEXT};">${t.w1}</p>
-            <p class="text-mut" style="margin:0;font-size:12.5px;color:${LIGHT_MUTED};">${t.w1s}</p>
-          </td>
-          <td align="right" style="padding-left:8px;white-space:nowrap;">
-            <span class="pill-hi" style="background:#e8f0fb;color:${BRAND};font-size:11px;font-weight:700;padding:5px 11px;border-radius:999px;border:1px solid #b7cef0;">${t.w1b}</span>
-          </td>
-        </tr></table>
-      </td></tr>
-
-      <tr><td class="divider" style="border-top:1px solid ${LIGHT_BORDER};padding:16px 0;">
-        <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-          <td>
-            <p class="text-pri" style="margin:0 0 2px;font-size:15px;font-weight:700;color:${LIGHT_TEXT};">${t.w2}</p>
-            <p class="text-mut" style="margin:0;font-size:12.5px;color:${LIGHT_MUTED};">${t.w2s}</p>
-          </td>
-          <td align="right" style="padding-left:8px;white-space:nowrap;">
-            <span class="pill-lo" style="background:#f4f5f7;color:${LIGHT_MUTED};font-size:11px;font-weight:700;padding:5px 11px;border-radius:999px;border:1px solid ${LIGHT_BORDER};">${t.w2b}</span>
-          </td>
-        </tr></table>
-      </td></tr>
-
-      <tr><td class="divider" style="border-top:1px solid ${LIGHT_BORDER};padding:16px 0 22px;">
-        <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-          <td>
-            <p class="text-pri" style="margin:0 0 2px;font-size:15px;font-weight:700;color:${LIGHT_TEXT};">${t.w3}</p>
-            <p class="text-mut" style="margin:0;font-size:12.5px;color:${LIGHT_MUTED};">${t.w3s}</p>
-          </td>
-          <td align="right" style="padding-left:8px;white-space:nowrap;">
-            <span class="pill-lo" style="background:#f4f5f7;color:#8a9099;font-size:11px;font-weight:700;padding:5px 11px;border-radius:999px;border:1px solid ${LIGHT_BORDER};">${t.w3b}</span>
-          </td>
-        </tr></table>
-      </td></tr>
-    </table>
-
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-      <tr><td class="divider" style="border-top:1px solid ${LIGHT_BORDER};padding:24px 0 0;">
-        <p class="accent" style="margin:0 0 6px;font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:${BRAND};">${t.refK}</p>
-        <p class="text-mut" style="margin:0 0 14px;font-size:13.5px;color:${LIGHT_MUTED};line-height:1.5;">${t.refS}</p>
-        <table role="presentation" class="linkbox" width="100%" cellpadding="0" cellspacing="0" style="background:#f7f8fb;border:1px solid ${LIGHT_BORDER};border-radius:8px;margin-bottom:12px;">
-          <tr><td style="padding:13px 14px;">
-            <p class="text-pri" style="margin:0;font-size:12px;color:#4a5058;word-break:break-all;font-family:'Courier New',Courier,monospace;">${referralLink}</p>
-          </td></tr>
-        </table>
-        <a class="btn-pri" href="${whatsappUrl}" style="display:block;background:${BRAND};color:#ffffff;font-size:14px;font-weight:700;padding:14px 0;border-radius:8px;text-decoration:none;text-align:center;margin-bottom:8px;">${t.shareBtn}</a>
-        <a class="btn-sec" href="${twitterUrl}" style="display:block;background:#ffffff;border:1px solid ${LIGHT_BORDER};color:${LIGHT_TEXT};font-size:13px;font-weight:700;padding:12px 0;border-radius:8px;text-decoration:none;text-align:center;">X / Twitter</a>
-      </td></tr>
-    </table>
-
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-      <tr><td class="divider" style="border-top:1px solid ${LIGHT_BORDER};padding:26px 0 28px;text-align:center;">
-        <p class="text-pri" style="margin:0 0 6px;font-size:21px;font-weight:800;color:${LIGHT_TEXT};letter-spacing:-0.3px;">${t.urg}</p>
-        <p class="text-mut" style="margin:0;font-size:13px;color:${LIGHT_MUTED};line-height:1.6;">${t.urg1}<br><strong class="accent" style="color:${BRAND};">${t.urg2}</strong></p>
-      </td></tr>
-    </table>
-
+  <!-- Urgency -->
+  <tr><td class="body" bgcolor="${LIGHT_CARD}" style="background-color:${LIGHT_CARD};padding:26px 28px 28px;text-align:center;">
+    <p class="text-pri" style="margin:0 0 8px;font-size:21px;font-weight:800;color:${LIGHT_TEXT};letter-spacing:-0.3px;line-height:1.25;">${t.urg}</p>
+    <p class="text-mut" style="margin:0;font-size:13px;color:${LIGHT_MUTED};line-height:1.6;">${t.urg1}<br><strong class="accent" style="color:${BRAND};">${t.urg2}</strong></p>
   </td></tr>
 </table>
 
