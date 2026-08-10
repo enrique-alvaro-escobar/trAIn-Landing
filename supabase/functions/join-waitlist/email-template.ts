@@ -25,7 +25,9 @@ export function buildEmail(
   referralLink: string,
   isEn: boolean,
   referrals = 0,
+  spotLink?: string,
 ): string {
+  const viewLink = spotLink || referralLink
   const referralsNeeded = 3
   const referralsClamped = Math.max(0, Math.min(referrals, referralsNeeded))
   const barPct = Math.round((referralsClamped / referralsNeeded) * 100)
@@ -165,7 +167,7 @@ export function buildEmail(
     <p class="accent" style="margin:0 0 10px;font-size:11px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:${BRAND};">${t.eyebrow}</p>
     <p class="text-pri" style="margin:0;font-size:72px;font-weight:800;letter-spacing:-3px;color:${LIGHT_TEXT};line-height:1;">#${position}</p>
     <p class="text-mut" style="margin:10px 0 18px;font-size:14px;color:${LIGHT_MUTED};">${t.sub}</p>
-    <a class="accent" href="${referralLink}" style="display:inline-block;color:${BRAND};font-size:13px;font-weight:600;text-decoration:underline;text-underline-offset:3px;">${t.ctaTop}</a>
+    <a class="accent" href="${viewLink}" style="display:inline-block;color:${BRAND};font-size:13px;font-weight:600;text-decoration:underline;text-underline-offset:3px;">${t.ctaTop}</a>
   </td></tr>
 
   <!-- Progress -->
