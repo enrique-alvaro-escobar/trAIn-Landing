@@ -5,7 +5,7 @@
  * del dispositivo y rompen el wordmark blanco. Con color-scheme:light + bgcolor +
  * logo oscuro-sobre-claro, el correo se mantiene legible.
  *
- * Ancho: 540px · Acento: #2A2AFF · Logo: logo-texto-on-light.png
+ * Ancho: 540px · Acento: #2A2AFF · Logo: logo-texto-email.png (transparente, azul)
  */
 
 const ACCENT = '#2A2AFF'
@@ -17,7 +17,7 @@ const BORDER = '#e2e5eb'
 const TEXT_PRI = '#1a1a1a'
 const TEXT_SEC = '#5b6270' // contraste AA sobre fondos claros
 const CARD_W = '540'
-const LOGO_URL = 'https://2trainapp.com/assets/logo-texto-on-light.png'
+const LOGO_URL = 'https://2trainapp.com/assets/logo-texto-email.png'
 
 export function buildEmail(
   position: number,
