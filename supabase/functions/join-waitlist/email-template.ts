@@ -2,14 +2,14 @@
  * Plantilla HTML del email de confirmación de waitlist (Resend).
  *
  * Light (default): fondo claro + wordmark negro.
- * Dark (@media prefers-color-scheme: dark): fondo azul marca #2A2AFF + wordmark blanco.
+ * Dark (@media prefers-color-scheme: dark): fondo azul marca #2A6FDB + wordmark blanco.
  *
  * Los headers del logo son PNG OPACOS del mismo color que el fondo (Gmail rellena
  * la transparencia PNG con blanco y generaba la "caja" blanca).
  */
 
-const BRAND = '#2A2AFF'
-const BRAND_SOFT = '#4B4BFF'
+const BRAND = '#2A6FDB'
+const BRAND_SOFT = '#5a8fe3'
 const LIGHT_BG = '#eef1f6'
 const LIGHT_CARD = '#ffffff'
 const LIGHT_HERO = '#f7f8fb'
@@ -120,11 +120,11 @@ export function buildEmail(
       .page { background-color:${BRAND} !important; }
       .card, .hero, .body, .linkbox { background-color:${BRAND} !important; border-color:${BRAND_SOFT} !important; }
       .text-pri { color:#ffffff !important; }
-      .text-mut { color:#e8e8ff !important; }
+      .text-mut { color:#d6e4f8 !important; }
       .accent { color:#ffffff !important; }
-      .bar-track { background-color:#1a1aff !important; }
-      .pill-hi { background-color:#1a1aff !important; color:#ffffff !important; border-color:#ffffff !important; }
-      .pill-lo { background-color:#1a1aff !important; color:#d0d0ff !important; border-color:${BRAND_SOFT} !important; }
+      .bar-track { background-color:#1e4f9e !important; }
+      .pill-hi { background-color:#1e4f9e !important; color:#ffffff !important; border-color:#ffffff !important; }
+      .pill-lo { background-color:#1e4f9e !important; color:#d0d0ff !important; border-color:${BRAND_SOFT} !important; }
       .btn-pri { background-color:#ffffff !important; color:${BRAND} !important; }
       .btn-sec { background-color:${BRAND} !important; border-color:#ffffff !important; color:#ffffff !important; }
       .divider { border-color:${BRAND_SOFT} !important; }
@@ -185,7 +185,7 @@ export function buildEmail(
             <p class="text-mut" style="margin:0;font-size:12.5px;color:${LIGHT_MUTED};">${t.w1s}</p>
           </td>
           <td align="right" style="padding-left:8px;white-space:nowrap;">
-            <span class="pill-hi" style="background:#eef0ff;color:${BRAND};font-size:11px;font-weight:700;padding:5px 11px;border-radius:999px;border:1px solid #d0d4ff;">${t.w1b}</span>
+            <span class="pill-hi" style="background:#e8f0fb;color:${BRAND};font-size:11px;font-weight:700;padding:5px 11px;border-radius:999px;border:1px solid #b7cef0;">${t.w1b}</span>
           </td>
         </tr></table>
       </td></tr>
