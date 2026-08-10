@@ -124,7 +124,7 @@ export function buildEmail(
       .accent { color:#ffffff !important; }
       .bar-track { background-color:#1e4f9e !important; }
       .pill-hi { background-color:#1e4f9e !important; color:#ffffff !important; border-color:#ffffff !important; }
-      .pill-lo { background-color:#1e4f9e !important; color:#d0d0ff !important; border-color:${BRAND_SOFT} !important; }
+      .pill-lo { background-color:#1e4f9e !important; color:#d6e4f8 !important; border-color:${BRAND_SOFT} !important; }
       .btn-pri { background-color:#ffffff !important; color:${BRAND} !important; }
       .btn-sec { background-color:${BRAND} !important; border-color:#ffffff !important; color:#ffffff !important; }
       .divider { border-color:${BRAND_SOFT} !important; }
