@@ -1,4 +1,5 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { buildEmail } from './email-template.ts'
 
 const ALLOWED_ORIGINS = new Set([
   'https://2trainapp.com',
@@ -132,7 +133,7 @@ Deno.serve(async (req) => {
           from: '2trAIn Waitlist <waitlist@2trainapp.com>',
           to: email,
           subject: isEn ? `You're #${position} on the 2trAIn waitlist` : `Eres el #${position} en la waitlist de 2trAIn`,
-          html: buildEmail(position, referralLink, isEn),
+          html: buildEmail(position, referralLink, isEn, referrals),
         }),
       })
     }
@@ -148,158 +149,3 @@ Deno.serve(async (req) => {
     })
   }
 })
-
-// Email en tema OSCURO, alineado con la identidad de la landing (fondo #0A0A0A, acento #2A6FDB).
-// Bilingüe: isEn=true → inglés; si no, español.
-function buildEmail(position: number, referralLink: string, isEn: boolean): string {
-  const t = isEn
-    ? {
-        lang: 'en', title: "You're in — 2trAIn", eyebrow: 'Spot confirmed', sub: 'on the 2trAIn waitlist',
-        ctaTop: 'View my spot →', how: 'How you move up',
-        w1: 'Wave 1 — First 100', w1s: 'Lifetime access · Free forever', w1b: '3 referrals ⚡',
-        w2: 'Wave 2 — Next 150', w2s: 'Access weeks after launch', w2b: '1 referral',
-        w3: 'Wave 3 — Last 150', w3s: 'First come, first served', w3b: 'Waitlist',
-        refK: 'Your referral link', refS: 'Share and move up. With 3 friends you lock in Wave 1.',
-        shareBtn: 'Share my link →', urg: 'Only 100 Wave 1 spots.',
-        urg1: "Once they're gone, there's no going back.", urg2: '3 friends = lifetime access, free.',
-        team: '— The 2trAIn team', signup: 'You signed up at',
-        wa: `Train solo with no guidance? I just reserved my spot in 2trAIn, an AI personal coach that tells you exactly what to do at every moment. Only 100 free lifetime spots. Join with my link and we both move up the list 👇\n${referralLink}`,
-        tw: `Just reserved my spot in 2trAIn ⚡\n\nAn AI personal coach that adapts to you in real time.\n\nOnly 100 free-forever spots. Get in before it fills up →`,
-      }
-    : {
-        lang: 'es', title: 'Estás dentro de 2trAIn', eyebrow: 'Plaza confirmada', sub: 'en la waitlist de 2trAIn',
-        ctaTop: 'Ver mi posición →', how: 'Cómo subes de posición',
-        w1: 'Wave 1 — Primeros 100', w1s: 'Acceso de por vida · Gratis para siempre', w1b: '3 referidos ⚡',
-        w2: 'Wave 2 — Siguientes 150', w2s: 'Acceso semanas después del lanzamiento', w2b: '1 referido',
-        w3: 'Wave 3 — Últimas 150', w3s: 'Por orden de llegada', w3b: 'Lista de espera',
-        refK: 'Tu link de referido', refS: 'Comparte y sube posiciones. Con 3 amigos tienes Wave 1 garantizado.',
-        shareBtn: 'Compartir mi link →', urg: 'Solo 100 plazas Wave 1.',
-        urg1: 'Cuando se llenen, no hay vuelta atrás.', urg2: '3 amigos = acceso de por vida, gratis.',
-        team: '— El equipo de 2trAIn', signup: 'Te apuntaste en',
-        wa: `¿Entrenas solo y sin guía? Acabo de reservar mi plaza en 2trAIn, un entrenador personal con IA que te dice exactamente qué hacer en cada momento. Solo hay 100 plazas gratuitas de por vida. Entra con mi link y los dos subimos posiciones en la lista 👇\n${referralLink}`,
-        tw: `Acabo de reservar mi plaza en 2trAIn ⚡\n\nUn entrenador personal con IA que se adapta a ti en tiempo real.\n\nSolo 100 plazas gratis para siempre. Entra antes de que se llene →`,
-      }
-
-  const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(t.wa)}`
-  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(t.tw)}&url=${encodeURIComponent(referralLink)}`
-  const font = `-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif`
-
-  return `<!DOCTYPE html>
-<html lang="${t.lang}">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="color-scheme" content="dark">
-  <meta name="supported-color-schemes" content="dark">
-  <title>${t.title}</title>
-</head>
-<body style="margin:0;padding:0;background-color:#0a0a0a;font-family:${font};">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#0a0a0a;padding:24px 12px;">
-<tr><td align="center">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:540px;">
-
-  <!-- HEADER -->
-  <tr><td style="padding:8px 4px 20px;">
-    <img src="https://2trainapp.com/assets/logo-texto.png" width="140" height="20" alt="2trAIn" style="display:block;height:20px;width:auto;border:0;outline:none;">
-  </td></tr>
-
-  <!-- HERO -->
-  <tr><td style="background:#0e0e0e;border:1px solid #1f1f1f;border-radius:16px 16px 0 0;border-bottom:none;padding:36px 32px 32px;text-align:center;">
-    <p style="margin:0 0 10px;font-size:11px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:#5a8fe3;">${t.eyebrow}</p>
-    <p style="margin:0;font-size:88px;font-weight:800;letter-spacing:-3px;color:#ffffff;line-height:1;">#${position}</p>
-    <p style="margin:10px 0 26px;font-size:14px;color:#8a8a8a;">${t.sub}</p>
-    <a href="${referralLink}" style="display:inline-block;background:#2a6fdb;color:#ffffff;font-size:14px;font-weight:700;padding:13px 30px;border-radius:999px;text-decoration:none;">${t.ctaTop}</a>
-  </td></tr>
-
-  <!-- BODY CARD -->
-  <tr><td style="background:#111111;border:1px solid #1f1f1f;border-top:none;border-radius:0 0 16px 16px;padding:4px 28px 8px;">
-
-    <!-- Waves -->
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-      <tr><td style="padding:26px 0 8px;">
-        <p style="margin:0;font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#8a8a8a;">${t.how}</p>
-      </td></tr>
-
-      <tr><td style="border-top:1px solid #1f1f1f;padding:16px 0;">
-        <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-          <td>
-            <p style="margin:0 0 2px;font-size:15px;font-weight:700;color:#ffffff;">${t.w1}</p>
-            <p style="margin:0;font-size:12.5px;color:#8a8a8a;">${t.w1s}</p>
-          </td>
-          <td align="right" style="padding-left:8px;white-space:nowrap;">
-            <span style="background:#0e1830;color:#5a8fe3;font-size:11px;font-weight:700;padding:5px 11px;border-radius:999px;border:1px solid #1e3a6e;">${t.w1b}</span>
-          </td>
-        </tr></table>
-      </td></tr>
-
-      <tr><td style="border-top:1px solid #1f1f1f;padding:16px 0;">
-        <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-          <td>
-            <p style="margin:0 0 2px;font-size:15px;font-weight:700;color:#ffffff;">${t.w2}</p>
-            <p style="margin:0;font-size:12.5px;color:#8a8a8a;">${t.w2s}</p>
-          </td>
-          <td align="right" style="padding-left:8px;white-space:nowrap;">
-            <span style="background:#161616;color:#8a8a8a;font-size:11px;font-weight:700;padding:5px 11px;border-radius:999px;border:1px solid #2a2a2a;">${t.w2b}</span>
-          </td>
-        </tr></table>
-      </td></tr>
-
-      <tr><td style="border-top:1px solid #1f1f1f;padding:16px 0 22px;">
-        <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-          <td>
-            <p style="margin:0 0 2px;font-size:15px;font-weight:700;color:#ffffff;">${t.w3}</p>
-            <p style="margin:0;font-size:12.5px;color:#8a8a8a;">${t.w3s}</p>
-          </td>
-          <td align="right" style="padding-left:8px;white-space:nowrap;">
-            <span style="background:#161616;color:#666666;font-size:11px;font-weight:700;padding:5px 11px;border-radius:999px;border:1px solid #242424;">${t.w3b}</span>
-          </td>
-        </tr></table>
-      </td></tr>
-    </table>
-
-    <!-- Referral -->
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-      <tr><td style="border-top:1px solid #1f1f1f;padding:24px 0 0;">
-        <p style="margin:0 0 6px;font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#5a8fe3;">${t.refK}</p>
-        <p style="margin:0 0 14px;font-size:13.5px;color:#8a8a8a;line-height:1.5;">${t.refS}</p>
-        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#0d0d0d;border:1px solid #1f1f1f;border-radius:8px;margin-bottom:12px;">
-          <tr><td style="padding:13px 14px;">
-            <p style="margin:0;font-size:12px;color:#9aa0a8;word-break:break-all;font-family:'Courier New',Courier,monospace;">${referralLink}</p>
-          </td></tr>
-        </table>
-        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:8px;">
-          <tr>
-            <td width="50%" style="padding-right:4px;">
-              <a href="${whatsappUrl}" style="display:block;background:#25d366;color:#0a0a0a;font-size:13px;font-weight:700;padding:13px 0;border-radius:8px;text-decoration:none;text-align:center;">WhatsApp</a>
-            </td>
-            <td width="50%" style="padding-left:4px;">
-              <a href="${twitterUrl}" style="display:block;background:#1a1a1a;border:1px solid #2a2a2a;color:#ffffff;font-size:13px;font-weight:700;padding:12px 0;border-radius:8px;text-decoration:none;text-align:center;">X / Twitter</a>
-            </td>
-          </tr>
-        </table>
-        <a href="${referralLink}" style="display:block;background:#2a6fdb;color:#ffffff;font-size:14px;font-weight:700;padding:14px 0;border-radius:8px;text-decoration:none;text-align:center;">${t.shareBtn}</a>
-      </td></tr>
-    </table>
-
-    <!-- Urgency -->
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-      <tr><td style="border-top:1px solid #1f1f1f;padding:26px 0 28px;text-align:center;">
-        <p style="margin:0 0 6px;font-size:21px;font-weight:800;color:#ffffff;letter-spacing:-0.3px;">${t.urg}</p>
-        <p style="margin:0;font-size:13px;color:#8a8a8a;line-height:1.6;">${t.urg1}<br><strong style="color:#5a8fe3;">${t.urg2}</strong></p>
-      </td></tr>
-    </table>
-
-  </td></tr>
-
-  <!-- FOOTER -->
-  <tr><td style="padding:18px 0 24px;text-align:center;">
-    <p style="margin:0 0 3px;font-size:12px;color:#555555;">${t.team}</p>
-    <p style="margin:0;font-size:11px;color:#444444;">${t.signup} <a href="${referralLink.split('?')[0]}" style="color:#5a8fe3;text-decoration:none;">2trainapp.com</a></p>
-  </td></tr>
-
-</table>
-</td></tr>
-</table>
-</body>
-</html>`
-}
