@@ -369,7 +369,7 @@ const isEn = document.documentElement.lang === 'en';
     // Determine wave
     const wave = position <= 100 ? 1 : position <= 250 ? 2 : 3;
     const waveData = {
-      1: { badge1: 'Wave 1 ⚡', badge2: isEn ? 'Lifetime access' : 'Acceso de por vida', badge3: isEn ? 'Free forever' : 'Gratis para siempre' },
+      1: { badge1: 'Wave 1 ⚡', badge2: isEn ? 'Exclusive perks' : 'Ventajas exclusivas', badge3: 'Founding Member' },
       2: { badge1: 'Wave 2', badge2: isEn ? '3 months free' : '3 meses gratis', badge3: 'Early access' },
       3: { badge1: 'Wave 3', badge2: isEn ? 'Standard access' : 'Acceso normal', badge3: isEn ? 'First come first served' : 'Por orden de llegada' },
     }[wave];
@@ -410,12 +410,12 @@ const isEn = document.documentElement.lang === 'en';
       };
     }
     const waMsg = isEn
-      ? encodeURIComponent(`I just reserved my spot on 2trAIn ⚡ An AI personal trainer that explains every decision. Only 100 lifetime-free spots. Join with my link 👉 ${link}`)
-      : encodeURIComponent(`Acabo de reservar mi plaza en 2trAIn ⚡ Un entrenador personal con IA que te explica cada decisión. Solo 100 plazas gratuitas de por vida. Entra con mi link 👉 ${link}`);
+      ? encodeURIComponent(`I just reserved my spot on 2trAIn ⚡ An AI personal trainer that explains every decision. Only 100 spots with exclusive perks. Join with my link 👉 ${link}`)
+      : encodeURIComponent(`Acabo de reservar mi plaza en 2trAIn ⚡ Un entrenador personal con IA que te explica cada decisión. Solo 100 plazas con ventajas exclusivas. Entra con mi link 👉 ${link}`);
     document.getElementById('ms-wa').href = `https://wa.me/?text=${waMsg}`;
     const twText = isEn
-      ? encodeURIComponent(`I just reserved my spot on 2trAIn ⚡\n\nAI that explains EVERY decision in your training.\nOnly 100 free-forever spots →`)
-      : encodeURIComponent(`Acabo de reservar mi plaza en 2trAIn ⚡\n\nIA que te explica CADA decisión de tu entrenamiento.\nSolo 100 plazas gratis para siempre →`);
+      ? encodeURIComponent(`I just reserved my spot on 2trAIn ⚡\n\nAI that explains EVERY decision in your training.\nOnly 100 spots with exclusive perks →`)
+      : encodeURIComponent(`Acabo de reservar mi plaza en 2trAIn ⚡\n\nIA que te explica CADA decisión de tu entrenamiento.\nSolo 100 plazas con ventajas exclusivas →`);
     document.getElementById('ms-x').href = `https://twitter.com/intent/tweet?text=${twText}&url=${encodeURIComponent(link)}`;
 
     // Show success

@@ -156,28 +156,28 @@ function buildEmail(position: number, referralLink: string, isEn: boolean): stri
     ? {
         lang: 'en', title: "You're in — 2trAIn", eyebrow: 'Spot confirmed', sub: 'on the 2trAIn waitlist',
         ctaTop: 'View my spot →', how: 'How you move up',
-        w1: 'Wave 1 — First 100', w1s: 'Lifetime access · Free forever', w1b: '3 referrals ⚡',
+        w1: 'Wave 1 — First 100', w1s: 'Exclusive perks · Founding Member', w1b: '3 referrals ⚡',
         w2: 'Wave 2 — Next 150', w2s: 'Access weeks after launch', w2b: '1 referral',
         w3: 'Wave 3 — Last 150', w3s: 'First come, first served', w3b: 'Waitlist',
         refK: 'Your referral link', refS: 'Share and move up. With 3 friends you lock in Wave 1.',
         shareBtn: 'Share my link →', urg: 'Only 100 Wave 1 spots.',
-        urg1: "Once they're gone, there's no going back.", urg2: '3 friends = lifetime access, free.',
+        urg1: "Once they're gone, there's no going back.", urg2: '3 friends = exclusive perks, locked in.',
         team: '— The 2trAIn team', signup: 'You signed up at',
-        wa: `Train solo with no guidance? I just reserved my spot in 2trAIn, an AI personal coach that tells you exactly what to do at every moment. Only 100 free lifetime spots. Join with my link and we both move up the list 👇\n${referralLink}`,
-        tw: `Just reserved my spot in 2trAIn ⚡\n\nAn AI personal coach that adapts to you in real time.\n\nOnly 100 free-forever spots. Get in before it fills up →`,
+        wa: `Train solo with no guidance? I just reserved my spot in 2trAIn, an AI personal coach that tells you exactly what to do at every moment. Only 100 spots with exclusive perks. Join with my link and we both move up the list 👇\n${referralLink}`,
+        tw: `Just reserved my spot in 2trAIn ⚡\n\nAn AI personal coach that adapts to you in real time.\n\nOnly 100 spots with exclusive perks. Get in before it fills up →`,
       }
     : {
         lang: 'es', title: 'Estás dentro de 2trAIn', eyebrow: 'Plaza confirmada', sub: 'en la waitlist de 2trAIn',
         ctaTop: 'Ver mi posición →', how: 'Cómo subes de posición',
-        w1: 'Wave 1 — Primeros 100', w1s: 'Acceso de por vida · Gratis para siempre', w1b: '3 referidos ⚡',
+        w1: 'Wave 1 — Primeros 100', w1s: 'Ventajas exclusivas · Founding Member', w1b: '3 referidos ⚡',
         w2: 'Wave 2 — Siguientes 150', w2s: 'Acceso semanas después del lanzamiento', w2b: '1 referido',
         w3: 'Wave 3 — Últimas 150', w3s: 'Por orden de llegada', w3b: 'Lista de espera',
         refK: 'Tu link de referido', refS: 'Comparte y sube posiciones. Con 3 amigos tienes Wave 1 garantizado.',
         shareBtn: 'Compartir mi link →', urg: 'Solo 100 plazas Wave 1.',
-        urg1: 'Cuando se llenen, no hay vuelta atrás.', urg2: '3 amigos = acceso de por vida, gratis.',
+        urg1: 'Cuando se llenen, no hay vuelta atrás.', urg2: '3 amigos = ventajas exclusivas aseguradas.',
         team: '— El equipo de 2trAIn', signup: 'Te apuntaste en',
-        wa: `¿Entrenas solo y sin guía? Acabo de reservar mi plaza en 2trAIn, un entrenador personal con IA que te dice exactamente qué hacer en cada momento. Solo hay 100 plazas gratuitas de por vida. Entra con mi link y los dos subimos posiciones en la lista 👇\n${referralLink}`,
-        tw: `Acabo de reservar mi plaza en 2trAIn ⚡\n\nUn entrenador personal con IA que se adapta a ti en tiempo real.\n\nSolo 100 plazas gratis para siempre. Entra antes de que se llene →`,
+        wa: `¿Entrenas solo y sin guía? Acabo de reservar mi plaza en 2trAIn, un entrenador personal con IA que te dice exactamente qué hacer en cada momento. Solo hay 100 plazas con ventajas exclusivas. Entra con mi link y los dos subimos posiciones en la lista 👇\n${referralLink}`,
+        tw: `Acabo de reservar mi plaza en 2trAIn ⚡\n\nUn entrenador personal con IA que se adapta a ti en tiempo real.\n\nSolo 100 plazas con ventajas exclusivas. Entra antes de que se llene →`,
       }
 
   const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(t.wa)}`

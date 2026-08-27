@@ -68,7 +68,7 @@ export const OgImage: React.FC = () => (
               borderRadius: 999,
             }}
           >
-            Beta gratuita · Primeros 100 de por vida
+            Beta gratuita · Ventajas exclusivas para los primeros 100
           </span>
           <span style={{ color: "#5f5f5f", fontSize: 17, fontWeight: 600, letterSpacing: "0.01em" }}>2trainapp.com</span>
         </div>
