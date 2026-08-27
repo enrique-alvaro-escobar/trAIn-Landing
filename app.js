@@ -299,8 +299,10 @@ const isEn = document.documentElement.lang === 'en';
     });
   })();
 
-  // Capture referral code from URL
-  const _refCode = new URLSearchParams(window.location.search).get('ref') || null;
+  // Capture referral code from URL (atribuir referidos) y spot (ver mi posición)
+  const _urlParams = new URLSearchParams(window.location.search);
+  const _refCode = _urlParams.get('ref') || null;
+  const _spotCode = _urlParams.get('spot') || null;
 
   // Modal form submit
   const mForm = document.getElementById('modal-form');
@@ -466,6 +468,43 @@ const isEn = document.documentElement.lang === 'en';
       mBtn.disabled = false; mBtn.style.opacity = '';
     }
   });
+
+  // CTA email "Ver mi posición" → ?spot=CODE abre el modal con la plaza real
+  if (_spotCode) {
+    openModal();
+    mFormState.classList.add('hidden');
+    mSuccess.classList.remove('hidden');
+    const statusEl = document.querySelector('#modal-success .ms-status');
+    if (statusEl) statusEl.textContent = isEn ? 'Loading…' : 'Cargando…';
+    (async () => {
+      try {
+        const res = await fetch('https://nruzjtqewjakfwshfagz.supabase.co/functions/v1/join-waitlist', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+          },
+          body: JSON.stringify({ referral_code: _spotCode, lang: isEn ? 'en' : 'es' }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Error');
+        showModalSuccess(data.referral_code, data.position, data.projection, data);
+        // Limpia ?spot= de la URL sin recargar (evita reabrir al compartir la barra)
+        try {
+          const u = new URL(window.location.href);
+          u.searchParams.delete('spot');
+          window.history.replaceState({}, '', u.pathname + (u.search || '') + u.hash);
+        } catch (_) {}
+      } catch (err) {
+        console.error('Spot lookup error:', err);
+        mSuccess.classList.add('hidden');
+        mFormState.classList.remove('hidden');
+        showModalError(isEn
+          ? 'We could not find that spot. Join the waitlist below.'
+          : 'No encontramos esa plaza. Apúntate abajo.');
+      }
+    })();
+  }
 
   modal.addEventListener('transitionend', () => {
     if (!modal.classList.contains('active')) {

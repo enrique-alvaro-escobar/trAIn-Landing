@@ -21,3 +21,5 @@ supabase/.temp/
 caps/
 email-preview.html
 SESION-PENDIENTE.md
+.vercel
+.env*
