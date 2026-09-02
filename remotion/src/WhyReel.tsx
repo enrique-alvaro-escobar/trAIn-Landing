@@ -57,7 +57,7 @@ const SceneReasons: React.FC = () => (
         <BigTitle>Siempre con un porqué.</BigTitle>
       </div>
       <ReasonRow decision="Hoy descansas" reason="tu fatiga es alta" delay={28} />
-      <ReasonRow decision="+2,5 kg en sentadilla" reason="completaste las series" delay={46} />
+      <ReasonRow decision="Una serie más" reason="completaste todas las series" delay={46} />
       <ReasonRow decision="Menos volumen" reason="dormiste poco" delay={64} />
     </div>
   </Scene>

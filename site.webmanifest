@@ -1,7 +1,7 @@
 {
   "name": "2trAIn",
   "short_name": "2trAIn",
-  "description": "Your AI fitness coach that explains the why behind every training decision.",
+  "description": "The AI coach that remembers you: your plan is rebuilt every week from what you train, choose and tell it.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0A0A0A",

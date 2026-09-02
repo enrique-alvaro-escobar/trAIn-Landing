@@ -359,8 +359,8 @@ const isEn = document.documentElement.lang === 'en';
     document.getElementById('ms-pos-frac').textContent = isEn ? `${free} available` : `${free} libres`;
     document.getElementById('ms-scarcity-taken').textContent = (isEn ? `${taken} taken` : `${taken} ocupada${taken !== 1 ? 's' : ''}`) + lockedTxt;
     document.getElementById('ms-scarcity-free').textContent = isEn ? `${free} available →` : `${free} disponible${free !== 1 ? 's' : ''} →`;
-    if (reduceMotion) { fill.style.transition = 'none'; fill.style.width = pct + '%'; return; }
-    setTimeout(() => { fill.style.width = pct + '%'; }, 500);
+    if (reduceMotion) { fill.style.transition = 'none'; fill.style.transform = 'scaleX(' + (pct / 100) + ')'; return; }
+    setTimeout(() => { fill.style.transform = 'scaleX(' + (pct / 100) + ')'; }, 500);
   }
 
   function showModalSuccess(referralCode, position, projection, stats) {
@@ -372,8 +372,8 @@ const isEn = document.documentElement.lang === 'en';
     const wave = position <= 100 ? 1 : position <= 250 ? 2 : 3;
     const waveData = {
       1: { badge1: 'Wave 1 ⚡', badge2: isEn ? 'Exclusive perks' : 'Ventajas exclusivas', badge3: 'Founding Member' },
-      2: { badge1: 'Wave 2', badge2: isEn ? '3 months free' : '3 meses gratis', badge3: 'Early access' },
-      3: { badge1: 'Wave 3', badge2: isEn ? 'Standard access' : 'Acceso normal', badge3: isEn ? 'First come first served' : 'Por orden de llegada' },
+      2: { badge1: 'Wave 2', badge2: isEn ? 'Second batch' : 'Segunda tanda', badge3: isEn ? 'Early access' : 'Acceso anticipado' },
+      3: { badge1: 'Wave 3', badge2: isEn ? 'Before the public' : 'Antes que el público', badge3: isEn ? 'First come first served' : 'Por orden de llegada' },
     }[wave];
     document.getElementById('ms-badge-1').textContent = waveData.badge1;
     document.getElementById('ms-badge-2').textContent = waveData.badge2;
@@ -434,7 +434,7 @@ const isEn = document.documentElement.lang === 'en';
     numWrap.onclick = () => {
       const fill = document.getElementById('ms-fill');
       fill.style.transition = 'none';
-      fill.style.width = '0%';
+      fill.style.transform = 'scaleX(0)';
       void fill.offsetWidth;
       fill.style.transition = '';
       animateNumber(position);
@@ -517,30 +517,17 @@ const isEn = document.documentElement.lang === 'en';
         mBtn.disabled = false; mBtn.style.opacity = '';
         // Reset bar for next open
         const fill = document.getElementById('ms-fill');
-        if (fill) { fill.style.transition = 'none'; fill.style.width = '0%'; }
+        if (fill) { fill.style.transition = 'none'; fill.style.transform = 'scaleX(0)'; }
       }, 50);
     }
   });
 })();
 
-(function() {
-  var target = new Date('2026-09-01T00:00:00');
-  function tick() {
-    var el = document.getElementById('countdown-display');
-    if (!el) return;
-    var diff = target - new Date();
-    if (diff <= 0) { el.textContent = isEn ? 'Beta available' : 'Beta disponible'; return; }
-    var d = Math.floor(diff / 86400000);
-    var h = Math.floor((diff % 86400000) / 3600000);
-    var m = Math.floor((diff % 3600000) / 60000);
-    el.innerHTML =
-      '<span aria-label="' + d + (isEn ? ' days' : ' días') + '">' + d + 'd</span> ' +
-      '<span aria-label="' + h + (isEn ? ' hours' : ' horas') + '">' + h + 'h</span> ' +
-      '<span aria-label="' + m + (isEn ? ' minutes' : ' minutos') + '">' + m + 'm</span>';
-  }
-  tick();
-  setInterval(tick, 60000);
-})();
+// Cuenta atrás retirada (2026-09-02). Apuntaba al 2026-09-01 y, una vez
+// vencida, dejaba en el bloque de conversión la frase "La beta abre el 1 de
+// septiembre · faltan / Beta disponible" en ES y EN. La escasez de esta
+// página pasa a ser de plazas —la escalera de waves de #beta-offer—, que no
+// caduca sola. No reintroducir un contador sin un dueño de la fecha.
 
 // Mobile menu
 (function() {
