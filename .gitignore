@@ -23,3 +23,9 @@ email-preview.html
 SESION-PENDIENTE.md
 .vercel
 .env*
+
+# Impeccable: design.json SI se comparte (autoridad de diseno del repo);
+# el resto es estado local del hook y consentimiento por desarrollador.
+.impeccable/config.local.json
+.impeccable/hook.cache.json
+.impeccable/live/

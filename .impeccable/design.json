@@ -1,0 +1,423 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-02T09:46:35Z",
+  "title": "Design System: 2trAIn",
+  "extensions": {
+    "colorMeta": {
+      "accent": {
+        "role": "primary",
+        "displayName": "Azul Senal",
+        "canonical": "#2A6FDB",
+        "tonalRamp": [
+          "#0B2041",
+          "#133973",
+          "#1C51A5",
+          "#246AD7",
+          "#548BE2",
+          "#85ADEA",
+          "#B7CFF3",
+          "#E9F0FB"
+        ]
+      },
+      "accent-2": {
+        "role": "primary",
+        "displayName": "Azul Legible",
+        "canonical": "#5A8FE3",
+        "tonalRamp": [
+          "#0B2041",
+          "#143973",
+          "#1C51A5",
+          "#2469D7",
+          "#548BE2",
+          "#86ADEA",
+          "#B7CEF3",
+          "#E9F0FB"
+        ]
+      },
+      "modal-green": {
+        "role": "secondary",
+        "displayName": "Verde Confirmacion",
+        "canonical": "#22C55E",
+        "tonalRamp": [
+          "#0B411F",
+          "#147337",
+          "#1CA54F",
+          "#25D666",
+          "#54E288",
+          "#86EAAB",
+          "#B8F3CD",
+          "#E9FBF0"
+        ]
+      },
+      "modal-amber": {
+        "role": "secondary",
+        "displayName": "Ambar Aviso",
+        "canonical": "#F5B62A",
+        "tonalRamp": [
+          "#493303",
+          "#815B06",
+          "#B88209",
+          "#F0A90B",
+          "#F6BD40",
+          "#F9D077",
+          "#FBE4AF",
+          "#FEF7E7"
+        ]
+      },
+      "danger": {
+        "role": "secondary",
+        "displayName": "Rojo Error",
+        "canonical": "#FF5555",
+        "tonalRamp": [
+          "#4C0000",
+          "#870000",
+          "#C10000",
+          "#FB0000",
+          "#FF3737",
+          "#FF7171",
+          "#FFABAB",
+          "#FFE5E5"
+        ]
+      },
+      "bg": {
+        "role": "neutral",
+        "displayName": "Negro Instrumento",
+        "canonical": "#0A0A0A",
+        "tonalRamp": [
+          "#262626",
+          "#434343",
+          "#616161",
+          "#7E7E7E",
+          "#9B9B9B",
+          "#B8B8B8",
+          "#D5D5D5",
+          "#F2F2F2"
+        ]
+      },
+      "bg-3": {
+        "role": "neutral",
+        "displayName": "Negro Elevado",
+        "canonical": "#111111",
+        "tonalRamp": [
+          "#262626",
+          "#434343",
+          "#616161",
+          "#7E7E7E",
+          "#9B9B9B",
+          "#B8B8B8",
+          "#D5D5D5",
+          "#F2F2F2"
+        ]
+      },
+      "fg": {
+        "role": "neutral",
+        "displayName": "Blanco Papel",
+        "canonical": "#FAFAFA",
+        "tonalRamp": [
+          "#262626",
+          "#434343",
+          "#616161",
+          "#7E7E7E",
+          "#9B9B9B",
+          "#B8B8B8",
+          "#D5D5D5",
+          "#F2F2F2"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Gris Apagado",
+        "canonical": "#8A8A8A",
+        "tonalRamp": [
+          "#262626",
+          "#434343",
+          "#616161",
+          "#7E7E7E",
+          "#9B9B9B",
+          "#B8B8B8",
+          "#D5D5D5",
+          "#F2F2F2"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Linea",
+        "canonical": "#1F1F1F",
+        "tonalRamp": [
+          "#262626",
+          "#434343",
+          "#616161",
+          "#7E7E7E",
+          "#9B9B9B",
+          "#B8B8B8",
+          "#D5D5D5",
+          "#F2F2F2"
+        ]
+      },
+      "wave-active": {
+        "role": "primary",
+        "displayName": "Azul Wave Activa",
+        "canonical": "#2359AD",
+        "tonalRamp": [
+          "#0D2140",
+          "#173A70",
+          "#2053A1",
+          "#2A6CD1",
+          "#588CDD",
+          "#89AEE7",
+          "#B9CFF1",
+          "#EAF0FB"
+        ],
+        "note": "Derivado, no token nuevo: color-mix(in srgb, var(--accent) 78%, var(--bg)). Blanco encima da 6,8:1."
+      },
+      "modal-dim-2": {
+        "role": "neutral",
+        "displayName": "Punto Wave Inactiva",
+        "canonical": "#3A3D42",
+        "tonalRamp": [
+          "#242629",
+          "#3F4248",
+          "#5A5F67",
+          "#767C86",
+          "#9499A1",
+          "#B3B7BD",
+          "#D2D4D8",
+          "#F1F2F3"
+        ]
+      },
+      "ink-black": {
+        "role": "neutral",
+        "displayName": "Negro Puro",
+        "canonical": "#000000",
+        "note": "Solo la tarjeta del formulario dentro del bloque azul de beta: es la inversion deliberada del bloque."
+      },
+      "hero-warm": {
+        "role": "secondary",
+        "displayName": "Calido de Hero",
+        "canonical": "rgba(255, 140, 40, 0.08)",
+        "note": "Unica nota calida del sitio, solo dentro del degradado desenfocado del hero-glow. Nunca en texto ni en superficie."
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Titulares de hero y de seccion."
+      },
+      "display-tight": {
+        "displayName": "Display Tight",
+        "purpose": "Bloques de 2-3 lineas que deben leerse como una masa."
+      },
+      "headline": {
+        "displayName": "Headline / FAQ",
+        "purpose": "Texto largo y pequeno: el tracking se relaja a proposito."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Todo el texto de lectura."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Eyebrows y etiquetas en mayusculas, 11px. Es el suelo: por debajo el texto funcional deja de leerse."
+      },
+      "mono": {
+        "displayName": "Mono",
+        "purpose": "Cifras y datos dentro del modal de exito."
+      },
+      "hero": {
+        "displayName": "Hero",
+        "purpose": "El titular de portada, 84px."
+      },
+      "section": {
+        "displayName": "Section",
+        "purpose": "Titular de seccion, 52px."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Titular de bloque, 26px."
+      },
+      "subtitle": {
+        "displayName": "Subtitle",
+        "purpose": "Entradilla y titular de tarjeta, 18px."
+      },
+      "body-sm": {
+        "displayName": "Body sm",
+        "purpose": "Texto de lectura secundario, 14px."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Microcopy y datos densos, 13px."
+      },
+      "micro": {
+        "displayName": "Micro",
+        "purpose": "El paso mas pequeno de cuerpo, 12px."
+      }
+    },
+    "shadows": [
+      {
+        "name": "focus-ring",
+        "value": "0 0 0 4px rgba(42, 111, 219, 0.1)",
+        "purpose": "Anillo de foco en inputs y controles."
+      },
+      {
+        "name": "focus-ring-wide",
+        "value": "0 0 0 6px rgba(42, 111, 219, 0.14)",
+        "purpose": "Variante ancha para controles grandes."
+      },
+      {
+        "name": "cta-halo",
+        "value": "0 12px 28px -10px rgba(42, 111, 219, 0.6)",
+        "purpose": "El boton primario proyecta su propio color hacia abajo."
+      },
+      {
+        "name": "scene-depth",
+        "value": "0 24px 60px -28px rgba(0, 0, 0, 0.85)",
+        "purpose": "Carcasa del telefono del hero y piezas que flotan sobre la pagina."
+      }
+    ],
+    "motion": [
+      {
+        "name": "gsap-scrolltrigger",
+        "value": "GSAP + ScrollTrigger (locales, /assets/js/)",
+        "purpose": "Toda la coreografia de scroll. Documentada en GSAP_SCROLL.md; cambiar estructura obliga a revisar triggers."
+      },
+      {
+        "name": "demo-marquee",
+        "value": "animation: demoMarquee (loop horizontal infinito)",
+        "purpose": "Carrusel de la demo. Marcado como antipatron por el detector: candidato a control manual."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "mobile-max",
+        "value": "767px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Reservar plaza en la beta. Es el unico trabajo de la pagina.",
+      "html": "<button class=\"ds-btn-primary\">Reservar mi plaza gratis</button>",
+      "css": ".ds-btn-primary { background: var(--accent, #2A6FDB); color: var(--fg, #FAFAFA); font: 800 16px/1.2 'TT Firs Neue', system-ui, sans-serif; letter-spacing: -.01em; padding: 14px 28px; border: none; border-radius: 999px; cursor: pointer; box-shadow: 0 12px 28px -10px rgba(42,111,219,.6); transition: background .18s ease, transform .18s ease; } .ds-btn-primary:hover { background: var(--accent-2, #5A8FE3); color: #0A0A0A; } .ds-btn-primary:active { transform: translateY(1px); } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 4px rgba(42,111,219,.1); }"
+    },
+    {
+      "name": "Email Input",
+      "kind": "input",
+      "refersTo": "input-email",
+      "description": "El unico control critico del sitio: alimenta la waitlist de Supabase.",
+      "html": "<input class=\"ds-input-email\" type=\"email\" placeholder=\"tu@email.com\" aria-label=\"Email\" />",
+      "css": ".ds-input-email { background: var(--bg-3, #111111); color: var(--fg, #FAFAFA); border: 1px solid var(--line, #1F1F1F); border-radius: 999px; padding: 14px 20px; width: 100%; font: 400 16px/1.5 'TT Firs Neue', system-ui, sans-serif; } .ds-input-email::placeholder { color: var(--muted, #8A8A8A); } .ds-input-email:focus-visible { outline: none; border-color: var(--accent, #2A6FDB); box-shadow: 0 0 0 4px rgba(42,111,219,.1); }"
+    },
+    {
+      "name": "Objetivo Chip",
+      "kind": "chip",
+      "refersTo": "chip-objetivo",
+      "description": "Las cuatro metas de entrada (Fuerza, Cardio, Prueba, Mantener). Misma IA, mismo razonamiento.",
+      "html": "<span class=\"ds-chip\"><span class=\"ds-chip-num\">01</span> Fuerza</span>",
+      "css": ".ds-chip { display: inline-flex; align-items: center; gap: 8px; background: rgba(42,111,219,.12); color: var(--accent-2, #5A8FE3); border-radius: 999px; padding: 4px 12px; font: 700 13px/1.4 'TT Firs Neue', system-ui, sans-serif; } .ds-chip-num { font-family: ui-monospace, monospace; font-size: 11px; opacity: .7; }"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Superficie estandar sobre el negro instrumento. Se separa por hairline, no por sombra.",
+      "html": "<div class=\"ds-card\"><h3>Te explica el porque</h3><p>Cada cambio de volumen o intensidad, explicado con tus datos.</p></div>",
+      "css": ".ds-card { background: var(--bg-2, #0d0d0d); color: var(--fg, #FAFAFA); border: 1px solid var(--line, #1F1F1F); border-radius: 16px; padding: 20px; font: 400 16px/1.5 'TT Firs Neue', system-ui, sans-serif; } .ds-card h3 { margin: 0 0 8px; font-weight: 800; letter-spacing: -.01em; font-size: 20px; } .ds-card p { margin: 0; color: var(--muted, #8A8A8A); } .ds-card:hover { border-color: var(--line-2, #2A2A2A); }"
+    },
+    {
+      "name": "Label / Eyebrow",
+      "kind": "custom",
+      "refersTo": "label-eyebrow",
+      "description": "Etiqueta en mayusculas sobre un titular de display.",
+      "html": "<span class=\"ds-label\">Tu objetivo</span>",
+      "css": ".ds-label { display: block; font: 700 11px/1.4 'TT Firs Neue', system-ui, sans-serif; text-transform: uppercase; letter-spacing: .15em; color: var(--muted, #8A8A8A); }"
+    },
+    {
+      "name": "Display Heading",
+      "kind": "custom",
+      "refersTo": "display",
+      "description": "El titular compacto que define la voz del sitio: tracking negativo e interlineado por debajo de 1.",
+      "html": "<h2 class=\"ds-display\">Elige la meta.<br />El plan lo construye contigo.</h2>",
+      "css": ".ds-display { font-family: 'TT Firs Neue', system-ui, sans-serif; font-weight: 800; font-size: clamp(25px, 8vw, 80px); line-height: .96; letter-spacing: -.02em; color: var(--fg, #FAFAFA); margin: 0; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "La Sala de Control",
+    "overview": "Negro de instrumento, un solo azul de senal y tipografia propia apretada hasta que las palabras se tocan. La pagina no vende entusiasmo, vende lectura de datos: el visitante entra a un puesto de mando donde cada decision aparece explicada, no celebrada. Es lo contrario del gimnasio iluminado y sonriente que usa la categoria, y ese rechazo es el posicionamiento.\n\nLa pieza que lo sostiene todo es el carrusel de la sesion: la IA razona en el chat y escupe una sesion real, ejercicio a ejercicio, con su foto y su prescripcion. Hay un segundo mundo de color mas pequeno, el modal de exito posterior al alta (tokens --ms-*, de modal success), unica superficie que llega despues de convertir.",
+    "keyCharacteristics": [
+      "Fondo negro casi absoluto con tres niveles de superficie muy proximos",
+      "Un unico azul de senal, mas su version clara para texto",
+      "Tipografia propia y variable, con tracking negativo agresivo en display",
+      "Paleta separada y acotada para el modal posterior al alta",
+      "Todo en pill: la forma por defecto es completamente redondeada"
+    ],
+    "rules": [
+      {
+        "name": "La Regla del Azul que se Lee",
+        "body": "El azul de relleno (#2A6FDB) y el azul de texto (#5A8FE3) no son intercambiables.",
+        "section": "colors"
+      },
+      {
+        "name": "La Regla del Despues",
+        "body": "Los tokens --ms-* pertenecen al modal de exito y no salen de el. Son el vocabulario de lo que pasa despues de convertir; sacarlos a la pagina de venta gasta antes de tiempo senales que solo significan algo una vez dentro.",
+        "section": "colors"
+      },
+      {
+        "name": "La Regla de la Paleta Unica",
+        "body": "Las paginas secundarias heredan la paleta de la principal; no redefinen tokens por su cuenta. Asi fue como --muted-2 acabo en #5A5A5A (2,9:1) en ocho ficheros mientras la principal usaba #808080 (5,0:1).",
+        "section": "colors"
+      },
+      {
+        "name": "La Regla del Semaforo Mudo",
+        "body": "Verde, ambar y rojo solo comunican estado. Nunca decoran ni aparecen en un titular.",
+        "section": "colors"
+      },
+      {
+        "name": "La Regla de la Escala Corta",
+        "body": "La escala documentada no es la que el codigo usa hoy: index.html carga 24 tamanos de fuente y 17 radios, con pasos de medio pixel (11,5 / 12,5 / 13,5 / 14,5 / 15,5px) que delatan ajuste a ojo. Consolidarlos es trabajo pendiente; mientras tanto, una pieza nueva se cine a los pasos documentados y no anade uno mas.",
+        "section": "typography"
+      },
+      {
+        "name": "La Regla del Tracking que Cede",
+        "body": "El tracking negativo es para tamanos grandes; por debajo de 24px se relaja o se elimina.",
+        "section": "typography"
+      },
+      {
+        "name": "La Regla de la Fuente Local",
+        "body": "TT Firs Neue se sirve desde /assets/fonts/ con font-display swap y precarga. No se sustituye ni se carga por CDN.",
+        "section": "typography"
+      },
+      {
+        "name": "La Regla de la Hairline",
+        "body": "Sobre negro, un borde de 1px separa mejor que cualquier sombra.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do usar el azul legible (#5A8FE3) para texto y el azul senal (#2A6FDB) para rellenos, halos y foco.",
+      "Do separar superficies con una hairline antes que con una sombra.",
+      "Do relajar el tracking negativo en cuanto el texto baja de tamano de display.",
+      "Do mantener la paleta --ms-* dentro del modal de exito.",
+      "Do heredar la paleta de la pagina principal en las secundarias, en vez de redeclarar :root en cada una.",
+      "Do aplicar cualquier cambio de estructura o copy a / y a /en/ en el mismo commit.",
+      "Do mantener todo texto funcional en 11px o mas.",
+      "Do servir fuentes y librerias en local, como ya se hace con TT Firs Neue, GSAP y ScrollTrigger.",
+      "Do cenirse a los pasos de tipografia y radio documentados en una pieza nueva, sin anadir uno mas."
+    ],
+    "donts": [
+      "Don't poner texto en #2A6FDB sobre el fondo negro.",
+      "Don't usar el verde, el ambar o el rojo como color de marca o de titular.",
+      "Don't volver a cargar Tailwind desde el CDN de desarrollo.",
+      "Don't anadir gradientes decorativos ni fotos de stock de gimnasio.",
+      "Don't introducir una segunda familia tipografica.",
+      "Don't vender con una fecha: la escasez de esta pagina es de plazas contadas en vivo, no de calendario.",
+      "Don't bajar texto funcional de 11px."
+    ]
+  }
+}

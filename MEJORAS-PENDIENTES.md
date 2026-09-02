@@ -1,5 +1,14 @@
 # Mejoras pendientes — 2trainapp.com
 
+> **DOCUMENTO HISTORICO — NO ES UN BACKLOG VIVO.**
+> Auditoria del 16/05/2026. Revisado el 02/09/2026: sus tres bloqueantes de
+> rendimiento estan resueltos (el favicon ya es un archivo, TT Firs Neue se
+> sirve local, GSAP y ScrollTrigger son locales y Tailwind esta compilado en
+> `dist/`), y su duda abierta sobre RLS la cerro
+> `supabase/migrations/20260616110000_security_lockdown.sql`. Lo unico que
+> seguia vigente —que todo el repo se servia publicamente— se cerro con el
+> `.vercelignore` creado el 02/09/2026. No planifiques a partir de aqui.
+
 Resultado de la auditoría completa realizada el 16/05/2026. Todo lo que está en este documento funciona correctamente; estas son optimizaciones y tareas pendientes ordenadas por prioridad.
 
 ---

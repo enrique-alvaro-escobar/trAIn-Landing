@@ -1,0 +1,25 @@
+{
+  "hook": {
+    "enabled": true,
+    "limits": {
+      "maxFindings": 5,
+      "maxChars": 8000
+    }
+  },
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "kicker-above-heading",
+        "value": "*",
+        "files": [
+          "en/index.html",
+          "index.html"
+        ],
+        "createdAt": "2026-09-02T11:36:38.524Z",
+        "reason": "usuario confirmado 2026-09-02: el eyebrow es componente documentado en DESIGN.md (label-eyebrow) y en los tres bloques de funcionalidad nombra la entrada mientras el titular, que va quemado en el reel, nombra la salida"
+      }
+    ]
+  }
+}

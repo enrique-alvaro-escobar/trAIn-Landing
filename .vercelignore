@@ -1,0 +1,33 @@
+# Vercel publica la raíz del repo tal cual (sitio estático, sin build step),
+# así que TODO fichero commiteado acaba siendo descargable en 2trainapp.com.
+# Verificado 2026-09-02: /guia_landing_beta.md, /MEJORAS-PENDIENTES.md,
+# /GSAP_SCROLL.md, /tailwind.config.js, /src/input.css,
+# /supabase/functions/join-waitlist/index.ts, /supabase/seed-waitlist-test.sql
+# y /scripts/send_email_previews.py devolvían todos 200 en producción.
+# No había credenciales dentro (la anon key de app.js es pública por diseño),
+# pero son documentos internos y código de servidor que no pintan nada ahí.
+
+# Documentación interna
+*.md
+!index.md
+
+# Contexto de diseño (autoridad compartida en el repo, no contenido público)
+PRODUCT.md
+DESIGN.md
+.impeccable/
+.claude/
+
+# Backend y build sources: nunca se sirven, solo se despliegan aparte
+supabase/
+scripts/
+remotion/
+src/
+tailwind.config.js
+package.json
+package-lock.json
+
+# Local
+.env
+.env.*
+caps/
+email-preview.html
